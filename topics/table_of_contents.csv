@@ -23,22 +23,22 @@ cinema_attendance,countries,culture,entertainment,"Cinema attendances, biggest m
 cinema_attendance,states,culture,entertainment,"Cinema attendances, biggest markets",todo
 feature_film_production,countries,culture,entertainment,"Feature films produced, biggest producers",todo
 feature_film_production,states,culture,entertainment,"Feature films produced, biggest producers",todo
-nobel_prizes_peace,countries,culture,honours_and_awards,"Nobel Peace Prize wins, by country of birth",todo
-nobel_prizes_medicine,countries,culture,honours_and_awards,"Nobel Prize in Medicine wins, by country of birth",todo
-nobel_prizes_literature,countries,culture,honours_and_awards,"Nobel Prize in Literature wins, by country of birth",todo
-nobel_prizes_economics,countries,culture,honours_and_awards,"Nobel Memorial Prize in Economics wins, by country of birth",todo
-nobel_prizes_physics,countries,culture,honours_and_awards,"Nobel Prize in Physics wins, by country of birth",todo
-nobel_prizes_chemistry,countries,culture,honours_and_awards,"Nobel Prize in Chemistry wins, by country of birth",todo
-nobel_prizes_total,countries,culture,honours_and_awards,"Total Nobel Prize wins, by country of birth",todo
+nobel_prizes_peace,countries,culture,honours_and_awards,"Nobel Peace Prize wins, all-time, by country of birth",todo
+nobel_prizes_medicine,countries,culture,honours_and_awards,"Nobel Prize in Medicine wins, all-time, by country of birth",todo
+nobel_prizes_literature,countries,culture,honours_and_awards,"Nobel Prize in Literature wins, all-time, by country of birth",todo
+nobel_prizes_economics,countries,culture,honours_and_awards,"Nobel Memorial Prize in Economics wins, all-time, by country of birth",todo
+nobel_prizes_physics,countries,culture,honours_and_awards,"Nobel Prize in Physics wins, all-time, by country of birth",todo
+nobel_prizes_chemistry,countries,culture,honours_and_awards,"Nobel Prize in Chemistry wins, all-time, by country of birth",todo
+nobel_prizes_total,countries,culture,honours_and_awards,"Total Nobel Prize wins, all-time, by country of birth",done
 press_freedom_index,countries,politics,media_freedom,Press freedom index score,todo
 journalist_abuse,countries,politics,media_freedom,"Abuses and attacks against journalists, reported",todo
 journalists_imprisoned,countries,politics,media_freedom,Number of journalists in prison,todo
-world_cup_titles_football_men,countries,culture,sport,Men's Football World Cup wins and finals appearances,todo
-world_cup_titles_football_women,countries,culture,sport,Women's Football World Cup wins and finals appearances,todo
-world_cup_titles_cricket,countries,culture,sport,Cricket World Cup wins and finals appearances,todo
-davis_cup_titles,countries,culture,sport,Davis Cup wins,todo
-olympic_medals_summer,countries,culture,sport,Summer Olympics medal count,todo
-olympic_medals_winter,countries,culture,sport,Winter Olympics medal count,todo
+world_cup_titles_football_men,countries,culture,sport,"Men's Football World Cup wins and finals appearances, all-time",todo
+world_cup_titles_football_women,countries,culture,sport,"Women's Football World Cup wins and finals appearances, all-time",todo
+world_cup_titles_cricket,countries,culture,sport,"Cricket World Cup wins and finals appearances, all-time",todo
+davis_cup_titles,countries,culture,sport,"Davis Cup wins, all-time",todo
+olympic_medals_summer,countries,culture,sport,"Summer Olympics medal count, all-time",todo
+olympic_medals_winter,countries,culture,sport,"Winter Olympics medal count, all-time",todo
 mobile_phone_subscriptions,countries,technology,connectivity,"Mobile telephone subscriptions, highest",todo
 mobile_phone_subscriptions,states,technology,connectivity,"Mobile telephone subscriptions, highest",todo
 landline_subscriptions,countries,technology,connectivity,"Fixed landline telephone subscriptions, highest",todo

@@ -88,6 +88,17 @@ using the topic as described in chat.
    and a value column; add a year column if the source's "latest available" year
    varies by country. Keep the source's own precision — no rounding.
 
+   If the source labels some rows below the country level in a way that should
+   roll up to one canonical row — constituent countries (Scotland, Northern
+   Ireland → United Kingdom), dependencies that are politically part of a
+   parent state (Faroe Islands → Denmark, Guadeloupe → France) — sum those
+   into the parent country yourself before staging. `add_topic.py`'s `--map`
+   resolves a label to a key but does not sum values that land on the same
+   key: two input labels mapped to the same country silently keep only the
+   last one processed (it prints a one-line `conflicts` notice, but the write
+   still succeeds and the dropped value isn't recorded anywhere). Pre-summing
+   in the staging file is the only way to get a correct total.
+
 5. **Merge it.**
 
    ```bash
@@ -178,6 +189,15 @@ Judge candidates on four things:
   `add_topic.py` enforces this on `--data-year` and rejects a mismatch unless you
   pass `--allow-stale-year` with a `--notes` explanation — reserve that for
   topics (census, some V-Dem/IHME series) that are never updated annually.
+
+  **Cumulative all-time totals** (Nobel Prizes, Olympic medals, World Cup
+  titles — a running career/history tally, not a yearly snapshot) still need
+  a `--data-year`, but it means "as of the most recent completed event," not
+  "the year this number describes." Use the year of the latest edition/award
+  covered by the source (e.g. `2025` for Nobel Prizes if the source includes
+  the 2025 announcements). Winners that aren't individually attributable to
+  one country — organizations, national teams for an individual-level tally —
+  get excluded rather than guessed at; say so in `--notes`.
 - **Consistent definition across rows.** Watch for sources that mix survey years,
   switch between administrative and modelled estimates, or change denominators
   by country. Note the caveat in `--notes` when unavoidable.
