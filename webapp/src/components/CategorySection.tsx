@@ -34,7 +34,13 @@ export function CategorySection({ section }: Props) {
         if (entry.boundingClientRect.top < 0) return;
         setRevealed(false);
       },
-      { threshold: 0.15 },
+      // threshold is a fraction of the *target's own* area, not the
+      // viewport's — for a section taller than viewport/threshold, no
+      // scroll position can ever satisfy it (some chapters, e.g. Industry,
+      // are taller than that). rootMargin makes the trigger line a fixed
+      // distance from the viewport edge instead, so it works regardless of
+      // how tall the section is.
+      { threshold: 0, rootMargin: '0px 0px -15% 0px' },
     );
     observer.observe(el);
     return () => observer.disconnect();
