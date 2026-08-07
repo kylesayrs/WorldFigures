@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: "Lora", ui-serif, Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  background: #faf7f2;
+  font-family: var(--font-sans);
+}
+
+/* subtle paper texture for the handbook feel */
+.paper-bg {
+  background-color: #faf7f2;
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(0, 0, 0, 0.035) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+
+::selection {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background: #1c1a22;
+  }
+  .paper-bg {
+    background-color: #1c1a22;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.045) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  ::selection {
+    background: rgba(255, 255, 255, 0.18);
+  }
+}
