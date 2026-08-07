@@ -12,7 +12,7 @@ not an input to the data pipeline in `data/`.
 |---|---|
 | `topic` | snake_case slug. Matches the column name the value ends up under in `data/<entity_type>.csv` once researched (see `data/manifest.md`). No year in the slug. |
 | `entity_type` | What each value in this topic is *about* — `countries`, `states`, `banks`, `companies`, `funds`, etc. The registered entity types and their data files live in `data/manifest.md`. |
-| `header` | Top-level chapter this topic is displayed under (e.g. `economics`, `health`). Purely a presentation grouping for the webapp — nothing in the data pipeline reads it. |
+| `header` | Top-level chapter this topic is displayed under. One of `demographics`, `geography`, `economics`, `industry`, `politics`, `society`, `culture` — that display order is hardcoded in `webapp/src/lib/data.ts` (`HEADER_ORDER`), not derived from this file. Purely a presentation grouping for the webapp — nothing in the data pipeline reads it. |
 | `sub_header` | Section within `header` (e.g. `gdp`, `disease_and_mortality`). Same caveat as `header`. |
 | `description` | Short human-readable description of the measure, good enough to scan the list and pick a topic. |
 | `status` | `todo` or `done` — see below. |

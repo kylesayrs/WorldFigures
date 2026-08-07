@@ -171,6 +171,23 @@ function loadSourceManifest(): Map<string, SourceInfo> {
   return map;
 }
 
+// Fixed display order for top-level categories (topics/table_of_contents.csv's
+// "header" column); anything not listed here sorts after, alphabetically.
+const HEADER_ORDER = [
+  'demographics',
+  'geography',
+  'economics',
+  'industry',
+  'politics',
+  'society',
+  'culture',
+];
+
+function headerSortKey(slug: string): [number, string] {
+  const index = HEADER_ORDER.indexOf(slug);
+  return [index === -1 ? HEADER_ORDER.length : index, slug];
+}
+
 interface TocRow extends CsvRow {
   topic: string;
   entity_type: string;
@@ -261,7 +278,11 @@ export function loadCategories(): CategorySection[] {
         subheaders,
       };
     })
-    .sort((a, b) => a.theme.label.localeCompare(b.theme.label));
+    .sort((a, b) => {
+      const [ai, aSlug] = headerSortKey(a.slug);
+      const [bi, bSlug] = headerSortKey(b.slug);
+      return ai - bi || aSlug.localeCompare(bSlug);
+    });
 
   return categories;
 }
