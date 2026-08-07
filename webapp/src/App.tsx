@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { loadCategories } from './lib/data';
+import { loadCategories, countTopics, countFilledTopics } from './lib/data';
 import { CategorySection } from './components/CategorySection';
 import { TocChips, ContentsPage } from './components/TableOfContents';
 
 function App() {
   const sections = useMemo(() => loadCategories(), []);
-  const totalTopics = sections.reduce((n, s) => n + s.topics.length, 0);
-  const totalFilled = sections.reduce((n, s) => n + s.topics.filter((t) => t.hasData).length, 0);
+  const totalTopics = sections.reduce((n, s) => n + countTopics(s), 0);
+  const totalFilled = sections.reduce((n, s) => n + countFilledTopics(s), 0);
 
   return (
     <div className="min-h-screen paper-bg">
@@ -18,7 +18,7 @@ function App() {
               World Figures
             </h1>
             <p className="text-xs opacity-60">
-              A pocket handbook of statistics for every country &amp; U.S. state
+              A pocket handbook of world statistics for every-day life
               {totalTopics > 0 && (
                 <span className="tabular-nums"> · {totalFilled}/{totalTopics} chapters researched</span>
               )}

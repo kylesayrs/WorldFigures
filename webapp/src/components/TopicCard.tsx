@@ -16,7 +16,7 @@ export function TopicCard({ topic, theme }: Props) {
   const totalCoverage = topic.countryValues.length + topic.stateValues.length;
   const maxCoverage =
     Number(topic.source?.coverageTotal) ||
-    (topic.scope.trim().toLowerCase() === 'states' ? 51 : topic.scope.trim().toLowerCase() === 'both' ? 248 : 197);
+    (topic.scopes.includes('countries') ? 197 : 0) + (topic.scopes.includes('states') ? 51 : 0);
 
   return (
     <motion.li
@@ -58,7 +58,12 @@ export function TopicCard({ topic, theme }: Props) {
             {totalCoverage}/{maxCoverage}
           </span>
         ) : (
-          <span className="text-[11px] font-medium italic opacity-60 shrink-0">no data yet</span>
+          <span
+            className="text-[11px] font-medium italic opacity-60 shrink-0"
+            title={topic.statusDescription || undefined}
+          >
+            no data yet
+          </span>
         )}
 
         <motion.span
@@ -82,7 +87,7 @@ export function TopicCard({ topic, theme }: Props) {
             className="px-4 overflow-hidden"
           >
             <div className="pb-4">
-              <p className="text-xs uppercase tracking-wide opacity-60 mb-2">{scopeLabel(topic.scope)}</p>
+              <p className="text-xs uppercase tracking-wide opacity-60 mb-2">{scopeLabel(topic.scopes)}</p>
 
               {topic.countryValues.length > 0 && (
                 <div className="mb-3">

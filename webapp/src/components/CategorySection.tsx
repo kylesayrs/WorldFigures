@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import type { CategorySection as CategorySectionData } from '../lib/data';
-import { TopicCard } from './TopicCard';
+import { SubheaderBlock } from './SubheaderBlock';
 import { useScrollFade } from '../hooks/useScrollFade';
 
 interface Props {
@@ -8,8 +8,9 @@ interface Props {
 }
 
 export function CategorySection({ section }: Props) {
-  const { theme, topics } = section;
-  const filledCount = topics.filter((t) => t.hasData).length;
+  const { theme, subheaders } = section;
+  const filledCount = subheaders.reduce((n, s) => n + s.topics.filter((t) => t.hasData).length, 0);
+  const totalCount = subheaders.reduce((n, s) => n + s.topics.length, 0);
   const header = useScrollFade<HTMLDivElement>();
 
   return (
@@ -28,18 +29,18 @@ export function CategorySection({ section }: Props) {
           {theme.label}
         </h2>
         <span className="text-xs opacity-60 tabular-nums shrink-0">
-          {filledCount}/{topics.length} researched
+          {filledCount}/{totalCount} researched
         </span>
       </motion.header>
 
-      {topics.length === 0 ? (
+      {subheaders.length === 0 ? (
         <p className="text-sm italic opacity-60">No topics added to this chapter yet.</p>
       ) : (
-        <ul className="flex flex-col gap-3">
-          {topics.map((topic) => (
-            <TopicCard key={topic.slug} topic={topic} theme={theme} />
+        <div className="flex flex-col gap-5">
+          {subheaders.map((subheader) => (
+            <SubheaderBlock key={subheader.slug} subheader={subheader} theme={theme} />
           ))}
-        </ul>
+        </div>
       )}
     </section>
   );

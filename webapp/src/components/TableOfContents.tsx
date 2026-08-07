@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import type { CategorySection } from '../lib/data';
+import { countFilledTopics, countTopics, type CategorySection } from '../lib/data';
 
 interface Props {
   sections: CategorySection[];
@@ -17,7 +17,7 @@ export function TocChips({ sections }: Props) {
       className="flex gap-2 overflow-x-auto px-4 py-2 sm:px-6 no-scrollbar"
     >
       {sections.map((s) => {
-        const filled = s.topics.filter((t) => t.hasData).length;
+        const filled = countFilledTopics(s);
         return (
           <button
             key={s.slug}
@@ -48,7 +48,8 @@ export function ContentsPage({ sections }: Props) {
       <h2 className="font-serif text-lg font-semibold mb-3 opacity-80">Contents</h2>
       <ul className="flex flex-col gap-1.5">
         {sections.map((s) => {
-          const filled = s.topics.filter((t) => t.hasData).length;
+          const filled = countFilledTopics(s);
+          const total = countTopics(s);
           return (
             <li key={s.slug}>
               <button
@@ -68,7 +69,7 @@ export function ContentsPage({ sections }: Props) {
                   aria-hidden
                 />
                 <span className="text-xs tabular-nums opacity-50 shrink-0">
-                  {filled}/{s.topics.length}
+                  {filled}/{total}
                 </span>
               </button>
             </li>

@@ -1,7 +1,14 @@
+const SMALL_WORDS = new Set(['and', 'or', 'of', 'the', 'a', 'an', 'in', 'on', 'to', 'for']);
+const ACRONYMS = new Set(['gdp', 'ppp', 'usd', 'hdi', 'un', 'us', 'uk', 'eu', 'co2']);
+
 export function humanizeSlug(slug: string): string {
   return slug
     .split('_')
-    .map((w) => (w.length <= 3 && w === w.toLowerCase() ? w.toUpperCase() : w[0]?.toUpperCase() + w.slice(1)))
+    .map((w, i) => {
+      if (ACRONYMS.has(w)) return w.toUpperCase();
+      if (SMALL_WORDS.has(w) && i !== 0) return w;
+      return w[0]?.toUpperCase() + w.slice(1);
+    })
     .join(' ');
 }
 
@@ -14,10 +21,14 @@ export function formatNumber(n: number): string {
   return new Intl.NumberFormat('en-US', { maximumFractionDigits }).format(n);
 }
 
-export function scopeLabel(scope: string): string {
+function singleScopeLabel(scope: string): string {
   const s = scope.trim().toLowerCase();
   if (s === 'countries') return 'Countries';
   if (s === 'states') return 'U.S. States';
-  if (s === 'both') return 'Countries & U.S. States';
-  return scope || 'Unspecified';
+  return humanizeSlug(scope);
+}
+
+export function scopeLabel(scopes: string[]): string {
+  if (scopes.length === 0) return 'Unspecified';
+  return scopes.map(singleScopeLabel).join(' & ');
 }
