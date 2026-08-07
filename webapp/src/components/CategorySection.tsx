@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import type { CategorySection as CategorySectionData } from '../lib/data';
 import { SubheaderBlock } from './SubheaderBlock';
-import { useScrollFade } from '../hooks/useScrollFade';
 
 interface Props {
   section: CategorySectionData;
@@ -11,7 +10,6 @@ export function CategorySection({ section }: Props) {
   const { theme, subheaders } = section;
   const filledCount = subheaders.reduce((n, s) => n + s.topics.filter((t) => t.hasData).length, 0);
   const totalCount = subheaders.reduce((n, s) => n + s.topics.length, 0);
-  const header = useScrollFade<HTMLDivElement>();
 
   return (
     <section
@@ -20,9 +18,11 @@ export function CategorySection({ section }: Props) {
       style={{ backgroundColor: theme.bg, borderColor: theme.border }}
     >
       <motion.header
-        ref={header.ref}
-        style={{ opacity: header.opacity, y: header.y }}
-        className="flex items-baseline justify-between gap-3 mb-4"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once: false, amount: 0.5 }}
+        transition={{ type: 'spring', stiffness: 500, damping: 22, mass: 0.6 }}
+        className="flex items-baseline justify-between gap-3 mb-4 origin-left"
       >
         <h2 className="font-serif text-2xl font-semibold flex items-center gap-2" style={{ color: theme.accent }}>
           <span aria-hidden>{theme.emoji}</span>

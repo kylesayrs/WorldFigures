@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { SubheaderSection } from '../lib/data';
 import type { CategoryTheme } from '../lib/theme';
+import { useScrollFade } from '../hooks/useScrollFade';
 import { TopicCard } from './TopicCard';
 
 interface Props {
@@ -10,16 +11,14 @@ interface Props {
 
 export function SubheaderBlock({ subheader, theme }: Props) {
   const filledCount = subheader.topics.filter((t) => t.hasData).length;
+  const header = useScrollFade<HTMLHeadingElement>();
 
   return (
     <div>
       <motion.h3
-        initial={{ opacity: 0, scale: 0.8 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: false, amount: 0.5 }}
-        transition={{ type: 'spring', stiffness: 500, damping: 22, mass: 0.6 }}
-        style={{ color: theme.accent }}
-        className="flex items-baseline justify-between gap-3 text-sm font-semibold uppercase tracking-wide mb-2 origin-left"
+        ref={header.ref}
+        style={{ opacity: header.opacity, y: header.y, color: theme.accent }}
+        className="flex items-baseline justify-between gap-3 text-sm font-semibold uppercase tracking-wide mb-2"
       >
         <span>{subheader.label}</span>
         <span className="text-[11px] font-normal tabular-nums opacity-70 normal-case shrink-0">
