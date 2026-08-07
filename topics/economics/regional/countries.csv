@@ -1,0 +1,5 @@
+topic,description,status
+regional_gdp,GDP of the region a country belongs to,todo
+regional_gdp_ppp,Purchasing power (GDP PPP) of the region a country belongs to,todo
+regional_population,Population of the region a country belongs to,todo
+regional_trade,International trade of the region a country belongs to,todo

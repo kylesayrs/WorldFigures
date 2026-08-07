@@ -1,0 +1,6 @@
+topic,description,status
+refugee_origin_population,Refugees by country of origin,todo
+refugee_hosting_population,"Refugee population hosted, largest",todo
+asylum_application_origin,Origin of asylum applications,todo
+asylum_application_destination,Country where asylum applications were lodged,todo
+conflict_displaced_population,"Population displaced by conflict, stock",todo
