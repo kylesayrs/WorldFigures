@@ -80,36 +80,6 @@ export const CATEGORY_THEMES: Record<string, CategoryTheme> = {
     borderDark: '#1f453d',
     accentDark: '#6fd1bf',
   },
-  technology: {
-    label: 'Technology',
-    emoji: '\u{1F4E1}',
-    bg: '#e2e9fb',
-    border: '#c7d3f5',
-    accent: '#3450a1',
-    bgDark: '#1a2035',
-    borderDark: '#293458',
-    accentDark: '#9db0ea',
-  },
-  health: {
-    label: 'Health',
-    emoji: '\u{1FA7A}',
-    bg: '#fce4ec',
-    border: '#f6c9db',
-    accent: '#a13a63',
-    bgDark: '#301a24',
-    borderDark: '#4a2836',
-    accentDark: '#e894b3',
-  },
-  transport: {
-    label: 'Transport',
-    emoji: '\u{1F697}',
-    bg: '#eef2d9',
-    border: '#dee6b0',
-    accent: '#5c6e1f',
-    bgDark: '#232a13',
-    borderDark: '#38431f',
-    accentDark: '#b8cc6a',
-  },
 };
 
 const FALLBACK_THEME: CategoryTheme = {
