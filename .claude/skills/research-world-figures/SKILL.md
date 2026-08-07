@@ -1,6 +1,7 @@
 ---
 name: research-world-figures
 description: Research a statistic for every country or U.S. state and add it to the "pocket world figures" master CSVs. Use this whenever the user names a topic they want per-country or per-state numbers for -- GDP, life expectancy, silicon exports, average commute duration, prison population, anything of that shape -- or asks to find a dataset covering all countries/states, add a column to the world figures book, check coverage of an existing topic, or refresh a topic with newer data. Trigger it even when the request is phrased casually ("get me broadband speeds by country", "what's the commute time in each state") and even when the user doesn't mention the book, CSVs, or this skill by name.
+argument-hint: <topic> <scope>
 ---
 
 # Pocket world figures
@@ -16,14 +17,56 @@ values filled in from memory. That column is worse than no column, because
 nothing in the CSV shows it happened. Every rule below exists to make that
 impossible.
 
+## Arguments
+
+Invoke as `/research-world-figures <topic> <scope>`, e.g.
+`/research-world-figures gdp_per_capita_ppp countries`.
+
+- `<topic>` — snake_case topic name, matching the `topic` column in
+  `topics/table_of_contents.csv`. Not unique on its own — see the `<slug>`
+  definition below.
+- `<scope>` — the entity type the topic is measured across, matching the
+  `entity_type` column (`countries`, `states`, `banks`, `companies`, `funds`,
+  ...). This is the same value that goes to `--entity-type` in step 5 below.
+
+On invocation:
+
+1. Parse `$ARGUMENTS` into `<topic>` and `<scope>`. If either is missing, ask
+   rather than guessing — a mismatched slug creates an orphan row that nothing
+   else will ever match later.
+2. Look up the row where `topic == <topic>` and `entity_type == <scope>` in
+   `topics/table_of_contents.csv`; `(topic, entity_type)` is the unique key.
+   Its `description` column is the starting point for "Pin down the measure"
+   below — a scan-the-list hint, not a full definition, so still nail down the
+   exact version (nominal vs PPP, mean vs median, etc.) yourself.
+   - No matching row: tell the user this `(topic, scope)` pair isn't in the
+     to-do list and confirm whether to add it or proceed anyway.
+   - Row found with `status=done`: confirm with the user that this is an
+     intentional refresh (you'll use `--force` in step 5) before continuing.
+3. Define `<slug>` as `<topic>_<scope>` (e.g. `gdp_nominal_countries`,
+   `gdp_nominal_states`). `<topic>` alone is **not** unique — the same topic
+   is often researched for more than one scope, as two independent columns in
+   two different master files — so anywhere below that needs a unique
+   filename or branch name (the staging file, the git branch) uses `<slug>`,
+   not `<topic>`. The `--topic` flag passed to `add_topic.py` in step 5 stays
+   `<topic>` alone: it's just the column name within that scope's own master
+   file, so it doesn't need the scope suffix.
+
+If the skill triggers from a topic named in conversation rather than explicit
+arguments, infer `<topic>`/`<scope>` the same way and check
+`topics/table_of_contents.csv` for a matching row; if nothing matches, proceed
+using the topic as described in chat.
+
 ## The loop
 
 1. **Pin down the measure.** A topic name is not yet a measure. "GDP" could be
    nominal, PPP, per capita, or growth rate. "Commute duration" could be mean
-   travel time for workers, median, or one-way vs round trip. Pick the version a
-   general-reader reference book would print, note it, and say which one you
-   picked in your final message. If genuinely ambiguous and the choice changes
-   the story the number tells, ask.
+   travel time for workers, median, or one-way vs round trip. Start from the
+   `description` looked up above (or the user's phrasing, if there was no
+   matching row), and pick the specific version a general-reader reference
+   book would print. Note it, and say which one you picked in your final
+   message. If genuinely ambiguous and the choice changes the story the
+   number tells, ask.
 
    Superlative topics ("largest silicon exporter") are one measure in disguise:
    find per-country silicon exports and the superlative falls out of the column,
@@ -41,7 +84,7 @@ impossible.
    the data URL — API endpoints returning CSV or JSON work fine — and write the
    response to a staging file.
 
-4. **Stage it.** Write `staging/<topic_slug>.csv` with at minimum a place column
+4. **Stage it.** Write `staging/<slug>.csv` with at minimum a place column
    and a value column; add a year column if the source's "latest available" year
    varies by country. Keep the source's own precision — no rounding.
 
@@ -49,7 +92,7 @@ impossible.
 
    ```bash
    python3 scripts/init_masters.py --data-dir data      # first run only, safe to repeat
-   python3 scripts/add_topic.py --entity-type countries --topic <slug> \
+   python3 scripts/add_topic.py --entity-type countries --topic <topic> \
      --input staging/<slug>.csv --key-col country --value-col value \
      --title "..." --unit "..." --source-name "..." --source-url "..." \
      --publisher "..." --published YYYY-MM-DD --data-year YYYY \
@@ -68,18 +111,27 @@ impossible.
    genuinely don't refresh annually, re-run with `--allow-stale-year` and a
    `--notes` explanation. Then re-run without `--dry-run`.
 
-6. **Open a PR.** Never commit a topic directly to `main`.
+6. **Mark the topic done.** In `topics/table_of_contents.csv`, set `status`
+   to `done` for the `(topic, entity_type)` row matching this run — matching
+   `<topic>`/`<scope>` from "Arguments" above. If the lookup in step 2 of
+   "Arguments" found no row (a topic not yet on the to-do list) and the user
+   said to proceed anyway, append a new row instead, with `status=done` and a
+   short `description`. This edit goes in the same commit as the data changes
+   below — the to-do list and the data it describes should never drift apart.
+
+7. **Open a PR.** Never commit a topic directly to `main`.
 
    - If the current branch is `main`, create and switch to `topic/<slug>`
      first; otherwise commit on the current branch.
    - Stage exactly what this run touched: the master file you merged into
      (e.g. `data/countries.csv`, `data/states.csv`, `data/banks.csv`),
-     `data/sources_manifest.csv`, and `staging/<slug>.csv`.
-   - Commit (e.g. `Add <topic> column`), push with `-u origin <branch>`, and
-     open the PR:
+     `data/sources_manifest.csv`, `staging/<slug>.csv`, and
+     `topics/table_of_contents.csv`.
+   - Commit (e.g. `Add <topic> column (<scope>)`), push with `-u origin
+     <branch>`, and open the PR:
 
      ```bash
-     gh pr create --base main --title "Add <topic> column" --body "$(cat <<'EOF'
+     gh pr create --base main --title "Add <topic> column (<scope>)" --body "$(cat <<'EOF'
      Measure: <what you picked, e.g. mean one-way commute time, workers 16+>
      Source: <publisher> — <source-name>, <source-url>
      Data year: <YYYY>  Coverage: <N>/197 (or /51)
@@ -91,10 +143,11 @@ impossible.
      refresh of a topic you opened earlier), that's fine — note the existing
      PR URL instead of erroring out.
 
-7. **Report back.** Tell the user the measure you chose, the source, the data
-   year, coverage (`N/197` or `N/51`), which notable rows are blank, and the
-   PR URL. If a large country is missing, say so plainly — that's the kind of
-   gap a reader notices.
+8. **Report back.** Tell the user the measure you chose, the source, the data
+   year, coverage (`N/197` or `N/51`), which notable rows are blank, that
+   `topics/table_of_contents.csv` is now marked `done` for this topic/scope,
+   and the PR URL. If a large country is missing, say so plainly — that's the
+   kind of gap a reader notices.
 
 ## Choosing a source
 
@@ -201,7 +254,7 @@ type you haven't used before. Short version:
   five-line addition to `ENTITY_TYPES` in `pwf_lib.py` — see `data/manifest.md`
   for the exact shape. Do this before staging a topic that needs it.
 
-`data/sources_manifest.csv` is one row per `(entity_type, topic_slug)` — its
+`data/sources_manifest.csv` is one row per `(entity_type, topic)` — its
 columns (title, unit, vintage, source, coverage) are fixed metadata fields, so
 adding or refreshing a topic there is already a single-row diff.
 
@@ -211,14 +264,16 @@ data/states.csv             field row, then state/fips/topic rows, one column pe
 data/banks.csv              field row, then name/topic rows, one column per bank (open roster)
 data/sources_manifest.csv   one row per (entity_type, topic): title, unit, vintage, source, coverage
 data/manifest.md            full data-layout reference
-staging/<slug>.csv          raw extraction, kept for auditing (one row per entity, as fetched)
+staging/<slug>.csv          raw extraction, kept for auditing (one row per entity, as fetched); slug = <topic>_<scope>
 topics/table_of_contents.csv  to-do list of topics, by entity_type: topic,entity_type,description,status
 topics/manifest.md          explains table_of_contents.csv
 ```
 
-Topic slugs are snake_case, no year in the name (`gdp_usd`, not `gdp_2024_usd`) —
+Topic names are snake_case, no year in the name (`gdp_usd`, not `gdp_2024_usd`) —
 the year lives in the manifest so refreshing a topic doesn't orphan the column.
-Include the unit or basis when it disambiguates: `gdp_per_capita_ppp`,
+`<topic>` alone is the column name and is reused across scopes (see
+"Arguments" above for how `<slug>` differs). Include the unit or basis when it
+disambiguates: `gdp_per_capita_ppp`,
 `mean_commute_minutes`, `silicon_exports_usd`.
 
 Refreshing a topic later: same command with `--force`, which replaces the column
@@ -246,9 +301,9 @@ variable IDs against the Census variable list before using them — table and
 variable names do change between vintages. Then:
 
 ```bash
-# fetch -> staging/mean_commute_minutes.csv with columns: state,value
+# fetch -> staging/mean_commute_minutes_states.csv with columns: state,value
 python3 scripts/add_topic.py --entity-type states --topic mean_commute_minutes \
-  --input staging/mean_commute_minutes.csv --key-col state --value-col value \
+  --input staging/mean_commute_minutes_states.csv --key-col state --value-col value \
   --title "Mean travel time to work" --unit "minutes" \
   --source-name "ACS 1-year estimates, aggregate travel time / workers who commute" \
   --source-url "<endpoint or table URL>" --publisher "U.S. Census Bureau" \
