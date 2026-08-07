@@ -1,1 +1,2 @@
 scope,topic_slug,title,unit,value_type,data_year,source_name,source_url,publisher,published,retrieved,coverage_filled,coverage_total,definition,notes
+states,gdp_state_usd,Gross domestic product by state,millions of current USD,number,2025,"Gross Domestic Product by State, Table SAGDP2 (All industry total, current dollars)",https://www.bea.gov/data/gdp/gdp-state,U.S. Bureau of Economic Analysis,2026-04-09,2026-08-07,51,51,"Nominal (current-dollar) gross domestic product by state, all industries, annual",
