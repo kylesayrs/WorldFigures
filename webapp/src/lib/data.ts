@@ -2,20 +2,27 @@ import { parseCsvObjects, parseCsvRows, type CsvRow } from './csv';
 import { getCategoryTheme, type CategoryTheme } from './theme';
 import { humanizeSlug } from './format';
 
-// Fixed master files, imported directly.
-import countriesCsv from '../../../data/countries.csv?raw';
-import statesCsv from '../../../data/us_states.csv?raw';
-import sourcesManifestCsv from '../../../data/sources_manifest.csv?raw';
-
-// topics/ grows one file at a time as the project's research skill runs, so
-// it's read as a recursive glob rather than fixed imports. Shape:
-//   topics/<category>/<subheader>/<scope>.csv   (exactly two directories deep)
-//   topics/manifest.csv                          (status code legend, not a topic file)
-const topicModules = import.meta.glob('../../../topics/**/*.csv', {
+// data/<entity_type>.csv masters grow one column at a time as topics get
+// researched, but the set of entity types itself is small and changes rarely
+// (see data/manifest.md's ENTITY_TYPES registry), so it's read as a glob
+// keyed by filename rather than fixed imports — a new entity type just needs
+// a new master file on disk, no code change here.
+const masterModules = import.meta.glob('../../../data/*.csv', {
   query: '?raw',
   import: 'default',
   eager: true,
 }) as Record<string, string>;
+
+import tableOfContentsCsv from '../../../topics/table_of_contents.csv?raw';
+import sourcesManifestCsv from '../../../data/sources_manifest.csv?raw';
+
+// topics/table_of_contents.csv has no status legend of its own anymore
+// (topics/manifest.md documents the two values in prose); kept here since
+// the UI wants a human-readable description for the "no data yet" tooltip.
+const STATUS_LEGEND: Record<string, string> = {
+  todo: 'Not yet researched and merged into data/.',
+  done: 'Researched and merged — a column exists in the corresponding data/<entity_type>.csv.',
+};
 
 export interface PlaceValue {
   code: string;
@@ -40,15 +47,21 @@ export interface SourceInfo {
   notes: string;
 }
 
+/** One entity type's slice of a topic (e.g. the "countries" values for gdp_nominal) — each entity type researched separately, so each gets its own source citation. */
+export interface EntityGroup {
+  entityType: string;
+  label: string;
+  values: PlaceValue[];
+  source: SourceInfo | null;
+}
+
 export interface TopicEntry {
   slug: string;
   description: string;
   status: string;
   statusDescription: string;
   scopes: string[];
-  source: SourceInfo | null;
-  countryValues: PlaceValue[];
-  stateValues: PlaceValue[];
+  entityGroups: EntityGroup[];
   hasData: boolean;
 }
 
@@ -64,24 +77,28 @@ export interface CategorySection {
   subheaders: SubheaderSection[];
 }
 
-/** A transposed master CSV: header row is place codes, each following row is `field,value,value,...`. */
+/** A transposed master CSV: header row is entity codes, each following row is `field,value,value,...`. The first data row is always the entity's human-readable name (see data/manifest.md). */
 interface TransposedMaster {
-  placeCodes: string[];
+  entityCodes: string[];
   fields: Map<string, string[]>;
 }
 
 function parseTransposedMaster(text: string): TransposedMaster {
   const rows = parseCsvRows(text);
-  if (rows.length === 0) return { placeCodes: [], fields: new Map() };
+  if (rows.length === 0) return { entityCodes: [], fields: new Map() };
   const [header, ...rest] = rows;
-  const placeCodes = header.slice(1);
+  const entityCodes = header.slice(1);
   const fields = new Map<string, string[]>();
   for (const r of rest) {
     const [fieldName, ...values] = r;
     if (!fieldName) continue;
     fields.set(fieldName.trim(), values);
   }
-  return { placeCodes, fields };
+  return { entityCodes, fields };
+}
+
+function nameValues(master: TransposedMaster): string[] | undefined {
+  return master.fields.values().next().value;
 }
 
 function numericValue(raw: string): number | null {
@@ -92,16 +109,12 @@ function numericValue(raw: string): number | null {
   return Number.isFinite(n) ? n : null;
 }
 
-function placeValuesForTopic(
-  master: TransposedMaster,
-  nameField: string,
-  topicSlug: string,
-): PlaceValue[] {
+function placeValuesForTopic(master: TransposedMaster, topicSlug: string): PlaceValue[] {
   const values = master.fields.get(topicSlug);
-  const names = master.fields.get(nameField);
+  const names = nameValues(master);
   if (!values || !names) return [];
   const out: PlaceValue[] = [];
-  master.placeCodes.forEach((code, i) => {
+  master.entityCodes.forEach((code, i) => {
     const raw = (values[i] ?? '').trim();
     if (raw === '') return;
     out.push({
@@ -121,12 +134,25 @@ function placeValuesForTopic(
   return out;
 }
 
+/** entity_type -> master, loaded from data/*.csv (sources_manifest.csv isn't a master, so it's skipped). */
+function loadEntityMasters(): Map<string, TransposedMaster> {
+  const masters = new Map<string, TransposedMaster>();
+  for (const [path, raw] of Object.entries(masterModules)) {
+    const fileName = path.slice(path.lastIndexOf('/') + 1);
+    if (fileName === 'sources_manifest.csv') continue;
+    const entityType = fileName.replace(/\.csv$/i, '');
+    masters.set(entityType, parseTransposedMaster(raw));
+  }
+  return masters;
+}
+
+/** (entity_type, topic_slug) -> SourceInfo; a topic can cite a different source per entity type (e.g. countries from the IMF, states from the BEA). */
 function loadSourceManifest(): Map<string, SourceInfo> {
   const rows = parseCsvObjects(sourcesManifestCsv);
   const map = new Map<string, SourceInfo>();
   for (const r of rows) {
-    if (!r.topic_slug) continue;
-    map.set(r.topic_slug, {
+    if (!r.topic_slug || !r.entity_type) continue;
+    map.set(`${r.entity_type}:${r.topic_slug}`, {
       title: r.title ?? '',
       unit: r.unit ?? '',
       valueType: r.value_type ?? '',
@@ -145,69 +171,13 @@ function loadSourceManifest(): Map<string, SourceInfo> {
   return map;
 }
 
-function statusLegendFromRows(rows: CsvRow[]): Map<string, string> {
-  const map = new Map<string, string>();
-  for (const r of rows) {
-    if (!r.status) continue;
-    map.set(r.status, r.description ?? '');
-  }
-  return map;
-}
-
-/** Path segments under topics/, e.g. "…/topics/economics/gdp/countries.csv" -> ["economics", "gdp", "countries.csv"]. */
-function topicsPathSegments(path: string): string[] {
-  const marker = '/topics/';
-  const idx = path.indexOf(marker);
-  const rel = idx === -1 ? path : path.slice(idx + marker.length);
-  return rel.split('/').filter(Boolean);
-}
-
-interface RawTopicFile {
-  category: string;
-  subheader: string;
-  scope: string;
-  rows: CsvRow[];
-}
-
-/**
- * Walks the topics/ glob and splits it into per-file entries plus the status
- * legend. topics/ is expected to be exactly two directories deep
- * (category/subheader) before the scope CSV — topics/manifest.csv is the one
- * sanctioned exception, since it's a status legend rather than a topic file.
- * Anything else at the wrong depth is a structural mistake in the data, not
- * a case the UI should silently paper over, so it throws.
- */
-function loadTopicsFolder(): { rawFiles: RawTopicFile[]; statusLegend: Map<string, string> } {
-  const rawFiles: RawTopicFile[] = [];
-  let statusLegend = new Map<string, string>();
-
-  for (const [path, raw] of Object.entries(topicModules)) {
-    const parts = topicsPathSegments(path);
-
-    if (parts.length === 1 && parts[0] === 'manifest.csv') {
-      statusLegend = statusLegendFromRows(parseCsvObjects(raw));
-      continue;
-    }
-
-    if (parts.length !== 3) {
-      const depth = Math.max(parts.length - 1, 0);
-      throw new Error(
-        `Malformed topics/ entry at "${path}": expected exactly 2 levels of nesting ` +
-          `(topics/<category>/<subheader>/<scope>.csv), found depth ${depth} ("${parts.join('/')}"). ` +
-          'Fix the folder structure or the topics loader in src/lib/data.ts.',
-      );
-    }
-
-    const [category, subheader, fileName] = parts;
-    rawFiles.push({
-      category,
-      subheader,
-      scope: fileName.replace(/\.csv$/i, ''),
-      rows: parseCsvObjects(raw),
-    });
-  }
-
-  return { rawFiles, statusLegend };
+interface TocRow extends CsvRow {
+  topic: string;
+  entity_type: string;
+  header: string;
+  sub_header: string;
+  description: string;
+  status: string;
 }
 
 export function countTopics(section: CategorySection): number {
@@ -219,62 +189,60 @@ export function countFilledTopics(section: CategorySection): number {
 }
 
 export function loadCategories(): CategorySection[] {
-  const countries = parseTransposedMaster(countriesCsv);
-  const states = parseTransposedMaster(statesCsv);
+  const entityMasters = loadEntityMasters();
   const sourceManifest = loadSourceManifest();
-  const { rawFiles, statusLegend } = loadTopicsFolder();
+  const tocRows = parseCsvObjects(tableOfContentsCsv) as TocRow[];
 
-  const categoryMap = new Map<string, Map<string, RawTopicFile[]>>();
-  for (const file of rawFiles) {
-    if (!categoryMap.has(file.category)) categoryMap.set(file.category, new Map());
-    const subheaderMap = categoryMap.get(file.category)!;
-    if (!subheaderMap.has(file.subheader)) subheaderMap.set(file.subheader, []);
-    subheaderMap.get(file.subheader)!.push(file);
+  // header -> sub_header -> topic -> merged rows across entity types.
+  const categoryMap = new Map<
+    string,
+    Map<string, Map<string, { description: string; status: string; entityTypes: string[] }>>
+  >();
+
+  for (const row of tocRows) {
+    if (!row.topic || !row.header || !row.sub_header) continue;
+    if (!categoryMap.has(row.header)) categoryMap.set(row.header, new Map());
+    const subheaderMap = categoryMap.get(row.header)!;
+    if (!subheaderMap.has(row.sub_header)) subheaderMap.set(row.sub_header, new Map());
+    const topicMap = subheaderMap.get(row.sub_header)!;
+
+    const existing = topicMap.get(row.topic);
+    if (existing) {
+      existing.entityTypes.push(row.entity_type);
+      if (!existing.description && row.description) existing.description = row.description;
+    } else {
+      topicMap.set(row.topic, {
+        description: row.description ?? '',
+        status: row.status ?? '',
+        entityTypes: [row.entity_type],
+      });
+    }
   }
 
   const categories: CategorySection[] = Array.from(categoryMap.entries())
-    .map(([categorySlug, subheaderMap]) => {
+    .map(([headerSlug, subheaderMap]) => {
       const subheaders: SubheaderSection[] = Array.from(subheaderMap.entries())
-        .map(([subheaderSlug, files]) => {
-          // Merge same-slug topics across scope files (e.g. gdp_nominal defined in
-          // both countries.csv and states.csv) into a single entry.
-          const bySlug = new Map<string, { description: string; status: string; scopes: string[] }>();
-          for (const file of files) {
-            for (const row of file.rows) {
-              if (!row.topic) continue;
-              const existing = bySlug.get(row.topic);
-              if (existing) {
-                existing.scopes.push(file.scope);
-                if (!existing.description && row.description) existing.description = row.description;
-              } else {
-                bySlug.set(row.topic, {
-                  description: row.description ?? '',
-                  status: row.status ?? '',
-                  scopes: [file.scope],
-                });
-              }
-            }
-          }
-
-          const topics: TopicEntry[] = Array.from(bySlug.entries())
+        .map(([subheaderSlug, topicMap]) => {
+          const topics: TopicEntry[] = Array.from(topicMap.entries())
             .map(([slug, meta]) => {
-              const source = sourceManifest.get(slug) ?? null;
-              const countryValues = meta.scopes.includes('countries')
-                ? placeValuesForTopic(countries, 'country', slug)
-                : [];
-              const stateValues = meta.scopes.includes('states')
-                ? placeValuesForTopic(states, 'state', slug)
-                : [];
+              const entityGroups: EntityGroup[] = meta.entityTypes.map((entityType) => {
+                const master = entityMasters.get(entityType);
+                const values = master ? placeValuesForTopic(master, slug) : [];
+                return {
+                  entityType,
+                  label: humanizeSlug(entityType),
+                  values,
+                  source: sourceManifest.get(`${entityType}:${slug}`) ?? null,
+                };
+              });
               return {
                 slug,
                 description: meta.description,
                 status: meta.status,
-                statusDescription: statusLegend.get(meta.status) ?? '',
-                scopes: meta.scopes,
-                source,
-                countryValues,
-                stateValues,
-                hasData: countryValues.length > 0 || stateValues.length > 0,
+                statusDescription: STATUS_LEGEND[meta.status] ?? '',
+                scopes: meta.entityTypes,
+                entityGroups,
+                hasData: entityGroups.some((g) => g.values.length > 0),
               };
             })
             .sort((a, b) => a.slug.localeCompare(b.slug));
@@ -288,8 +256,8 @@ export function loadCategories(): CategorySection[] {
         .sort((a, b) => a.label.localeCompare(b.label));
 
       return {
-        slug: categorySlug,
-        theme: getCategoryTheme(categorySlug),
+        slug: headerSlug,
+        theme: getCategoryTheme(headerSlug),
         subheaders,
       };
     })

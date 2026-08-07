@@ -12,11 +12,14 @@ interface Props {
 
 export function TopicCard({ topic, theme }: Props) {
   const [open, setOpen] = useState(false);
-  const title = topic.source?.title || humanizeSlug(topic.slug);
-  const totalCoverage = topic.countryValues.length + topic.stateValues.length;
-  const maxCoverage =
-    Number(topic.source?.coverageTotal) ||
-    (topic.scopes.includes('countries') ? 197 : 0) + (topic.scopes.includes('states') ? 51 : 0);
+  const firstTitledGroup = topic.entityGroups.find((g) => g.source?.title);
+  const title = firstTitledGroup?.source?.title || humanizeSlug(topic.slug);
+  const firstDefinedGroup = topic.entityGroups.find((g) => g.source?.definition);
+  const totalCoverage = topic.entityGroups.reduce((n, g) => n + g.values.length, 0);
+  const maxCoverage = topic.entityGroups.reduce(
+    (n, g) => n + (Number(g.source?.coverageTotal) || g.values.length),
+    0,
+  );
 
   return (
     <motion.li
@@ -45,8 +48,10 @@ export function TopicCard({ topic, theme }: Props) {
           <p className="font-serif font-semibold leading-snug truncate" style={{ color: theme.accent }}>
             {title}
           </p>
-          {(topic.description || topic.source?.definition) && (
-            <p className="text-xs opacity-70 truncate">{topic.description || topic.source?.definition}</p>
+          {(topic.description || firstDefinedGroup?.source?.definition) && (
+            <p className="text-xs opacity-70 truncate">
+              {topic.description || firstDefinedGroup?.source?.definition}
+            </p>
           )}
         </div>
 
@@ -89,25 +94,15 @@ export function TopicCard({ topic, theme }: Props) {
             <div className="pb-4">
               <p className="text-xs uppercase tracking-wide opacity-60 mb-2">{scopeLabel(topic.scopes)}</p>
 
-              {topic.countryValues.length > 0 && (
-                <div className="mb-3">
-                  {topic.stateValues.length > 0 && (
-                    <p className="text-xs font-medium mb-1 opacity-80">Countries</p>
-                  )}
-                  <PlaceList values={topic.countryValues} unit={topic.source?.unit ?? ''} theme={theme} />
-                </div>
-              )}
-
-              {topic.stateValues.length > 0 && (
-                <div>
-                  {topic.countryValues.length > 0 && (
-                    <p className="text-xs font-medium mb-1 opacity-80">U.S. States</p>
-                  )}
-                  <PlaceList values={topic.stateValues} unit={topic.source?.unit ?? ''} theme={theme} />
-                </div>
-              )}
-
-              {topic.source && <SourceFootnote source={topic.source} />}
+              {topic.entityGroups
+                .filter((g) => g.values.length > 0)
+                .map((group, i, filled) => (
+                  <div key={group.entityType} className={i < filled.length - 1 ? 'mb-3' : undefined}>
+                    {filled.length > 1 && <p className="text-xs font-medium mb-1 opacity-80">{group.label}</p>}
+                    <PlaceList values={group.values} unit={group.source?.unit ?? ''} theme={theme} />
+                    {group.source && <SourceFootnote source={group.source} />}
+                  </div>
+                ))}
             </div>
           </motion.div>
         )}

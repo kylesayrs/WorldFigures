@@ -1,391 +1,391 @@
-topic,entity_type,description,status
-largest_nonfinancial_companies,companies,Largest non-financial companies,todo
-largest_banks,banks,Largest banks,todo
-largest_sovereign_wealth_funds,funds,Largest sovereign-wealth funds,todo
-largest_state_investment_funds,funds,Largest state permanent/investment funds,todo
-office_rents,countries,"Office rents, highest",todo
-office_rents,states,"Office rents, highest",todo
-foreign_direct_investment,countries,"Foreign direct investment, largest",todo
-foreign_direct_investment,states,"Foreign direct investment, largest",todo
-entrepreneurial_activity,countries,Entrepreneurial activity rate,todo
-entrepreneurial_activity,states,Entrepreneurial activity rate,todo
-brain_drain,countries,"Brain drain, highest",todo
-brain_drain,states,"Brain drain, highest",todo
-rd_spending,countries,R&D spending,todo
-rd_spending,states,R&D spending,todo
-innovation_index,countries,Innovation index score,todo
-innovation_index,states,Innovation index score,todo
-music_sales,countries,"Recorded music sales/revenue, biggest markets",todo
-music_sales,states,"Recorded music sales/revenue, biggest markets",todo
-book_publishing,countries,"Books published, biggest markets",todo
-book_publishing,states,"Books published, biggest markets",todo
-cinema_attendance,countries,"Cinema attendances, biggest markets",todo
-cinema_attendance,states,"Cinema attendances, biggest markets",todo
-feature_film_production,countries,"Feature films produced, biggest producers",todo
-feature_film_production,states,"Feature films produced, biggest producers",todo
-nobel_prizes_peace,countries,"Nobel Peace Prize wins, by country of birth",todo
-nobel_prizes_medicine,countries,"Nobel Prize in Medicine wins, by country of birth",todo
-nobel_prizes_literature,countries,"Nobel Prize in Literature wins, by country of birth",todo
-nobel_prizes_economics,countries,"Nobel Memorial Prize in Economics wins, by country of birth",todo
-nobel_prizes_physics,countries,"Nobel Prize in Physics wins, by country of birth",todo
-nobel_prizes_chemistry,countries,"Nobel Prize in Chemistry wins, by country of birth",todo
-nobel_prizes_total,countries,"Total Nobel Prize wins, by country of birth",todo
-press_freedom_index,countries,Press freedom index score,todo
-journalist_abuse,countries,"Abuses and attacks against journalists, reported",todo
-journalists_imprisoned,countries,Number of journalists in prison,todo
-world_cup_titles_football_men,countries,Men's Football World Cup wins and finals appearances,todo
-world_cup_titles_football_women,countries,Women's Football World Cup wins and finals appearances,todo
-world_cup_titles_cricket,countries,Cricket World Cup wins and finals appearances,todo
-davis_cup_titles,countries,Davis Cup wins,todo
-olympic_medals_summer,countries,Summer Olympics medal count,todo
-olympic_medals_winter,countries,Winter Olympics medal count,todo
-mobile_phone_subscriptions,countries,"Mobile telephone subscriptions, highest",todo
-mobile_phone_subscriptions,states,"Mobile telephone subscriptions, highest",todo
-landline_subscriptions,countries,"Fixed landline telephone subscriptions, highest",todo
-landline_subscriptions,states,"Fixed landline telephone subscriptions, highest",todo
-broadband_subscriptions,countries,"Broadband subscriptions, highest",todo
-broadband_subscriptions,states,"Broadband subscriptions, highest",todo
-broadband_speed,countries,"Average broadband internet speed, highest",todo
-broadband_speed,states,"Average broadband internet speed, highest",todo
-tourist_arrivals,countries,"International tourist arrivals, most",todo
-tourist_arrivals,states,"Tourist arrivals, most",todo
-tourist_spending,countries,"Outbound tourist spending, biggest spenders",todo
-tourist_spending,states,"Domestic tourist spending, biggest spenders",todo
-tourist_receipts,countries,"Inbound tourism receipts, largest",todo
-tourist_receipts,states,"Inbound tourism receipts, largest",todo
-beer_consumption,countries,"Beer consumption per person, highest",todo
-beer_consumption,states,"Beer consumption per person, highest",todo
-wine_consumption,countries,"Wine consumption per person, highest",todo
-wine_consumption,states,"Wine consumption per person, highest",todo
-gambling_losses,countries,"Gambling losses per person, highest",todo
-gambling_losses,states,"Gambling losses per person, highest",todo
-total_births,countries,Total annual births,todo
-total_births,states,Total annual births,todo
-teenage_births,countries,Teenage births,todo
-teenage_births,states,Teenage births,todo
-contraception_rate,countries,Contraception prevalence rate,todo
-marriage_rate,countries,"Marriage rate, highest and lowest",todo
-marriage_rate,states,"Marriage rate, highest and lowest",todo
-divorce_rate,countries,"Divorce rate, highest and lowest",todo
-divorce_rate,states,"Divorce rate, highest and lowest",todo
-mean_age_first_marriage_women,countries,"Mean age of women at first marriage, youngest and oldest",todo
-mean_age_first_marriage_women,states,"Mean age of women at first marriage, youngest and oldest",todo
-foreign_born_population,countries,"Foreign-born population, largest",todo
-foreign_born_population,states,"Foreign-born population, largest",todo
-population_total,countries,"Total population, current year",todo
-population_total,states,"Total population, current year",todo
-population_projected,countries,Projected population (e.g. 2040),todo
-population_projected,states,Projected population (e.g. 2040),todo
-population_growth_rate,countries,Population growth rate,todo
-population_growth_rate,states,Population growth rate,todo
-median_age,countries,Median age of population,todo
-median_age,states,Median age of population,todo
-sex_ratio,countries,Sex ratio (males per female),todo
-sex_ratio,states,Sex ratio (males per female),todo
-urban_growth_rate,countries,Urban population growth rate,todo
-urban_growth_rate,states,Urban population growth rate,todo
-urban_concentration,countries,Urban concentration (share of population in largest city),todo
-urban_concentration,states,Urban concentration (share of population in largest city),todo
-rural_population,countries,"Rural population, share of total",todo
-rural_population,states,"Rural population, share of total",todo
-aid_received,countries,"Aid received, largest recipients",todo
-aid_given,countries,"Aid given, largest donors",todo
-aid_change,countries,Biggest changes in aid,todo
-current_account_balance,countries,"Current-account balance, largest surpluses and deficits",todo
-current_account_balance_pct_gdp,countries,"Current-account balance as % of GDP, largest surpluses and deficits",todo
-official_reserves,countries,Official reserves,todo
-official_gold_reserves,countries,Official gold reserves,todo
-workers_remittances,countries,Workers' remittances,todo
-foreign_debt,countries,"Foreign debt, highest",todo
-foreign_debt_burden,countries,"Foreign debt burden (debt as % of GNI), highest",todo
-debt_service_ratio,countries,"Debt-service ratio, highest",todo
-household_debt,countries,Household debt,todo
-household_debt,states,Household debt,todo
-exchange_rate,countries,Exchange rate against the US dollar,todo
-big_mac_index,countries,The Economist's Big Mac index,todo
-gdp_nominal,countries,"GDP, nominal, largest economies",todo
-gdp_nominal,states,"GDP, nominal, largest economies",todo
-gdp_ppp,countries,"GDP, purchasing power parity, largest economies",todo
-gdp_per_capita,countries,GDP per person,todo
-gdp_per_capita,states,GDP per person,todo
-gdp_per_capita_ppp,countries,Purchasing power per person,todo
-gdp_growth_rate,countries,Economic growth rate,todo
-gdp_growth_rate,states,Economic growth rate,todo
-consumer_price_inflation,countries,"Consumer-price inflation, highest and lowest",todo
-consumer_price_inflation,states,"Consumer-price inflation, highest and lowest",todo
-commodity_price_change,countries,Commodity price change,todo
-house_price_change,countries,House price change,todo
-house_price_change,states,House price change,todo
-government_debt,countries,"Government debt (% of GDP), highest and lowest",todo
-government_debt,states,"Government debt (% of GDP), highest and lowest",todo
-government_spending,countries,"Government spending (% of GDP), highest and lowest",todo
-government_spending,states,"Government spending (% of GDP), highest and lowest",todo
-tax_revenue,countries,"Tax revenue (% of GDP), highest and lowest",todo
-tax_revenue,states,"Tax revenue (% of GDP), highest and lowest",todo
-regional_gdp,countries,GDP of the region a country belongs to,todo
-regional_gdp_ppp,countries,Purchasing power (GDP PPP) of the region a country belongs to,todo
-regional_population,countries,Population of the region a country belongs to,todo
-regional_trade,countries,International trade of the region a country belongs to,todo
-stock_market_cap,countries,"Stock market capitalisation, largest",todo
-stock_market_performance,countries,"Stockmarket index annual performance, largest gains and losses",todo
-stock_market_turnover,countries,"Value of shares traded, largest",todo
-listed_companies,countries,"Number of listed companies, most",todo
-trade_dependency,countries,Trade dependency (trade as share of GDP),todo
-gini_coefficient,countries,Gini coefficient,todo
-gini_coefficient,states,Gini coefficient,todo
-household_wealth,countries,Household wealth,todo
-num_millionaires,countries,Number of millionaires,todo
-num_millionaires,states,Number of millionaires,todo
-co2_emissions_total,countries,"CO2 emissions, biggest emitters",todo
-co2_emissions_total,states,"CO2 emissions, biggest emitters",todo
-co2_emissions_per_capita,countries,"CO2 emissions per person, largest",todo
-co2_emissions_per_capita,states,"CO2 emissions per person, largest",todo
-co2_emissions_change,countries,Change in CO2 emissions,todo
-co2_emissions_change,states,Change in CO2 emissions,todo
-capital_city_air_pollution,countries,"Air pollution in capital cities, most polluted",todo
-sanitation_access,countries,"Access to basic sanitation, lowest",todo
-forest_area,countries,"Forest area, largest",todo
-forest_area,states,"Forest area, largest",todo
-forest_cover_share,countries,"Forest cover (% of land area), most forested",todo
-forest_cover_share,states,"Forest cover (% of land area), most forested",todo
-forest_change,countries,"Change in forest area, biggest decrease and increase",todo
-forest_change,states,"Change in forest area, biggest decrease and increase",todo
-protected_area,countries,"Protected land and water areas, largest",todo
-protected_area,states,"Protected land and water areas, largest",todo
-endangered_species,countries,"Endangered species, most",todo
-endangered_species,states,"Endangered species, most",todo
-natural_catastrophes,countries,"Natural catastrophes, worst",todo
-natural_catastrophes,states,"Natural catastrophes, worst",todo
-rainfall,countries,"Average annual rainfall, most",todo
-rainfall,states,"Average annual rainfall, most",todo
-land_area,countries,"Land area, largest and smallest",todo
-land_area,states,"Land area, largest and smallest",todo
-highest_elevation,countries,Highest point elevation,todo
-highest_elevation,states,Highest point elevation,todo
-largest_desert_area,countries,Area of largest non-polar desert,todo
-largest_desert_area,states,Area of largest non-polar desert,todo
-eez_area,countries,"Exclusive economic zone area, largest",todo
-longest_river,countries,Length of longest river,todo
-longest_river,states,Length of longest river,todo
-largest_lake_area,countries,Area of largest lake,todo
-largest_lake_area,states,Area of largest lake,todo
-diabetes_prevalence,countries,Diabetes prevalence rate,todo
-diabetes_prevalence,states,Diabetes prevalence rate,todo
-cardiovascular_disease_deaths,countries,Cardiovascular disease death rate,todo
-cardiovascular_disease_deaths,states,Cardiovascular disease death rate,todo
-cancer_deaths,countries,Cancer death rate,todo
-cancer_deaths,states,Cancer death rate,todo
-suicide_rate,countries,Suicide rate,todo
-suicide_rate,states,Suicide rate,todo
-measles_immunisation_rate,countries,Measles immunisation rate,todo
-measles_immunisation_rate,states,Measles immunisation rate,todo
-dpt_immunisation_rate,countries,DPT immunisation rate,todo
-dpt_immunisation_rate,states,DPT immunisation rate,todo
-hiv_aids_prevalence,countries,HIV/AIDS prevalence rate,todo
-hiv_aids_prevalence,states,HIV/AIDS prevalence rate,todo
-hiv_aids_deaths,countries,HIV/AIDS death rate,todo
-hiv_aids_deaths,states,HIV/AIDS death rate,todo
-life_expectancy,countries,"Life expectancy at birth, highest and lowest",todo
-life_expectancy,states,"Life expectancy at birth, highest and lowest",todo
-life_expectancy_male,countries,"Male life expectancy at birth, highest and lowest",todo
-life_expectancy_male,states,"Male life expectancy at birth, highest and lowest",todo
-life_expectancy_female,countries,"Female life expectancy at birth, highest and lowest",todo
-life_expectancy_female,states,"Female life expectancy at birth, highest and lowest",todo
-death_rate,countries,"Crude death rate, highest and lowest",todo
-death_rate,states,"Crude death rate, highest and lowest",todo
-infant_mortality_rate,countries,"Infant mortality rate, highest and lowest",todo
-infant_mortality_rate,states,"Infant mortality rate, highest and lowest",todo
-obesity_rate,countries,"Obesity rate, adult population",todo
-obesity_rate,states,"Obesity rate, adult population",todo
-underweight_population_rate,countries,"Underweight population, share of total",todo
-underweight_population_rate,states,"Underweight population, share of total",todo
-health_spending,countries,"Health spending, highest and lowest",todo
-health_spending,states,"Health spending, highest and lowest",todo
-out_of_pocket_health_spending,countries,"Out-of-pocket health spending share, highest and lowest",todo
-out_of_pocket_health_spending,states,"Out-of-pocket health spending share, highest and lowest",todo
-agricultural_output,countries,"Agricultural output, largest",todo
-agricultural_output,states,"Agricultural output, largest",todo
-agricultural_dependency,countries,"Economic dependency on agriculture, most and least",todo
-agricultural_dependency,states,"Economic dependency on agriculture, most and least",todo
-fisheries_aquaculture_production,countries,Fisheries and aquaculture production,todo
-fisheries_aquaculture_production,states,Fisheries and aquaculture production,todo
-cereal_production,countries,"Cereal production, biggest producers",todo
-cereal_production,states,"Cereal production, biggest producers",todo
-meat_production,countries,"Meat production, biggest producers",todo
-meat_production,states,"Meat production, biggest producers",todo
-fruit_production,countries,"Fruit production, biggest producers",todo
-fruit_production,states,"Fruit production, biggest producers",todo
-vegetable_production,countries,"Vegetable production, biggest producers",todo
-vegetable_production,states,"Vegetable production, biggest producers",todo
-roots_tubers_production,countries,"Roots and tubers production, biggest producers",todo
-roots_tubers_production,states,"Roots and tubers production, biggest producers",todo
-wheat_production,countries,"Wheat production, leading producers",todo
-wheat_production,states,"Wheat production, leading producers",todo
-wheat_consumption,countries,"Wheat consumption, leading consumers",todo
-rice_production,countries,"Rice production, leading producers",todo
-rice_production,states,"Rice production, leading producers",todo
-rice_consumption,countries,"Rice consumption, leading consumers",todo
-sugar_production,countries,"Sugar production, leading producers",todo
-sugar_production,states,"Sugar production, leading producers",todo
-sugar_consumption,countries,"Sugar consumption, leading consumers",todo
-coarse_grains_production,countries,"Coarse grains production, leading producers",todo
-coarse_grains_production,states,"Coarse grains production, leading producers",todo
-coarse_grains_consumption,countries,"Coarse grains consumption, leading consumers",todo
-tea_production,countries,"Tea production, leading producers",todo
-tea_consumption,countries,"Tea consumption, leading consumers",todo
-coffee_production,countries,"Coffee production, leading producers",todo
-coffee_consumption,countries,"Coffee consumption, leading consumers",todo
-cocoa_production,countries,"Cocoa production, leading producers",todo
-cocoa_consumption,countries,"Cocoa consumption, leading consumers",todo
-orange_juice_production,countries,"Orange juice production, leading producers",todo
-orange_juice_production,states,"Orange juice production, leading producers",todo
-orange_juice_consumption,countries,"Orange juice consumption, leading consumers",todo
-copper_production,countries,"Copper production, leading producers",todo
-copper_production,states,"Copper production, leading producers",todo
-copper_consumption,countries,"Copper consumption, leading consumers",todo
-lead_production,countries,"Lead production, leading producers",todo
-lead_production,states,"Lead production, leading producers",todo
-lead_consumption,countries,"Lead consumption, leading consumers",todo
-zinc_production,countries,"Zinc production, leading producers",todo
-zinc_production,states,"Zinc production, leading producers",todo
-zinc_consumption,countries,"Zinc consumption, leading consumers",todo
-tin_production,countries,"Tin production, leading producers",todo
-tin_consumption,countries,"Tin consumption, leading consumers",todo
-nickel_production,countries,"Nickel production, leading producers",todo
-nickel_production,states,"Nickel production, leading producers",todo
-nickel_consumption,countries,"Nickel consumption, leading consumers",todo
-aluminium_production,countries,"Aluminium production, leading producers",todo
-aluminium_production,states,"Aluminium production, leading producers",todo
-aluminium_consumption,countries,"Aluminium consumption, leading consumers",todo
-precious_metals_production,countries,"Precious metals production, leading producers",todo
-precious_metals_production,states,"Precious metals production, leading producers",todo
-precious_metals_consumption,countries,"Precious metals consumption, leading consumers",todo
-rubber_production,countries,"Rubber production, leading producers",todo
-rubber_consumption,countries,"Rubber consumption, leading consumers",todo
-cotton_production,countries,"Cotton production, leading producers",todo
-cotton_production,states,"Cotton production, leading producers",todo
-cotton_consumption,countries,"Cotton consumption, leading consumers",todo
-oilseeds_vegetable_oils_production,countries,"Major oilseeds and vegetable oils production, leading producers",todo
-oilseeds_vegetable_oils_production,states,"Major oilseeds and vegetable oils production, leading producers",todo
-oilseeds_vegetable_oils_consumption,countries,"Major oilseeds and vegetable oils consumption, leading consumers",todo
-oil_production,countries,"Oil production, leading producers",todo
-oil_production,states,"Oil production, leading producers",todo
-oil_consumption,countries,"Oil consumption, leading consumers",todo
-oil_reserves,countries,"Proved oil reserves, largest",todo
-oil_reserves,states,"Proved oil reserves, largest",todo
-natural_gas_production,countries,"Natural gas production, leading producers",todo
-natural_gas_production,states,"Natural gas production, leading producers",todo
-natural_gas_consumption,countries,"Natural gas consumption, leading consumers",todo
-coal_production,countries,"Coal production, leading producers",todo
-coal_production,states,"Coal production, leading producers",todo
-coal_consumption,countries,"Coal consumption, leading consumers",todo
-energy_production,countries,"Energy production, largest",todo
-energy_production,states,"Energy production, largest",todo
-energy_consumption,countries,"Energy consumption, largest",todo
-energy_consumption,states,"Energy consumption, largest",todo
-energy_efficiency,countries,"Energy efficiency, most and least",todo
-energy_efficiency,states,"Energy efficiency, most and least",todo
-net_energy_imports,countries,"Net energy imports, highest and lowest",todo
-net_energy_imports,states,"Net energy imports, highest and lowest",todo
-energy_consumption_per_capita,countries,"Energy consumption per person, largest",todo
-energy_consumption_per_capita,states,"Energy consumption per person, largest",todo
-electricity_sources,countries,Sources of electricity,todo
-electricity_sources,states,Sources of electricity,todo
-industrial_output,countries,"Industrial output, largest",todo
-industrial_output,states,"Industrial output, largest",todo
-industrial_output_growth,countries,"Industrial output growth, highest and lowest",todo
-industrial_output_growth,states,"Industrial output growth, highest and lowest",todo
-manufacturing_output,countries,"Manufacturing output, largest",todo
-manufacturing_output,states,"Manufacturing output, largest",todo
-services_output,countries,"Services output, largest",todo
-services_output,states,"Services output, largest",todo
-services_growth_rate,countries,Services sector growth rate,todo
-services_growth_rate,states,Services sector growth rate,todo
-services_income_exports,countries,"Earnings from services and income exports, biggest",todo
-exports_total,countries,"Total exports, biggest exporters",todo
-exports_total,states,"Total exports, biggest exporters",todo
-goods_trade_total,countries,"Total goods trade, biggest traders",todo
-labour_force_participation,countries,"Labour-force participation rate, highest and lowest",todo
-labour_force_participation,states,"Labour-force participation rate, highest and lowest",todo
-modern_slavery,countries,Modern slavery prevalence,todo
-unemployment_rate,countries,"Unemployment rate, highest",todo
-unemployment_rate,states,"Unemployment rate, highest",todo
-youth_unemployment_rate,countries,"Youth unemployment rate, highest",todo
-youth_unemployment_rate,states,"Youth unemployment rate, highest",todo
-average_hours_worked,countries,Average hours worked,todo
-average_hours_worked,states,Average hours worked,todo
-gender_pay_gap,countries,Gender pay gap,todo
-gender_pay_gap,states,Gender pay gap,todo
-unpaid_work,countries,"Unpaid work, hours spent",todo
-unpaid_work,states,"Unpaid work, hours spent",todo
-democracy_index,countries,"Democracy index score, most and least democratic",todo
-parliament_seats,countries,"Parliamentary seats, most and fewest",todo
-parliament_seats,states,"State legislature seats, most and fewest",todo
-women_in_parliament,countries,"Women in parliament, share of seats held",todo
-women_in_parliament,states,"Women in state legislature, share of seats held",todo
-orbital_launches,countries,"Orbital launches, most",todo
-satellites_in_space,countries,"Satellites in space, most",todo
-global_peace_index,countries,"Global Peace Index score, most and least peaceful",todo
-defence_spending,countries,"Defence spending, largest",todo
-armed_forces_size,countries,"Armed forces personnel, largest",todo
-arms_trade,countries,"Arms trade, largest traders",todo
-terrorist_attacks,countries,"Terrorist attacks, most",todo
-biggest_city_population,countries,Population of largest city,todo
-biggest_city_population,states,Population of largest city,todo
-city_growth_rate,countries,City population growth rate,todo
-city_growth_rate,states,City population growth rate,todo
-city_liveability_index,countries,City liveability index score,todo
-tallest_building_height,countries,Height of tallest building,todo
-tallest_building_height,states,Height of tallest building,todo
-murder_rate,countries,"Murder rate, highest",todo
-murder_rate,states,"Murder rate, highest",todo
-robbery_rate,countries,"Robbery rate, highest",todo
-robbery_rate,states,"Robbery rate, highest",todo
-prison_population,countries,"Prisoners, total and rate, largest",todo
-prison_population,states,"Prisoners, total and rate, largest",todo
-primary_enrolment_rate,countries,"Primary school enrolment rate, highest and lowest",todo
-primary_enrolment_rate,states,"Primary school enrolment rate, highest and lowest",todo
-secondary_enrolment_rate,countries,"Secondary school enrolment rate, highest and lowest",todo
-secondary_enrolment_rate,states,"Secondary school enrolment rate, highest and lowest",todo
-tertiary_enrolment_rate,countries,"Tertiary education enrolment rate, highest and lowest",todo
-tertiary_enrolment_rate,states,"Tertiary education enrolment rate, highest and lowest",todo
-literacy_rate,countries,"Adult literacy rate, lowest",todo
-education_spending,countries,"Education spending (% of GDP), highest and lowest",todo
-education_spending,states,"Education spending (% of budget), highest and lowest",todo
-num_households,countries,"Number of households, largest",todo
-num_households,states,"Number of households, largest",todo
-household_size,countries,"Average household size, largest and smallest",todo
-household_size,states,"Average household size, largest and smallest",todo
-cost_of_living_index,countries,"Cost of living, highest and lowest",todo
-cost_of_living_index,states,"Cost of living, highest and lowest",todo
-world_giving_index,countries,"World Giving Index score, most and least generous",todo
-refugee_origin_population,countries,Refugees by country of origin,todo
-refugee_hosting_population,countries,"Refugee population hosted, largest",todo
-asylum_application_origin,countries,Origin of asylum applications,todo
-asylum_application_destination,countries,Country where asylum applications were lodged,todo
-conflict_displaced_population,countries,"Population displaced by conflict, stock",todo
-human_development_index,countries,Human Development Index,todo
-air_passenger_traffic,countries,"Air passenger traffic, most",todo
-air_passenger_traffic,states,"Air passenger traffic, most",todo
-busiest_airport,countries,"Busiest airport, by passenger traffic",todo
-busiest_airport,states,"Busiest airport, by passenger traffic",todo
-rail_network_length,countries,"Railway network length, longest",todo
-rail_network_length,states,"Railway network length, longest",todo
-rail_passengers,countries,"Rail passenger traffic, most",todo
-rail_passengers,states,"Rail passenger traffic, most",todo
-rail_freight,countries,"Rail freight traffic, most",todo
-rail_freight,states,"Rail freight traffic, most",todo
-road_network_length,countries,"Road network length, longest",todo
-road_network_length,states,"Road network length, longest",todo
-road_network_density,countries,"Road network density, densest",todo
-road_network_density,states,"Road network density, densest",todo
-road_congestion,countries,"Road congestion, most crowded",todo
-road_congestion,states,"Road congestion, most crowded",todo
-road_deaths,countries,"Road traffic deaths, most",todo
-road_deaths,states,"Road traffic deaths, most",todo
-car_ownership_growth,countries,"Car ownership growth rate, fastest and slowest growing",todo
-car_ownership_growth,states,"Car ownership growth rate, fastest and slowest growing",todo
-car_production,countries,"Car production, largest",todo
-cars_sold,countries,"New car sales, largest",todo
-merchant_fleet_domicile,countries,"Merchant fleet size by country of domicile (beneficial ownership), largest",todo
-merchant_fleet_registration,countries,"Merchant fleet size by country of registration (flag), largest",todo
+topic,entity_type,header,sub_header,description,status
+largest_nonfinancial_companies,companies,economics,business_and_investment,Largest non-financial companies,todo
+largest_banks,banks,economics,markets_and_finance,Largest banks,todo
+largest_sovereign_wealth_funds,funds,economics,markets_and_finance,Largest sovereign-wealth funds,todo
+largest_state_investment_funds,funds,economics,markets_and_finance,Largest state permanent/investment funds,todo
+office_rents,countries,economics,business_and_investment,"Office rents, highest",todo
+office_rents,states,economics,business_and_investment,"Office rents, highest",todo
+foreign_direct_investment,countries,economics,trade,"Foreign direct investment, largest",todo
+foreign_direct_investment,states,economics,trade,"Foreign direct investment, largest",todo
+entrepreneurial_activity,countries,economics,business_and_investment,Entrepreneurial activity rate,todo
+entrepreneurial_activity,states,economics,business_and_investment,Entrepreneurial activity rate,todo
+brain_drain,countries,demographics,migration,"Brain drain, highest",todo
+brain_drain,states,demographics,migration,"Brain drain, highest",todo
+rd_spending,countries,technology,research,R&D spending,todo
+rd_spending,states,technology,research,R&D spending,todo
+innovation_index,countries,technology,research,Innovation index score,todo
+innovation_index,states,technology,research,Innovation index score,todo
+music_sales,countries,culture,entertainment,"Recorded music sales/revenue, biggest markets",todo
+music_sales,states,culture,entertainment,"Recorded music sales/revenue, biggest markets",todo
+book_publishing,countries,culture,entertainment,"Books published, biggest markets",todo
+book_publishing,states,culture,entertainment,"Books published, biggest markets",todo
+cinema_attendance,countries,culture,entertainment,"Cinema attendances, biggest markets",todo
+cinema_attendance,states,culture,entertainment,"Cinema attendances, biggest markets",todo
+feature_film_production,countries,culture,entertainment,"Feature films produced, biggest producers",todo
+feature_film_production,states,culture,entertainment,"Feature films produced, biggest producers",todo
+nobel_prizes_peace,countries,culture,honours_and_awards,"Nobel Peace Prize wins, by country of birth",todo
+nobel_prizes_medicine,countries,culture,honours_and_awards,"Nobel Prize in Medicine wins, by country of birth",todo
+nobel_prizes_literature,countries,culture,honours_and_awards,"Nobel Prize in Literature wins, by country of birth",todo
+nobel_prizes_economics,countries,culture,honours_and_awards,"Nobel Memorial Prize in Economics wins, by country of birth",todo
+nobel_prizes_physics,countries,culture,honours_and_awards,"Nobel Prize in Physics wins, by country of birth",todo
+nobel_prizes_chemistry,countries,culture,honours_and_awards,"Nobel Prize in Chemistry wins, by country of birth",todo
+nobel_prizes_total,countries,culture,honours_and_awards,"Total Nobel Prize wins, by country of birth",todo
+press_freedom_index,countries,politics,media_freedom,Press freedom index score,todo
+journalist_abuse,countries,politics,media_freedom,"Abuses and attacks against journalists, reported",todo
+journalists_imprisoned,countries,politics,media_freedom,Number of journalists in prison,todo
+world_cup_titles_football_men,countries,culture,sport,Men's Football World Cup wins and finals appearances,todo
+world_cup_titles_football_women,countries,culture,sport,Women's Football World Cup wins and finals appearances,todo
+world_cup_titles_cricket,countries,culture,sport,Cricket World Cup wins and finals appearances,todo
+davis_cup_titles,countries,culture,sport,Davis Cup wins,todo
+olympic_medals_summer,countries,culture,sport,Summer Olympics medal count,todo
+olympic_medals_winter,countries,culture,sport,Winter Olympics medal count,todo
+mobile_phone_subscriptions,countries,technology,connectivity,"Mobile telephone subscriptions, highest",todo
+mobile_phone_subscriptions,states,technology,connectivity,"Mobile telephone subscriptions, highest",todo
+landline_subscriptions,countries,technology,connectivity,"Fixed landline telephone subscriptions, highest",todo
+landline_subscriptions,states,technology,connectivity,"Fixed landline telephone subscriptions, highest",todo
+broadband_subscriptions,countries,technology,connectivity,"Broadband subscriptions, highest",todo
+broadband_subscriptions,states,technology,connectivity,"Broadband subscriptions, highest",todo
+broadband_speed,countries,technology,connectivity,"Average broadband internet speed, highest",todo
+broadband_speed,states,technology,connectivity,"Average broadband internet speed, highest",todo
+tourist_arrivals,countries,culture,tourism,"International tourist arrivals, most",todo
+tourist_arrivals,states,culture,tourism,"Tourist arrivals, most",todo
+tourist_spending,countries,culture,tourism,"Outbound tourist spending, biggest spenders",todo
+tourist_spending,states,culture,tourism,"Domestic tourist spending, biggest spenders",todo
+tourist_receipts,countries,culture,tourism,"Inbound tourism receipts, largest",todo
+tourist_receipts,states,culture,tourism,"Inbound tourism receipts, largest",todo
+beer_consumption,countries,culture,lifestyle,"Beer consumption per person, highest",todo
+beer_consumption,states,culture,lifestyle,"Beer consumption per person, highest",todo
+wine_consumption,countries,culture,lifestyle,"Wine consumption per person, highest",todo
+wine_consumption,states,culture,lifestyle,"Wine consumption per person, highest",todo
+gambling_losses,countries,culture,lifestyle,"Gambling losses per person, highest",todo
+gambling_losses,states,culture,lifestyle,"Gambling losses per person, highest",todo
+total_births,countries,demographics,fertility_and_family,Total annual births,todo
+total_births,states,demographics,fertility_and_family,Total annual births,todo
+teenage_births,countries,demographics,fertility_and_family,Teenage births,todo
+teenage_births,states,demographics,fertility_and_family,Teenage births,todo
+contraception_rate,countries,demographics,fertility_and_family,Contraception prevalence rate,todo
+marriage_rate,countries,demographics,fertility_and_family,"Marriage rate, highest and lowest",todo
+marriage_rate,states,demographics,fertility_and_family,"Marriage rate, highest and lowest",todo
+divorce_rate,countries,demographics,fertility_and_family,"Divorce rate, highest and lowest",todo
+divorce_rate,states,demographics,fertility_and_family,"Divorce rate, highest and lowest",todo
+mean_age_first_marriage_women,countries,demographics,fertility_and_family,"Mean age of women at first marriage, youngest and oldest",todo
+mean_age_first_marriage_women,states,demographics,fertility_and_family,"Mean age of women at first marriage, youngest and oldest",todo
+foreign_born_population,countries,demographics,migration,"Foreign-born population, largest",todo
+foreign_born_population,states,demographics,migration,"Foreign-born population, largest",todo
+population_total,countries,demographics,population,"Total population, current year",todo
+population_total,states,demographics,population,"Total population, current year",todo
+population_projected,countries,demographics,population,Projected population (e.g. 2040),todo
+population_projected,states,demographics,population,Projected population (e.g. 2040),todo
+population_growth_rate,countries,demographics,population,Population growth rate,todo
+population_growth_rate,states,demographics,population,Population growth rate,todo
+median_age,countries,demographics,population,Median age of population,todo
+median_age,states,demographics,population,Median age of population,todo
+sex_ratio,countries,demographics,population,Sex ratio (males per female),todo
+sex_ratio,states,demographics,population,Sex ratio (males per female),todo
+urban_growth_rate,countries,demographics,urbanization,Urban population growth rate,todo
+urban_growth_rate,states,demographics,urbanization,Urban population growth rate,todo
+urban_concentration,countries,demographics,urbanization,Urban concentration (share of population in largest city),todo
+urban_concentration,states,demographics,urbanization,Urban concentration (share of population in largest city),todo
+rural_population,countries,demographics,urbanization,"Rural population, share of total",todo
+rural_population,states,demographics,urbanization,"Rural population, share of total",todo
+aid_received,countries,economics,public_finance,"Aid received, largest recipients",todo
+aid_given,countries,economics,public_finance,"Aid given, largest donors",todo
+aid_change,countries,economics,public_finance,Biggest changes in aid,todo
+current_account_balance,countries,economics,public_finance,"Current-account balance, largest surpluses and deficits",todo
+current_account_balance_pct_gdp,countries,economics,public_finance,"Current-account balance as % of GDP, largest surpluses and deficits",todo
+official_reserves,countries,economics,public_finance,Official reserves,todo
+official_gold_reserves,countries,economics,public_finance,Official gold reserves,todo
+workers_remittances,countries,economics,public_finance,Workers' remittances,todo
+foreign_debt,countries,economics,public_finance,"Foreign debt, highest",todo
+foreign_debt_burden,countries,economics,public_finance,"Foreign debt burden (debt as % of GNI), highest",todo
+debt_service_ratio,countries,economics,public_finance,"Debt-service ratio, highest",todo
+household_debt,countries,economics,markets_and_finance,Household debt,todo
+household_debt,states,economics,markets_and_finance,Household debt,todo
+exchange_rate,countries,economics,markets_and_finance,Exchange rate against the US dollar,todo
+big_mac_index,countries,economics,markets_and_finance,The Economist's Big Mac index,todo
+gdp_nominal,countries,economics,gdp,"GDP, nominal, largest economies",todo
+gdp_nominal,states,economics,gdp,"GDP, nominal, largest economies",todo
+gdp_ppp,countries,economics,gdp,"GDP, purchasing power parity, largest economies",todo
+gdp_per_capita,countries,economics,gdp,GDP per person,todo
+gdp_per_capita,states,economics,gdp,GDP per person,todo
+gdp_per_capita_ppp,countries,economics,gdp,Purchasing power per person,todo
+gdp_growth_rate,countries,economics,gdp,Economic growth rate,todo
+gdp_growth_rate,states,economics,gdp,Economic growth rate,todo
+consumer_price_inflation,countries,economics,prices,"Consumer-price inflation, highest and lowest",todo
+consumer_price_inflation,states,economics,prices,"Consumer-price inflation, highest and lowest",todo
+commodity_price_change,countries,economics,prices,Commodity price change,todo
+house_price_change,countries,economics,prices,House price change,todo
+house_price_change,states,economics,prices,House price change,todo
+government_debt,countries,economics,public_finance,"Government debt (% of GDP), highest and lowest",todo
+government_debt,states,economics,public_finance,"Government debt (% of GDP), highest and lowest",todo
+government_spending,countries,economics,public_finance,"Government spending (% of GDP), highest and lowest",todo
+government_spending,states,economics,public_finance,"Government spending (% of GDP), highest and lowest",todo
+tax_revenue,countries,economics,public_finance,"Tax revenue (% of GDP), highest and lowest",todo
+tax_revenue,states,economics,public_finance,"Tax revenue (% of GDP), highest and lowest",todo
+regional_gdp,countries,economics,regional,GDP of the region a country belongs to,todo
+regional_gdp_ppp,countries,economics,regional,Purchasing power (GDP PPP) of the region a country belongs to,todo
+regional_population,countries,economics,regional,Population of the region a country belongs to,todo
+regional_trade,countries,economics,regional,International trade of the region a country belongs to,todo
+stock_market_cap,countries,economics,markets_and_finance,"Stock market capitalisation, largest",todo
+stock_market_performance,countries,economics,markets_and_finance,"Stockmarket index annual performance, largest gains and losses",todo
+stock_market_turnover,countries,economics,markets_and_finance,"Value of shares traded, largest",todo
+listed_companies,countries,economics,markets_and_finance,"Number of listed companies, most",todo
+trade_dependency,countries,economics,trade,Trade dependency (trade as share of GDP),todo
+gini_coefficient,countries,economics,wealth_and_inequality,Gini coefficient,todo
+gini_coefficient,states,economics,wealth_and_inequality,Gini coefficient,todo
+household_wealth,countries,economics,wealth_and_inequality,Household wealth,todo
+num_millionaires,countries,economics,wealth_and_inequality,Number of millionaires,todo
+num_millionaires,states,economics,wealth_and_inequality,Number of millionaires,todo
+co2_emissions_total,countries,geography,environment,"CO2 emissions, biggest emitters",todo
+co2_emissions_total,states,geography,environment,"CO2 emissions, biggest emitters",todo
+co2_emissions_per_capita,countries,geography,environment,"CO2 emissions per person, largest",todo
+co2_emissions_per_capita,states,geography,environment,"CO2 emissions per person, largest",todo
+co2_emissions_change,countries,geography,environment,Change in CO2 emissions,todo
+co2_emissions_change,states,geography,environment,Change in CO2 emissions,todo
+capital_city_air_pollution,countries,geography,environment,"Air pollution in capital cities, most polluted",todo
+sanitation_access,countries,geography,environment,"Access to basic sanitation, lowest",todo
+forest_area,countries,geography,environment,"Forest area, largest",todo
+forest_area,states,geography,environment,"Forest area, largest",todo
+forest_cover_share,countries,geography,environment,"Forest cover (% of land area), most forested",todo
+forest_cover_share,states,geography,environment,"Forest cover (% of land area), most forested",todo
+forest_change,countries,geography,environment,"Change in forest area, biggest decrease and increase",todo
+forest_change,states,geography,environment,"Change in forest area, biggest decrease and increase",todo
+protected_area,countries,geography,environment,"Protected land and water areas, largest",todo
+protected_area,states,geography,environment,"Protected land and water areas, largest",todo
+endangered_species,countries,geography,environment,"Endangered species, most",todo
+endangered_species,states,geography,environment,"Endangered species, most",todo
+natural_catastrophes,countries,geography,environment,"Natural catastrophes, worst",todo
+natural_catastrophes,states,geography,environment,"Natural catastrophes, worst",todo
+rainfall,countries,geography,water_features,"Average annual rainfall, most",todo
+rainfall,states,geography,water_features,"Average annual rainfall, most",todo
+land_area,countries,geography,land_features,"Land area, largest and smallest",todo
+land_area,states,geography,land_features,"Land area, largest and smallest",todo
+highest_elevation,countries,geography,land_features,Highest point elevation,todo
+highest_elevation,states,geography,land_features,Highest point elevation,todo
+largest_desert_area,countries,geography,land_features,Area of largest non-polar desert,todo
+largest_desert_area,states,geography,land_features,Area of largest non-polar desert,todo
+eez_area,countries,geography,land_features,"Exclusive economic zone area, largest",todo
+longest_river,countries,geography,water_features,Length of longest river,todo
+longest_river,states,geography,water_features,Length of longest river,todo
+largest_lake_area,countries,geography,water_features,Area of largest lake,todo
+largest_lake_area,states,geography,water_features,Area of largest lake,todo
+diabetes_prevalence,countries,health,disease_and_mortality,Diabetes prevalence rate,todo
+diabetes_prevalence,states,health,disease_and_mortality,Diabetes prevalence rate,todo
+cardiovascular_disease_deaths,countries,health,disease_and_mortality,Cardiovascular disease death rate,todo
+cardiovascular_disease_deaths,states,health,disease_and_mortality,Cardiovascular disease death rate,todo
+cancer_deaths,countries,health,disease_and_mortality,Cancer death rate,todo
+cancer_deaths,states,health,disease_and_mortality,Cancer death rate,todo
+suicide_rate,countries,health,disease_and_mortality,Suicide rate,todo
+suicide_rate,states,health,disease_and_mortality,Suicide rate,todo
+measles_immunisation_rate,countries,health,immunisation,Measles immunisation rate,todo
+measles_immunisation_rate,states,health,immunisation,Measles immunisation rate,todo
+dpt_immunisation_rate,countries,health,immunisation,DPT immunisation rate,todo
+dpt_immunisation_rate,states,health,immunisation,DPT immunisation rate,todo
+hiv_aids_prevalence,countries,health,disease_and_mortality,HIV/AIDS prevalence rate,todo
+hiv_aids_prevalence,states,health,disease_and_mortality,HIV/AIDS prevalence rate,todo
+hiv_aids_deaths,countries,health,disease_and_mortality,HIV/AIDS death rate,todo
+hiv_aids_deaths,states,health,disease_and_mortality,HIV/AIDS death rate,todo
+life_expectancy,countries,health,disease_and_mortality,"Life expectancy at birth, highest and lowest",todo
+life_expectancy,states,health,disease_and_mortality,"Life expectancy at birth, highest and lowest",todo
+life_expectancy_male,countries,health,disease_and_mortality,"Male life expectancy at birth, highest and lowest",todo
+life_expectancy_male,states,health,disease_and_mortality,"Male life expectancy at birth, highest and lowest",todo
+life_expectancy_female,countries,health,disease_and_mortality,"Female life expectancy at birth, highest and lowest",todo
+life_expectancy_female,states,health,disease_and_mortality,"Female life expectancy at birth, highest and lowest",todo
+death_rate,countries,health,disease_and_mortality,"Crude death rate, highest and lowest",todo
+death_rate,states,health,disease_and_mortality,"Crude death rate, highest and lowest",todo
+infant_mortality_rate,countries,health,disease_and_mortality,"Infant mortality rate, highest and lowest",todo
+infant_mortality_rate,states,health,disease_and_mortality,"Infant mortality rate, highest and lowest",todo
+obesity_rate,countries,health,nutrition,"Obesity rate, adult population",todo
+obesity_rate,states,health,nutrition,"Obesity rate, adult population",todo
+underweight_population_rate,countries,health,nutrition,"Underweight population, share of total",todo
+underweight_population_rate,states,health,nutrition,"Underweight population, share of total",todo
+health_spending,countries,health,spending,"Health spending, highest and lowest",todo
+health_spending,states,health,spending,"Health spending, highest and lowest",todo
+out_of_pocket_health_spending,countries,health,spending,"Out-of-pocket health spending share, highest and lowest",todo
+out_of_pocket_health_spending,states,health,spending,"Out-of-pocket health spending share, highest and lowest",todo
+agricultural_output,countries,industry,agriculture,"Agricultural output, largest",todo
+agricultural_output,states,industry,agriculture,"Agricultural output, largest",todo
+agricultural_dependency,countries,industry,agriculture,"Economic dependency on agriculture, most and least",todo
+agricultural_dependency,states,industry,agriculture,"Economic dependency on agriculture, most and least",todo
+fisheries_aquaculture_production,countries,industry,agriculture,Fisheries and aquaculture production,todo
+fisheries_aquaculture_production,states,industry,agriculture,Fisheries and aquaculture production,todo
+cereal_production,countries,industry,agriculture,"Cereal production, biggest producers",todo
+cereal_production,states,industry,agriculture,"Cereal production, biggest producers",todo
+meat_production,countries,industry,agriculture,"Meat production, biggest producers",todo
+meat_production,states,industry,agriculture,"Meat production, biggest producers",todo
+fruit_production,countries,industry,agriculture,"Fruit production, biggest producers",todo
+fruit_production,states,industry,agriculture,"Fruit production, biggest producers",todo
+vegetable_production,countries,industry,agriculture,"Vegetable production, biggest producers",todo
+vegetable_production,states,industry,agriculture,"Vegetable production, biggest producers",todo
+roots_tubers_production,countries,industry,agriculture,"Roots and tubers production, biggest producers",todo
+roots_tubers_production,states,industry,agriculture,"Roots and tubers production, biggest producers",todo
+wheat_production,countries,industry,agriculture,"Wheat production, leading producers",todo
+wheat_production,states,industry,agriculture,"Wheat production, leading producers",todo
+wheat_consumption,countries,industry,agriculture,"Wheat consumption, leading consumers",todo
+rice_production,countries,industry,agriculture,"Rice production, leading producers",todo
+rice_production,states,industry,agriculture,"Rice production, leading producers",todo
+rice_consumption,countries,industry,agriculture,"Rice consumption, leading consumers",todo
+sugar_production,countries,industry,agriculture,"Sugar production, leading producers",todo
+sugar_production,states,industry,agriculture,"Sugar production, leading producers",todo
+sugar_consumption,countries,industry,agriculture,"Sugar consumption, leading consumers",todo
+coarse_grains_production,countries,industry,agriculture,"Coarse grains production, leading producers",todo
+coarse_grains_production,states,industry,agriculture,"Coarse grains production, leading producers",todo
+coarse_grains_consumption,countries,industry,agriculture,"Coarse grains consumption, leading consumers",todo
+tea_production,countries,industry,agriculture,"Tea production, leading producers",todo
+tea_consumption,countries,industry,agriculture,"Tea consumption, leading consumers",todo
+coffee_production,countries,industry,agriculture,"Coffee production, leading producers",todo
+coffee_consumption,countries,industry,agriculture,"Coffee consumption, leading consumers",todo
+cocoa_production,countries,industry,agriculture,"Cocoa production, leading producers",todo
+cocoa_consumption,countries,industry,agriculture,"Cocoa consumption, leading consumers",todo
+orange_juice_production,countries,industry,agriculture,"Orange juice production, leading producers",todo
+orange_juice_production,states,industry,agriculture,"Orange juice production, leading producers",todo
+orange_juice_consumption,countries,industry,agriculture,"Orange juice consumption, leading consumers",todo
+copper_production,countries,industry,commodities,"Copper production, leading producers",todo
+copper_production,states,industry,commodities,"Copper production, leading producers",todo
+copper_consumption,countries,industry,commodities,"Copper consumption, leading consumers",todo
+lead_production,countries,industry,commodities,"Lead production, leading producers",todo
+lead_production,states,industry,commodities,"Lead production, leading producers",todo
+lead_consumption,countries,industry,commodities,"Lead consumption, leading consumers",todo
+zinc_production,countries,industry,commodities,"Zinc production, leading producers",todo
+zinc_production,states,industry,commodities,"Zinc production, leading producers",todo
+zinc_consumption,countries,industry,commodities,"Zinc consumption, leading consumers",todo
+tin_production,countries,industry,commodities,"Tin production, leading producers",todo
+tin_consumption,countries,industry,commodities,"Tin consumption, leading consumers",todo
+nickel_production,countries,industry,commodities,"Nickel production, leading producers",todo
+nickel_production,states,industry,commodities,"Nickel production, leading producers",todo
+nickel_consumption,countries,industry,commodities,"Nickel consumption, leading consumers",todo
+aluminium_production,countries,industry,commodities,"Aluminium production, leading producers",todo
+aluminium_production,states,industry,commodities,"Aluminium production, leading producers",todo
+aluminium_consumption,countries,industry,commodities,"Aluminium consumption, leading consumers",todo
+precious_metals_production,countries,industry,commodities,"Precious metals production, leading producers",todo
+precious_metals_production,states,industry,commodities,"Precious metals production, leading producers",todo
+precious_metals_consumption,countries,industry,commodities,"Precious metals consumption, leading consumers",todo
+rubber_production,countries,industry,agriculture,"Rubber production, leading producers",todo
+rubber_consumption,countries,industry,agriculture,"Rubber consumption, leading consumers",todo
+cotton_production,countries,industry,agriculture,"Cotton production, leading producers",todo
+cotton_production,states,industry,agriculture,"Cotton production, leading producers",todo
+cotton_consumption,countries,industry,agriculture,"Cotton consumption, leading consumers",todo
+oilseeds_vegetable_oils_production,countries,industry,agriculture,"Major oilseeds and vegetable oils production, leading producers",todo
+oilseeds_vegetable_oils_production,states,industry,agriculture,"Major oilseeds and vegetable oils production, leading producers",todo
+oilseeds_vegetable_oils_consumption,countries,industry,agriculture,"Major oilseeds and vegetable oils consumption, leading consumers",todo
+oil_production,countries,industry,energy,"Oil production, leading producers",todo
+oil_production,states,industry,energy,"Oil production, leading producers",todo
+oil_consumption,countries,industry,energy,"Oil consumption, leading consumers",todo
+oil_reserves,countries,industry,energy,"Proved oil reserves, largest",todo
+oil_reserves,states,industry,energy,"Proved oil reserves, largest",todo
+natural_gas_production,countries,industry,energy,"Natural gas production, leading producers",todo
+natural_gas_production,states,industry,energy,"Natural gas production, leading producers",todo
+natural_gas_consumption,countries,industry,energy,"Natural gas consumption, leading consumers",todo
+coal_production,countries,industry,energy,"Coal production, leading producers",todo
+coal_production,states,industry,energy,"Coal production, leading producers",todo
+coal_consumption,countries,industry,energy,"Coal consumption, leading consumers",todo
+energy_production,countries,industry,energy,"Energy production, largest",todo
+energy_production,states,industry,energy,"Energy production, largest",todo
+energy_consumption,countries,industry,energy,"Energy consumption, largest",todo
+energy_consumption,states,industry,energy,"Energy consumption, largest",todo
+energy_efficiency,countries,industry,energy,"Energy efficiency, most and least",todo
+energy_efficiency,states,industry,energy,"Energy efficiency, most and least",todo
+net_energy_imports,countries,industry,energy,"Net energy imports, highest and lowest",todo
+net_energy_imports,states,industry,energy,"Net energy imports, highest and lowest",todo
+energy_consumption_per_capita,countries,industry,energy,"Energy consumption per person, largest",todo
+energy_consumption_per_capita,states,industry,energy,"Energy consumption per person, largest",todo
+electricity_sources,countries,industry,energy,Sources of electricity,todo
+electricity_sources,states,industry,energy,Sources of electricity,todo
+industrial_output,countries,industry,manufacturing,"Industrial output, largest",todo
+industrial_output,states,industry,manufacturing,"Industrial output, largest",todo
+industrial_output_growth,countries,industry,manufacturing,"Industrial output growth, highest and lowest",todo
+industrial_output_growth,states,industry,manufacturing,"Industrial output growth, highest and lowest",todo
+manufacturing_output,countries,industry,manufacturing,"Manufacturing output, largest",todo
+manufacturing_output,states,industry,manufacturing,"Manufacturing output, largest",todo
+services_output,countries,industry,services,"Services output, largest",todo
+services_output,states,industry,services,"Services output, largest",todo
+services_growth_rate,countries,industry,services,Services sector growth rate,todo
+services_growth_rate,states,industry,services,Services sector growth rate,todo
+services_income_exports,countries,industry,services,"Earnings from services and income exports, biggest",todo
+exports_total,countries,economics,trade,"Total exports, biggest exporters",todo
+exports_total,states,economics,trade,"Total exports, biggest exporters",todo
+goods_trade_total,countries,economics,trade,"Total goods trade, biggest traders",todo
+labour_force_participation,countries,industry,labour,"Labour-force participation rate, highest and lowest",todo
+labour_force_participation,states,industry,labour,"Labour-force participation rate, highest and lowest",todo
+modern_slavery,countries,industry,labour,Modern slavery prevalence,todo
+unemployment_rate,countries,industry,labour,"Unemployment rate, highest",todo
+unemployment_rate,states,industry,labour,"Unemployment rate, highest",todo
+youth_unemployment_rate,countries,industry,labour,"Youth unemployment rate, highest",todo
+youth_unemployment_rate,states,industry,labour,"Youth unemployment rate, highest",todo
+average_hours_worked,countries,industry,labour,Average hours worked,todo
+average_hours_worked,states,industry,labour,Average hours worked,todo
+gender_pay_gap,countries,industry,labour,Gender pay gap,todo
+gender_pay_gap,states,industry,labour,Gender pay gap,todo
+unpaid_work,countries,industry,labour,"Unpaid work, hours spent",todo
+unpaid_work,states,industry,labour,"Unpaid work, hours spent",todo
+democracy_index,countries,politics,democracy,"Democracy index score, most and least democratic",todo
+parliament_seats,countries,politics,democracy,"Parliamentary seats, most and fewest",todo
+parliament_seats,states,politics,democracy,"State legislature seats, most and fewest",todo
+women_in_parliament,countries,politics,democracy,"Women in parliament, share of seats held",todo
+women_in_parliament,states,politics,democracy,"Women in state legislature, share of seats held",todo
+orbital_launches,countries,technology,space,"Orbital launches, most",todo
+satellites_in_space,countries,technology,space,"Satellites in space, most",todo
+global_peace_index,countries,politics,security_and_defence,"Global Peace Index score, most and least peaceful",todo
+defence_spending,countries,politics,security_and_defence,"Defence spending, largest",todo
+armed_forces_size,countries,politics,security_and_defence,"Armed forces personnel, largest",todo
+arms_trade,countries,politics,security_and_defence,"Arms trade, largest traders",todo
+terrorist_attacks,countries,politics,security_and_defence,"Terrorist attacks, most",todo
+biggest_city_population,countries,society,cities,Population of largest city,todo
+biggest_city_population,states,society,cities,Population of largest city,todo
+city_growth_rate,countries,society,cities,City population growth rate,todo
+city_growth_rate,states,society,cities,City population growth rate,todo
+city_liveability_index,countries,society,cities,City liveability index score,todo
+tallest_building_height,countries,society,cities,Height of tallest building,todo
+tallest_building_height,states,society,cities,Height of tallest building,todo
+murder_rate,countries,society,crime_and_justice,"Murder rate, highest",todo
+murder_rate,states,society,crime_and_justice,"Murder rate, highest",todo
+robbery_rate,countries,society,crime_and_justice,"Robbery rate, highest",todo
+robbery_rate,states,society,crime_and_justice,"Robbery rate, highest",todo
+prison_population,countries,society,crime_and_justice,"Prisoners, total and rate, largest",todo
+prison_population,states,society,crime_and_justice,"Prisoners, total and rate, largest",todo
+primary_enrolment_rate,countries,society,education,"Primary school enrolment rate, highest and lowest",todo
+primary_enrolment_rate,states,society,education,"Primary school enrolment rate, highest and lowest",todo
+secondary_enrolment_rate,countries,society,education,"Secondary school enrolment rate, highest and lowest",todo
+secondary_enrolment_rate,states,society,education,"Secondary school enrolment rate, highest and lowest",todo
+tertiary_enrolment_rate,countries,society,education,"Tertiary education enrolment rate, highest and lowest",todo
+tertiary_enrolment_rate,states,society,education,"Tertiary education enrolment rate, highest and lowest",todo
+literacy_rate,countries,society,education,"Adult literacy rate, lowest",todo
+education_spending,countries,society,education,"Education spending (% of GDP), highest and lowest",todo
+education_spending,states,society,education,"Education spending (% of budget), highest and lowest",todo
+num_households,countries,society,quality_of_life,"Number of households, largest",todo
+num_households,states,society,quality_of_life,"Number of households, largest",todo
+household_size,countries,society,quality_of_life,"Average household size, largest and smallest",todo
+household_size,states,society,quality_of_life,"Average household size, largest and smallest",todo
+cost_of_living_index,countries,society,quality_of_life,"Cost of living, highest and lowest",todo
+cost_of_living_index,states,society,quality_of_life,"Cost of living, highest and lowest",todo
+world_giving_index,countries,society,quality_of_life,"World Giving Index score, most and least generous",todo
+refugee_origin_population,countries,society,migration_and_refugees,Refugees by country of origin,todo
+refugee_hosting_population,countries,society,migration_and_refugees,"Refugee population hosted, largest",todo
+asylum_application_origin,countries,society,migration_and_refugees,Origin of asylum applications,todo
+asylum_application_destination,countries,society,migration_and_refugees,Country where asylum applications were lodged,todo
+conflict_displaced_population,countries,society,migration_and_refugees,"Population displaced by conflict, stock",todo
+human_development_index,countries,society,quality_of_life,Human Development Index,todo
+air_passenger_traffic,countries,transport,air,"Air passenger traffic, most",todo
+air_passenger_traffic,states,transport,air,"Air passenger traffic, most",todo
+busiest_airport,countries,transport,air,"Busiest airport, by passenger traffic",todo
+busiest_airport,states,transport,air,"Busiest airport, by passenger traffic",todo
+rail_network_length,countries,transport,rail,"Railway network length, longest",todo
+rail_network_length,states,transport,rail,"Railway network length, longest",todo
+rail_passengers,countries,transport,rail,"Rail passenger traffic, most",todo
+rail_passengers,states,transport,rail,"Rail passenger traffic, most",todo
+rail_freight,countries,transport,rail,"Rail freight traffic, most",todo
+rail_freight,states,transport,rail,"Rail freight traffic, most",todo
+road_network_length,countries,transport,road,"Road network length, longest",todo
+road_network_length,states,transport,road,"Road network length, longest",todo
+road_network_density,countries,transport,road,"Road network density, densest",todo
+road_network_density,states,transport,road,"Road network density, densest",todo
+road_congestion,countries,transport,road,"Road congestion, most crowded",todo
+road_congestion,states,transport,road,"Road congestion, most crowded",todo
+road_deaths,countries,transport,road,"Road traffic deaths, most",todo
+road_deaths,states,transport,road,"Road traffic deaths, most",todo
+car_ownership_growth,countries,transport,road,"Car ownership growth rate, fastest and slowest growing",todo
+car_ownership_growth,states,transport,road,"Car ownership growth rate, fastest and slowest growing",todo
+car_production,countries,transport,road,"Car production, largest",todo
+cars_sold,countries,transport,road,"New car sales, largest",todo
+merchant_fleet_domicile,countries,transport,maritime,"Merchant fleet size by country of domicile (beneficial ownership), largest",todo
+merchant_fleet_registration,countries,transport,maritime,"Merchant fleet size by country of registration (flag), largest",todo
