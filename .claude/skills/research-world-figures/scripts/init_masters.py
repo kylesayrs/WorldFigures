@@ -1,10 +1,15 @@
 #!/usr/bin/env python3
 """Create the master CSVs and the source manifest, or repair existing ones.
 
-Safe to re-run: existing topic columns and values are preserved. Rows that
-drifted (renamed, reordered, deleted) are restored to the canonical set, and
-any row keys found in the master but not in the canonical list are reported
-rather than silently dropped.
+Fixed-roster entity types (countries, states): safe to re-run. Existing topic
+columns and values are preserved. Rows that drifted (renamed, reordered,
+deleted) are restored to the canonical set, and any row keys found in the
+master but not in the canonical list are reported rather than silently
+dropped.
+
+Open-roster entity types (banks, companies, ...): there's no canonical set to
+restore -- this just makes sure the master file exists (creating an empty one
+if needed) and otherwise leaves it untouched.
 
     python3 scripts/init_masters.py --data-dir data
 """
@@ -14,13 +19,13 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pwf_lib import (MANIFEST_COLUMNS, SCOPES, load_canonical, manifest_path,
-                     master_path, read_csv, read_master_csv, write_csv,
-                     write_master_csv)
+from pwf_lib import (ENTITY_TYPES, MANIFEST_COLUMNS, load_canonical,
+                     manifest_path, master_path, read_csv, read_master_csv,
+                     write_csv, write_master_csv)
 
 
-def init_scope(data_dir, scope, verbose=True):
-    cfg = SCOPES[scope]
+def init_fixed(data_dir, scope, verbose=True):
+    cfg = ENTITY_TYPES[scope]
     key_col, name_col = cfg["key_col"], cfg["name_col"]
     base_cols = [key_col, name_col] + cfg["extra_cols"]
     path = master_path(data_dir, scope)
@@ -52,6 +57,31 @@ def init_scope(data_dir, scope, verbose=True):
     return len(out)
 
 
+def init_open(data_dir, scope, verbose=True):
+    cfg = ENTITY_TYPES[scope]
+    key_col = cfg["key_col"]
+    path = master_path(data_dir, scope)
+
+    if os.path.exists(path):
+        cols, rows = read_master_csv(path, key_col)
+    else:
+        cols, rows = [key_col, cfg["name_col"]] + cfg["extra_cols"], []
+        write_master_csv(path, cols, rows, key_col)
+
+    if verbose:
+        base = [key_col, cfg["name_col"]] + cfg["extra_cols"]
+        topics = [c for c in cols if c not in base]
+        print("%-10s %s  rows=%d topics=%d (open roster -- untouched)"
+              % (scope, path, len(rows), len(topics)))
+    return len(rows)
+
+
+def init_scope(data_dir, scope, verbose=True):
+    if ENTITY_TYPES[scope]["roster"] == "fixed":
+        return init_fixed(data_dir, scope, verbose)
+    return init_open(data_dir, scope, verbose)
+
+
 def init_manifest(data_dir, verbose=True):
     path = manifest_path(data_dir)
     rows = read_csv(path) if os.path.exists(path) else []
@@ -64,11 +94,11 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--data-dir", default="data")
-    ap.add_argument("--scope", choices=list(SCOPES) + ["all"], default="all")
+    ap.add_argument("--entity-type", choices=list(ENTITY_TYPES) + ["all"], default="all")
     args = ap.parse_args()
 
     os.makedirs(args.data_dir, exist_ok=True)
-    scopes = list(SCOPES) if args.scope == "all" else [args.scope]
+    scopes = list(ENTITY_TYPES) if args.entity_type == "all" else [args.entity_type]
     for s in scopes:
         init_scope(args.data_dir, s)
     init_manifest(args.data_dir)

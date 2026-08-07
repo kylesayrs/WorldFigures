@@ -19,8 +19,28 @@ SKILL_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(SKILL_DIR)))
 ASSETS = os.path.join(PROJECT_ROOT, "assets")
 
-SCOPES = {
+# Every entity type a topic can be measured across. Two kinds:
+#
+# - roster="fixed": the set of rows never changes. It's loaded from
+#   assets/<asset> (one row per canonical entity) and init_masters.py restores
+#   exactly that set on every run; add_topic.py treats an input label that
+#   doesn't match a canonical row as an error to resolve with --map/--drop.
+#   countries and states are the two fixed types today.
+#
+# - roster="open": there is no canonical list -- the set of rows is whatever
+#   has shown up in a merged topic so far. init_masters.py never resets an
+#   open master, just makes sure the file exists. add_topic.py matches new
+#   input labels against the master's *current* rows and, when a label
+#   doesn't match, adds it as a new row (see Resolver) instead of erroring.
+#   No "asset" key is needed or read for open types.
+#
+# To register a new entity type (banks, companies, universities, ...), add an
+# entry here with roster="open", pick a key_col/name_col, then run
+#   python3 scripts/init_masters.py --data-dir data --entity-type <name>
+# once to create the empty master. No canonical roster has to exist first.
+ENTITY_TYPES = {
     "countries": {
+        "roster": "fixed",
         "asset": "countries.csv",
         "key_col": "iso3",
         "name_col": "country",
@@ -28,18 +48,40 @@ SCOPES = {
         "extra_cols": ["iso2"],
     },
     "states": {
+        "roster": "fixed",
         "asset": "us_states.csv",
         "key_col": "state_code",
         "name_col": "state",
-        "master": "us_states.csv",
+        "master": "states.csv",
         "extra_cols": ["fips"],
+    },
+    "companies": {
+        "roster": "open",
+        "key_col": "entity_id",
+        "name_col": "name",
+        "master": "companies.csv",
+        "extra_cols": [],
+    },
+    "banks": {
+        "roster": "open",
+        "key_col": "entity_id",
+        "name_col": "name",
+        "master": "banks.csv",
+        "extra_cols": [],
+    },
+    "funds": {
+        "roster": "open",
+        "key_col": "entity_id",
+        "name_col": "name",
+        "master": "funds.csv",
+        "extra_cols": [],
     },
 }
 
 MANIFEST = "sources_manifest.csv"
 
 MANIFEST_COLUMNS = [
-    "scope",
+    "entity_type",
     "topic_slug",
     "title",
     "unit",
@@ -169,17 +211,32 @@ def read_master_csv(path, key_col):
     return [key_col] + field_order, out_rows
 
 
-def load_canonical(scope):
-    cfg = SCOPES[scope]
-    rows = read_csv(os.path.join(ASSETS, cfg["asset"]))
+def load_canonical(scope, data_dir=None):
+    """The rows a scope's index is built from.
+
+    Fixed types: the canonical asset list (unaffected by data_dir). Open
+    types: whatever rows the master currently has -- there's no separate
+    canonical list, so a fresh master (or one that doesn't exist yet) simply
+    means an empty index and every input label becomes a new row.
+    """
+    cfg = ENTITY_TYPES[scope]
+    if cfg["roster"] == "fixed":
+        rows = read_csv(os.path.join(ASSETS, cfg["asset"]))
+        for r in rows:
+            r["_aliases"] = [a for a in (r.get("aliases") or "").split("|") if a]
+        return rows
+    path = master_path(data_dir, scope)
+    if not os.path.exists(path):
+        return []
+    _, rows = read_master_csv(path, cfg["key_col"])
     for r in rows:
-        r["_aliases"] = [a for a in (r.get("aliases") or "").split("|") if a]
+        r["_aliases"] = []
     return rows
 
 
-def build_index(scope):
+def build_index(scope, data_dir=None):
     """Map every normalized name/code/alias to a canonical key."""
-    cfg = SCOPES[scope]
+    cfg = ENTITY_TYPES[scope]
     idx = {}
 
     def put(text, key):
@@ -187,7 +244,7 @@ def build_index(scope):
         if n and n not in idx:
             idx[n] = key
 
-    for r in load_canonical(scope):
+    for r in load_canonical(scope, data_dir):
         key = r[cfg["key_col"]]
         put(key, key)
         put(r[cfg["name_col"]], key)
@@ -199,12 +256,24 @@ def build_index(scope):
     return idx
 
 
-def non_row_reason(label):
-    """Why this label is legitimately not a row, or None if it should have matched."""
+def slugify(name):
+    """A stable, readable key for an open-roster entity, derived from its name."""
+    n = norm(name)
+    s = re.sub(r"\s+", "_", n).strip("_")
+    return s or "entity"
+
+
+def non_row_reason(label, roster="fixed"):
+    """Why this label is legitimately not a row, or None if it should have matched.
+
+    TERRITORY_PATTERNS is about political geography (dependencies, autonomous
+    territories) and only makes sense for fixed place-based scopes; it's
+    skipped for open-roster scopes like banks or companies.
+    """
     n = norm(label)
     if any(re.search(p, n) for p in AGGREGATE_PATTERNS):
         return "aggregate/total"
-    if any(re.search(p, n) for p in TERRITORY_PATTERNS):
+    if roster == "fixed" and any(re.search(p, n) for p in TERRITORY_PATTERNS):
         return "territory/not a row"
     return None
 
@@ -213,21 +282,28 @@ class Resolver:
     """Resolves source-provided labels to canonical keys.
 
     Exact and alias matches are silent. Close matches are accepted but reported,
-    because a typo'd match is still worth a human glance. Anything else is
-    returned unresolved rather than guessed -- a wrong country row is a much
-    worse outcome than a blank one.
+    because a typo'd match is still worth a human glance.
+
+    Fixed-roster scopes: anything else is returned unresolved rather than
+    guessed -- a wrong country row is a much worse outcome than a blank one.
+
+    Open-roster scopes: an unresolved label isn't a mistake, it's a new
+    entity that hasn't shown up in this master before -- it's added as a new
+    row (see `created`) instead of being reported as unmatched.
     """
 
     FUZZY_ACCEPT = 0.93
     FUZZY_SUGGEST = 0.80
 
-    def __init__(self, scope, manual_map=None):
+    def __init__(self, scope, manual_map=None, data_dir=None):
         self.scope = scope
-        self.idx = build_index(scope)
+        self.roster = ENTITY_TYPES[scope]["roster"]
+        self.idx = build_index(scope, data_dir)
         self.keys = set(self.idx.values())
         self.manual = {norm(k): v for k, v in (manual_map or {}).items()}
         self.fuzzy = []      # (source_label, matched_key, score)
         self.dropped = []    # (source_label, reason)
+        self.created = []    # (source_label, new_key) -- open-roster scopes only
 
     def resolve(self, label):
         n = norm(label)
@@ -237,7 +313,7 @@ class Resolver:
             return self.manual[n]
         if n in self.idx:
             return self.idx[n]
-        reason = non_row_reason(label)
+        reason = non_row_reason(label, self.roster)
         if reason:
             self.dropped.append((label, reason))
             return None
@@ -247,6 +323,14 @@ class Resolver:
             key = self.idx[close[0]]
             score = difflib.SequenceMatcher(None, n, close[0]).ratio()
             self.fuzzy.append((label, key, round(score, 3)))
+            return key
+        if self.roster == "open":
+            key = slugify(label)
+            while key in self.keys:
+                key = key + "_"
+            self.keys.add(key)
+            self.idx[n] = key
+            self.created.append((label, key))
             return key
         return None
 
@@ -284,7 +368,7 @@ def clean_number(raw):
 
 
 def master_path(data_dir, scope):
-    return os.path.join(data_dir, SCOPES[scope]["master"])
+    return os.path.join(data_dir, ENTITY_TYPES[scope]["master"])
 
 
 def manifest_path(data_dir):
@@ -296,7 +380,7 @@ def load_master(data_dir, scope):
     if not os.path.exists(path):
         die("no master at %s -- run scripts/init_masters.py --data-dir %s first"
             % (path, data_dir))
-    return read_master_csv(path, SCOPES[scope]["key_col"])
+    return read_master_csv(path, ENTITY_TYPES[scope]["key_col"])
 
 
 def die(msg):

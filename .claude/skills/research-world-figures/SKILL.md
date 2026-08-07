@@ -49,12 +49,16 @@ impossible.
 
    ```bash
    python3 scripts/init_masters.py --data-dir data      # first run only, safe to repeat
-   python3 scripts/add_topic.py --scope countries --topic <slug> \
+   python3 scripts/add_topic.py --entity-type countries --topic <slug> \
      --input staging/<slug>.csv --key-col country --value-col value \
      --title "..." --unit "..." --source-name "..." --source-url "..." \
      --publisher "..." --published YYYY-MM-DD --data-year YYYY \
      --definition "..." --dry-run
    ```
+
+   `--entity-type` is whatever kind of thing the topic's rows are about —
+   `countries` and `states` for most topics, but a topic like "largest banks"
+   is `banks`, not `countries` (see "Entity types" below).
 
    `--dry-run` first, always. It prints coverage, fuzzy matches, skipped
    aggregates, every unresolved label, and a `vintage` line checking `--data-year`
@@ -68,9 +72,9 @@ impossible.
 
    - If the current branch is `main`, create and switch to `topic/<slug>`
      first; otherwise commit on the current branch.
-   - Stage exactly what this run touched: the master file(s) you merged into
-     (`data/countries.csv` and/or `data/us_states.csv`), `data/sources_manifest.csv`,
-     and `staging/<slug>.csv`.
+   - Stage exactly what this run touched: the master file you merged into
+     (e.g. `data/countries.csv`, `data/states.csv`, `data/banks.csv`),
+     `data/sources_manifest.csv`, and `staging/<slug>.csv`.
    - Commit (e.g. `Add <topic> column`), push with `-u origin <branch>`, and
      open the PR:
 
@@ -167,49 +171,50 @@ unit mismatch (thousands vs units, local currency vs USD) or a stray aggregate
 row that slipped through. Check one or two values against a second source; a
 mismatch means you've misread the column, not that the source is wrong.
 
-## Data layout
+## Entity types
 
-`data/countries.csv` and `data/us_states.csv` hold one column per place and one
-row per field. The first row is a header of place codes (iso3 / state_code);
-every row below it is a field, starting with `country` / `state` and `iso2` /
-`fips`, then one row per topic:
+Every topic is measured across some **entity type** — `countries` and
+`states` cover most topics, but a topic like "largest banks" is about banks,
+not places, so it's `entity_type=banks`, with its own master
+(`data/banks.csv`) and its own rows. Forcing an entity-based topic into
+`countries`/`states` produces either a meaningless "which country has the
+biggest bank" number or 197 blank cells — pick the entity type the topic is
+actually about.
 
-```
-field,AFG,ALB,DZA,...
-country,Afghanistan,Albania,Algeria,...
-iso2,AF,AL,DZ,...
-gdp_usd,20.1e9,18.9e9,...
-```
+Full details (the transposed master-CSV shape, the fixed-vs-open roster
+distinction, the currently registered entity types, and how to register a new
+one) live in `data/manifest.md` — read it before adding a topic for an entity
+type you haven't used before. Short version:
 
-This layout keeps diffs small. Places are fixed at 197 / 51 columns, but topics
-accumulate forever, one per skill run. Adding a topic appends a single row, and
-refreshing one (`--force`) changes exactly that row -- a reviewer can see what
-changed at a glance. `add_topic.py` and `init_masters.py` handle reading and
-writing this shape for you -- `pwf_lib.read_master_csv` / `write_master_csv`
-are the only places that know the on-disk shape; everywhere else in the code
-works with the natural one-row-per-place representation instead.
+- **`countries`, `states`** — fixed roster. 197 countries (193 UN members +
+  Holy See, Palestine, Taiwan, Kosovo) / 51 states+DC, restored on every
+  `init_masters.py` run from `assets/countries.csv` / `assets/us_states.csv`.
+  An input label that doesn't match a canonical row is an error to fix with
+  `--map`/`--drop` — dependencies and territories (Hong Kong, Puerto Rico,
+  Greenland) are recognized and skipped, not treated as new rows.
+- **`companies`, `banks`, `funds`** — open roster, currently empty (no topic
+  has been researched for them yet). There's no canonical list; `add_topic.py`
+  adds a new row automatically the first time an entity's name appears and
+  reuses that row (fuzzy-matched) the next time the same entity shows up in a
+  later topic.
+- Adding an entity type nobody's used before (e.g. `universities`) is a
+  five-line addition to `ENTITY_TYPES` in `pwf_lib.py` — see `data/manifest.md`
+  for the exact shape. Do this before staging a topic that needs it.
 
-`data/sources_manifest.csv` is one row per topic (its columns -- title, unit,
-vintage, source, coverage -- are fixed metadata fields, not a growing set), so
+`data/sources_manifest.csv` is one row per `(entity_type, topic_slug)` — its
+columns (title, unit, vintage, source, coverage) are fixed metadata fields, so
 adding or refreshing a topic there is already a single-row diff.
 
 ```
 data/countries.csv          field row, then country/iso2/topic rows, one column per iso3
-data/us_states.csv          field row, then state/fips/topic rows, one column per state_code
-data/sources_manifest.csv   one row per topic: title, unit, vintage, source, coverage
-staging/<slug>.csv          raw extraction, kept for auditing (one row per place, as fetched)
+data/states.csv             field row, then state/fips/topic rows, one column per state_code
+data/banks.csv              field row, then name/topic rows, one column per bank (open roster)
+data/sources_manifest.csv   one row per (entity_type, topic): title, unit, vintage, source, coverage
+data/manifest.md            full data-layout reference
+staging/<slug>.csv          raw extraction, kept for auditing (one row per entity, as fetched)
+topics/table_of_contents.csv  to-do list of topics, by entity_type: topic,entity_type,description,status
+topics/manifest.md          explains table_of_contents.csv
 ```
-
-`assets/countries.csv` and `assets/us_states.csv` (the canonical place lists
-the masters are built from) hold one row per place instead -- they're static
-reference data, not a growing set of topics, so there's no diff problem
-to solve there.
-
-Places are fixed: **197 countries** (193 UN members, plus Holy See and Palestine
-as observers, plus Taiwan and Kosovo) and **51 state columns** (50 states + DC).
-The scripts restore this set on every run, so a topic can never quietly add or
-drop a place. Dependencies and territories (Hong Kong, Puerto Rico, Greenland)
-are not rows; they're recognized and skipped.
 
 Topic slugs are snake_case, no year in the name (`gdp_usd`, not `gdp_2024_usd`) —
 the year lives in the manifest so refreshing a topic doesn't orphan the column.
@@ -223,9 +228,9 @@ and updates the manifest entry in place.
 
 | Script | Use |
 |---|---|
-| `scripts/init_masters.py` | Create or repair the masters and manifest. Idempotent; preserves existing topic columns. |
+| `scripts/init_masters.py` | Create or repair the masters and manifest. Idempotent; preserves existing topic columns (and, for open-roster entity types, existing rows). |
 | `scripts/add_topic.py` | Merge staged values into a master + write the manifest entry. `--dry-run` reports without writing. Rejects `--data-year` values other than last calendar year unless `--allow-stale-year` is passed. |
-| `scripts/report.py` | Coverage per topic, undocumented columns, rows blank everywhere. |
+| `scripts/report.py` | Coverage per topic, undocumented columns, rows blank everywhere (fixed-roster entity types), or entity counts per topic (open-roster). |
 
 Run `--help` on any of them for the full flag list.
 
@@ -242,7 +247,7 @@ variable names do change between vintages. Then:
 
 ```bash
 # fetch -> staging/mean_commute_minutes.csv with columns: state,value
-python3 scripts/add_topic.py --scope states --topic mean_commute_minutes \
+python3 scripts/add_topic.py --entity-type states --topic mean_commute_minutes \
   --input staging/mean_commute_minutes.csv --key-col state --value-col value \
   --title "Mean travel time to work" --unit "minutes" \
   --source-name "ACS 1-year estimates, aggregate travel time / workers who commute" \

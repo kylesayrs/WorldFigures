@@ -6,17 +6,21 @@ place names (or ISO3 / postal codes) and a column of values. Everything else --
 matching to canonical rows, leaving gaps blank, keeping column order stable --
 happens here.
 
-    python3 scripts/add_topic.py --scope countries --topic gdp_usd \\
+    python3 scripts/add_topic.py --entity-type countries --topic gdp_usd \\
       --input staging/gdp.csv --key-col country --value-col value \\
       --title "GDP (current US$)" --unit "current US$" \\
       --source-name "World Bank WDI, NY.GDP.MKTP.CD" \\
       --source-url "https://api.worldbank.org/v2/..." \\
       --publisher "World Bank" --published 2026-07-01 --data-year 2025
 
-Nothing is written unless every input label either resolves to a canonical row,
-is a recognized aggregate, or is explicitly dropped with --drop. That check is
-the point of the script: an unresolved label usually means a real country is
-about to go missing.
+Fixed-roster entity types (countries, states): nothing is written unless every
+input label either resolves to a canonical row, is a recognized aggregate, or
+is explicitly dropped with --drop. That check is the point of the script: an
+unresolved label usually means a real country is about to go missing.
+
+Open-roster entity types (banks, companies, ...): there's no canonical row set
+to check against, so an input label that doesn't match an entity already in
+the master is added as a new row instead of being reported as unmatched.
 
 --data-year (or the values a --year-col resolves to) must be dated to last
 calendar year -- today's year minus one. Anything else is rejected unless you
@@ -31,11 +35,11 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pwf_lib import (MANIFEST_COLUMNS, SCOPES, Resolver, clean_number, die,
-                     load_master, manifest_path, master_path, read_csv,
+from pwf_lib import (ENTITY_TYPES, MANIFEST_COLUMNS, Resolver, clean_number,
+                     die, load_master, manifest_path, master_path, read_csv,
                      write_csv, write_master_csv)
 
-BASE = {s: [c["key_col"], c["name_col"]] + c["extra_cols"] for s, c in SCOPES.items()}
+BASE = {s: [c["key_col"], c["name_col"]] + c["extra_cols"] for s, c in ENTITY_TYPES.items()}
 
 
 def parse_pairs(items, sep="="):
@@ -51,7 +55,7 @@ def parse_pairs(items, sep="="):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--scope", required=True, choices=list(SCOPES))
+    ap.add_argument("--entity-type", dest="scope", required=True, choices=list(ENTITY_TYPES))
     ap.add_argument("--topic", required=True, help="column name, snake_case, no year")
     ap.add_argument("--input", required=True, help="staged CSV/TSV of values")
     ap.add_argument("--key-col", required=True, help="column holding place names or codes")
@@ -86,8 +90,9 @@ def main():
                     help="write anyway, leaving unresolved labels out (use sparingly)")
     args = ap.parse_args()
 
-    cfg = SCOPES[args.scope]
+    cfg = ENTITY_TYPES[args.scope]
     key_col, name_col = cfg["key_col"], cfg["name_col"]
+    roster = cfg["roster"]
     if args.topic in BASE[args.scope]:
         die("topic %r collides with a reserved column" % args.topic)
 
@@ -103,7 +108,7 @@ def main():
                 % (col, args.input, ", ".join(staged[0])))
 
     dropset = {d.strip().lower() for d in (args.drop or [])}
-    res = Resolver(args.scope, parse_pairs(args.map))
+    res = Resolver(args.scope, parse_pairs(args.map), data_dir=args.data_dir)
 
     values, years, unmatched, unparsed, dupes = {}, {}, [], [], []
     for row in staged:
@@ -145,6 +150,12 @@ def main():
 
     # ---- report -------------------------------------------------------------
     cols, master = load_master(args.data_dir, args.scope)
+    if roster == "open":
+        # An open master may not have a name/extra-col row yet (e.g. its very
+        # first merge) -- make sure identity columns exist before any row
+        # gets appended, or names silently never get written.
+        identity_cols = [name_col] + cfg["extra_cols"]
+        cols = [key_col] + identity_cols + [c for c in cols if c not in ([key_col] + identity_cols)]
     total = len(master)
     filled = sum(1 for r in master if r[key_col] in values)
     missing = [r[name_col] for r in master if r[key_col] not in values]
@@ -153,7 +164,17 @@ def main():
     print("vintage   : data_year=%s, expected %d%s" % (
         data_year or "(none)", target_year,
         "" if not stale else (" -- OVERRIDDEN" if args.allow_stale_year else " -- REJECTED")))
-    print("coverage  : %d/%d rows (%.0f%%)" % (filled, total, 100.0 * filled / total))
+    if roster == "fixed":
+        print("coverage  : %d/%d rows (%.0f%%)" % (
+            filled, total, 100.0 * filled / total if total else 0.0))
+    else:
+        print("coverage  : %d value(s) -- %d new entit%s, %d matched an existing row"
+              % (len(values), len(res.created), "y" if len(res.created) == 1 else "ies",
+                 len(values) - len(res.created)))
+        if res.created:
+            shown = ", ".join(l for l, k in res.created[:15]) + (
+                ", ..." if len(res.created) > 15 else "")
+            print("new       : %s" % shown)
     if res.fuzzy:
         print("fuzzy     : %s" % "; ".join("%s -> %s (%.2f)" % f for f in res.fuzzy))
     if res.dropped:
@@ -165,7 +186,7 @@ def main():
     if unparsed:
         print("non-numeric: %d value(s) ignored, e.g. %s"
               % (len(unparsed), unparsed[:3]))
-    if missing:
+    if roster == "fixed" and missing:
         shown = ", ".join(missing[:15]) + (", ..." if len(missing) > 15 else "")
         print("blank     : %d rows -- %s" % (len(missing), shown))
     if unmatched:
@@ -194,6 +215,11 @@ def main():
     # ---- write master -------------------------------------------------------
     if args.topic not in cols:
         cols = cols + [args.topic]
+    if roster == "open" and res.created:
+        # New entities discovered this run aren't in `master` yet -- append
+        # them as new rows (open rosters grow, they're never reset).
+        for label, key in res.created:
+            master.append({key_col: key, name_col: label})
     for r in master:
         r[args.topic] = values.get(r[key_col], "")
     write_master_csv(master_path(args.data_dir, args.scope), cols, master, key_col)
@@ -202,18 +228,19 @@ def main():
     mpath = manifest_path(args.data_dir)
     entries = read_csv(mpath) if os.path.exists(mpath) else []
     entry = {
-        "scope": args.scope, "topic_slug": args.topic, "title": args.title,
+        "entity_type": args.scope, "topic_slug": args.topic, "title": args.title,
         "unit": args.unit, "value_type": args.value_type, "data_year": data_year,
         "source_name": args.source_name, "source_url": args.source_url,
         "publisher": args.publisher, "published": args.published,
         "retrieved": datetime.date.today().isoformat(),
-        "coverage_filled": filled, "coverage_total": total,
+        "coverage_filled": len(values) if roster == "open" else filled,
+        "coverage_total": "" if roster == "open" else total,
         "definition": args.definition, "notes": args.notes,
     }
     entries = [e for e in entries
-               if not (e.get("scope") == args.scope and e.get("topic_slug") == args.topic)]
+               if not (e.get("entity_type") == args.scope and e.get("topic_slug") == args.topic)]
     entries.append(entry)
-    entries.sort(key=lambda e: (e.get("scope", ""), e.get("topic_slug", "")))
+    entries.sort(key=lambda e: (e.get("entity_type", ""), e.get("topic_slug", "")))
     write_csv(mpath, MANIFEST_COLUMNS, entries)
 
     print("\nwrote %s and %s" % (master_path(args.data_dir, args.scope), mpath))
