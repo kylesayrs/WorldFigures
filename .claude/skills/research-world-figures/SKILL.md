@@ -146,18 +146,47 @@ mismatch means you've misread the column, not that the source is wrong.
 
 ## Data layout
 
+`data/countries.csv` and `data/us_states.csv` hold one column per place and one
+row per field. The first row is a header of place codes (iso3 / state_code);
+every row below it is a field, starting with `country` / `state` and `iso2` /
+`fips`, then one row per topic:
+
 ```
-data/countries.csv          iso3, country, iso2, then one column per topic
-data/us_states.csv          state_code, state, fips, then one column per topic
-data/sources_manifest.csv   one row per topic: title, unit, vintage, source, coverage
-staging/<slug>.csv          raw extraction, kept for auditing
+field,AFG,ALB,DZA,...
+country,Afghanistan,Albania,Algeria,...
+iso2,AF,AL,DZ,...
+gdp_usd,20.1e9,18.9e9,...
 ```
 
-Rows are fixed: **197 countries** (193 UN members, plus Holy See and Palestine as
-observers, plus Taiwan and Kosovo) and **51 state rows** (50 states + DC). The
-scripts restore this set on every run, so a topic can never quietly add or drop a
-row. Dependencies and territories (Hong Kong, Puerto Rico, Greenland) are not
-rows; they're recognized and skipped.
+This layout keeps diffs small. Places are fixed at 197 / 51 columns, but topics
+accumulate forever, one per skill run. Adding a topic appends a single row, and
+refreshing one (`--force`) changes exactly that row -- a reviewer can see what
+changed at a glance. `add_topic.py` and `init_masters.py` handle reading and
+writing this shape for you -- `pwf_lib.read_master_csv` / `write_master_csv`
+are the only places that know the on-disk shape; everywhere else in the code
+works with the natural one-row-per-place representation instead.
+
+`data/sources_manifest.csv` is one row per topic (its columns -- title, unit,
+vintage, source, coverage -- are fixed metadata fields, not a growing set), so
+adding or refreshing a topic there is already a single-row diff.
+
+```
+data/countries.csv          field row, then country/iso2/topic rows, one column per iso3
+data/us_states.csv          field row, then state/fips/topic rows, one column per state_code
+data/sources_manifest.csv   one row per topic: title, unit, vintage, source, coverage
+staging/<slug>.csv          raw extraction, kept for auditing (one row per place, as fetched)
+```
+
+`assets/countries.csv` and `assets/us_states.csv` (the canonical place lists
+the masters are built from) hold one row per place instead -- they're static
+reference data, not a growing set of topics, so there's no diff problem
+to solve there.
+
+Places are fixed: **197 countries** (193 UN members, plus Holy See and Palestine
+as observers, plus Taiwan and Kosovo) and **51 state columns** (50 states + DC).
+The scripts restore this set on every run, so a topic can never quietly add or
+drop a place. Dependencies and territories (Hong Kong, Puerto Rico, Greenland)
+are not rows; they're recognized and skipped.
 
 Topic slugs are snake_case, no year in the name (`gdp_usd`, not `gdp_2024_usd`) —
 the year lives in the manifest so refreshing a topic doesn't orphan the column.

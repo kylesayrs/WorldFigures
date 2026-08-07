@@ -33,7 +33,7 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pwf_lib import (MANIFEST_COLUMNS, SCOPES, Resolver, clean_number, die,
                      load_master, manifest_path, master_path, read_csv,
-                     write_csv)
+                     write_csv, write_master_csv)
 
 BASE = {s: [c["key_col"], c["name_col"]] + c["extra_cols"] for s, c in SCOPES.items()}
 
@@ -196,7 +196,7 @@ def main():
         cols = cols + [args.topic]
     for r in master:
         r[args.topic] = values.get(r[key_col], "")
-    write_csv(master_path(args.data_dir, args.scope), cols, master)
+    write_master_csv(master_path(args.data_dir, args.scope), cols, master, key_col)
 
     # ---- upsert manifest ----------------------------------------------------
     mpath = manifest_path(args.data_dir)

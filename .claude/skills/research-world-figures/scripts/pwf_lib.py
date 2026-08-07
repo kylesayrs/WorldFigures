@@ -123,6 +123,52 @@ def write_csv(path, fieldnames, rows):
     os.replace(tmp, path)
 
 
+def write_master_csv(path, fieldnames, rows, key_col):
+    """Write a master with one column per place and one row per field.
+
+    Places (197 countries / 51 states) are fixed, but topic rows grow forever
+    -- one per skill run. Adding a topic appends exactly one line, and
+    refreshing a topic changes exactly one line -- both are clean, reviewable
+    PRs. Written atomically so an interrupted run can't leave a truncated
+    master.
+    """
+    keys = [r[key_col] for r in rows]
+    field_order = [c for c in fieldnames if c != key_col]
+    tmp = path + ".tmp"
+    os.makedirs(os.path.dirname(os.path.abspath(path)), exist_ok=True)
+    with open(tmp, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f, lineterminator="\n")
+        w.writerow(["field"] + keys)
+        for field in field_order:
+            w.writerow([field] + [r.get(field, "") for r in rows])
+    os.replace(tmp, path)
+
+
+def read_master_csv(path, key_col):
+    """Read a master CSV into the one-row-per-place shape the rest of the
+    code (matching, coverage counts, ...) is written against."""
+    with open(path, newline="", encoding="utf-8-sig") as f:
+        rows = list(csv.reader(f))
+    if not rows:
+        return [key_col], []
+    keys = rows[0][1:]
+    field_order, field_values = [], {}
+    for r in rows[1:]:
+        if not r or r[0] == "":
+            continue
+        field, vals = r[0], r[1:]
+        vals += [""] * (len(keys) - len(vals))
+        field_order.append(field)
+        field_values[field] = vals
+    out_rows = []
+    for i, k in enumerate(keys):
+        row = {key_col: k}
+        for field in field_order:
+            row[field] = field_values[field][i]
+        out_rows.append(row)
+    return [key_col] + field_order, out_rows
+
+
 def load_canonical(scope):
     cfg = SCOPES[scope]
     rows = read_csv(os.path.join(ASSETS, cfg["asset"]))
@@ -250,9 +296,7 @@ def load_master(data_dir, scope):
     if not os.path.exists(path):
         die("no master at %s -- run scripts/init_masters.py --data-dir %s first"
             % (path, data_dir))
-    with open(path, newline="", encoding="utf-8-sig") as f:
-        r = csv.DictReader(f)
-        return list(r.fieldnames), list(r)
+    return read_master_csv(path, SCOPES[scope]["key_col"])
 
 
 def die(msg):

@@ -15,7 +15,8 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from pwf_lib import (MANIFEST_COLUMNS, SCOPES, load_canonical, manifest_path,
-                     master_path, read_csv, write_csv)
+                     master_path, read_csv, read_master_csv, write_csv,
+                     write_master_csv)
 
 
 def init_scope(data_dir, scope, verbose=True):
@@ -26,8 +27,7 @@ def init_scope(data_dir, scope, verbose=True):
 
     existing, existing_cols = {}, []
     if os.path.exists(path):
-        rows = read_csv(path)
-        existing_cols = list(rows[0].keys()) if rows else []
+        existing_cols, rows = read_master_csv(path, key_col)
         for r in rows:
             existing[r.get(key_col, "")] = r
 
@@ -43,7 +43,7 @@ def init_scope(data_dir, scope, verbose=True):
         out.append(row)
 
     orphans = sorted(set(existing) - {r[key_col] for r in out} - {""})
-    write_csv(path, base_cols + topic_cols, out)
+    write_master_csv(path, base_cols + topic_cols, out, key_col)
     if verbose:
         print("%-10s %s  rows=%d topics=%d" % (scope, path, len(out), len(topic_cols)))
         if orphans:
