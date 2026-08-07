@@ -84,6 +84,22 @@ using the topic as described in chat.
    the data URL — API endpoints returning CSV or JSON work fine — and write the
    response to a staging file.
 
+   For entity-ranking topics (companies, banks, funds) the primary source is
+   often a subscription report — S&P Global Market Intelligence, *The Banker*'s
+   Top 1000, Fortune Global 500 — with no free bulk download. If the primary
+   source's own page is unreachable (paywalled, blocks fetchers, or renders the
+   ranking as a graphic instead of markup) but a web search turns up a Wikipedia
+   list that names the same report as its source, that's an acceptable last
+   resort — pulled the same non-manual way, not the way step 3 opens by warning
+   against: fetch the article via the MediaWiki API
+   (`action=parse&prop=wikitext`) and parse the table programmatically, don't
+   read the rendered page and retype numbers. Then verify at least one figure
+   (rank 1 is enough) against the primary source's own published text or press
+   release — Wikipedia's inline citation can lag behind an edited table, so the
+   numbers are what to check, not the citation. Cite the primary source, not
+   Wikipedia, in `--source-name`/`--publisher`, and record the extraction path
+   and the figure you verified in `--notes`.
+
 4. **Stage it.** Write `staging/<slug>.csv` with at minimum a place column
    and a value column; add a year column if the source's "latest available" year
    varies by country. Keep the source's own precision — no rounding.
@@ -106,7 +122,7 @@ using the topic as described in chat.
    python3 scripts/add_topic.py --entity-type countries --topic <topic> \
      --input staging/<slug>.csv --key-col country --value-col value \
      --title "..." --unit "..." --source-name "..." --source-url "..." \
-     --publisher "..." --published YYYY-MM-DD --data-year YYYY \
+     --publisher "..." --published YYYY-MM-DD --data-date YYYY-MM-DD \
      --definition "..." --dry-run
    ```
 
@@ -115,7 +131,7 @@ using the topic as described in chat.
    is `banks`, not `countries` (see "Entity types" below).
 
    `--dry-run` first, always. It prints coverage, fuzzy matches, skipped
-   aggregates, every unresolved label, and a `vintage` line checking `--data-year`
+   aggregates, every unresolved label, and a `vintage` line checking `--data-date`
    against last calendar year. Resolve unmatched labels (`--map "Label=ISO3"` for
    real matches, `--drop "Label"` for non-rows); if the vintage line says
    REJECTED, either find a source dated to last year or, for topics that
@@ -145,7 +161,7 @@ using the topic as described in chat.
      gh pr create --base main --title "Add <topic> column (<scope>)" --body "$(cat <<'EOF'
      Measure: <what you picked, e.g. mean one-way commute time, workers 16+>
      Source: <publisher> — <source-name>, <source-url>
-     Data year: <YYYY>  Coverage: <N>/197 (or /51)
+     Data date: <YYYY-MM-DD, or YYYY if that's all the source gives>  Coverage: <N>/197 (or /51)
      Notable gaps: <large places missing, or "none">
      EOF
      )"
@@ -172,6 +188,13 @@ Prefer, in rough order:
 3. **A well-documented academic or NGO dataset** with a methodology paper —
    V-Dem, IHME, Transparency International.
 
+For entity-ranking topics (companies, banks, funds), the equivalent of tier 1
+is usually a commercial industry report rather than a government agency — S&P
+Global Market Intelligence for banks, Forbes Global 2000 / Fortune Global 500
+for companies, the Sovereign Wealth Fund Institute for funds. See
+`references/source-catalog.md`'s "Entity rankings" section for known sources,
+and step 3 above for what to do when the report itself isn't freely reachable.
+
 Judge candidates on four things:
 
 - **Coverage.** Aim for all or nearly all rows. A source covering 40 countries
@@ -180,20 +203,22 @@ Judge candidates on four things:
 - **How many sources.** Default to one source per column; see "How many sources
   to accept" below for when a second, well-aligned source is allowed instead of
   leaving gaps blank.
-- **Documented vintage, and last calendar year specifically.** You need the year
+- **Documented vintage, and last calendar year specifically.** You need the date
   the values describe *and* the release date; an undated number can't be
-  footnoted. Beyond that, the data year itself must be *last* calendar year —
-  today minus one. If today is in 2026, only 2025-dated values are acceptable;
-  2024 is stale and 2026 (this year) is usually still incomplete. Recompute this
-  from the current date each time, don't reuse a number from an earlier session.
-  `add_topic.py` enforces this on `--data-year` and rejects a mismatch unless you
-  pass `--allow-stale-year` with a `--notes` explanation — reserve that for
-  topics (census, some V-Dem/IHME series) that are never updated annually.
+  footnoted. Give `--data-date` the most precise date the source states — a
+  specific day (`2025-12-31`) beats a bare year — but its year component must be
+  *last* calendar year — today minus one. If today is in 2026, only 2025-dated
+  values are acceptable; 2024 is stale and 2026 (this year) is usually still
+  incomplete. Recompute this from the current date each time, don't reuse a
+  number from an earlier session. `add_topic.py` enforces this on `--data-date`
+  and rejects a mismatch unless you pass `--allow-stale-year` with a `--notes`
+  explanation — reserve that for topics (census, some V-Dem/IHME series) that
+  are never updated annually.
 
   **Cumulative all-time totals** (Nobel Prizes, Olympic medals, World Cup
   titles — a running career/history tally, not a yearly snapshot) still need
-  a `--data-year`, but it means "as of the most recent completed event," not
-  "the year this number describes." Use the year of the latest edition/award
+  a `--data-date`, but it means "as of the most recent completed event," not
+  "the date this number describes." Use the year of the latest edition/award
   covered by the source (e.g. `2025` for Nobel Prizes if the source includes
   the 2025 announcements). Winners that aren't individually attributable to
   one country — organizations, national teams for an individual-level tally —
@@ -304,7 +329,7 @@ and updates the manifest entry in place.
 | Script | Use |
 |---|---|
 | `scripts/init_masters.py` | Create or repair the masters and manifest. Idempotent; preserves existing topic columns (and, for open-roster entity types, existing rows). |
-| `scripts/add_topic.py` | Merge staged values into a master + write the manifest entry. `--dry-run` reports without writing. Rejects `--data-year` values other than last calendar year unless `--allow-stale-year` is passed. |
+| `scripts/add_topic.py` | Merge staged values into a master + write the manifest entry. `--dry-run` reports without writing. Rejects `--data-date` values whose year is other than last calendar year unless `--allow-stale-year` is passed. |
 | `scripts/report.py` | Coverage per topic, undocumented columns, rows blank everywhere (fixed-roster entity types), or entity counts per topic (open-roster). |
 
 Run `--help` on any of them for the full flag list.
@@ -327,7 +352,7 @@ python3 scripts/add_topic.py --entity-type states --topic mean_commute_minutes \
   --title "Mean travel time to work" --unit "minutes" \
   --source-name "ACS 1-year estimates, aggregate travel time / workers who commute" \
   --source-url "<endpoint or table URL>" --publisher "U.S. Census Bureau" \
-  --published <release date> --data-year <survey year> \
+  --published <release date> --data-date <survey year, or exact "as of" date> \
   --definition "Mean one-way travel time to work, workers 16+ not working from home" \
   --dry-run
 ```

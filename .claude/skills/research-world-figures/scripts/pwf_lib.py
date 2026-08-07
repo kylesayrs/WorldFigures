@@ -86,7 +86,7 @@ MANIFEST_COLUMNS = [
     "title",
     "unit",
     "value_type",
-    "data_year",
+    "date",
     "source_name",
     "source_url",
     "publisher",

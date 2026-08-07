@@ -7,6 +7,7 @@ something better covered or more recent for a topic, use that instead.
 
 - [Countries](#countries)
 - [U.S. states](#us-states)
+- [Entity rankings (companies, banks, funds)](#entity-rankings-companies-banks-funds)
 - [Bulk-download patterns](#bulk-download-patterns)
 - [Traps](#traps)
 
@@ -84,6 +85,38 @@ something better covered or more recent for a topic, use that instead.
 - **USDA NASS** — agriculture and land use.
 - **Tax Foundation, KFF, Ballotpedia** — useful and generally well sourced, but
   secondary; prefer the underlying federal source when it exists.
+
+## Entity rankings (companies, banks, funds)
+
+Unlike the country/state domains above, these topics' best sources are almost
+always commercial industry reports with no free bulk download — a genuinely
+different situation from a government statistical agency, so budget extra time
+for finding a usable extraction path.
+
+- **Banks, by total assets** — S&P Global Market Intelligence publishes an
+  annual "world's largest banks by assets" ranking (also regional cuts: Europe,
+  Asia-Pacific, the Americas). The article states its "as of" date in the text
+  even when the full ranking table itself is paywalled or rendered as a
+  graphic. *The Banker*'s "Top 1000 World Banks" (ranked by Tier 1 capital,
+  published every July) is broader but also gated and not aimed at general
+  readers.
+- **Companies, general** — Forbes Global 2000 (ranks by a composite of sales,
+  profit, assets, and market value) and Fortune Global 500 (ranks by revenue)
+  both publish free leaderboard pages; whether the full list is scrapeable
+  markup or a paywalled interactive table varies by year, so check before
+  committing to one.
+- **Sovereign-wealth and state investment funds** — the Sovereign Wealth Fund
+  Institute (SWFI) publishes a free rankings page by assets under management;
+  it doesn't offer a bulk CSV, so the extraction question below still applies.
+
+None of these are a curated aggregator in the sense Our World in Data is for
+country topics — treat the industry report as the primary source even when
+you end up extracting it from a reproduction. If the report's own page isn't
+reachable, see step 3 of `SKILL.md` ("Get the data as a file, not as prose")
+for the Wikipedia-mirror fallback: fetch the reproducing article
+programmatically via the MediaWiki API, not by hand, and verify at least one
+figure against the primary source's own text before trusting the rest of the
+table.
 
 ## Bulk-download patterns
 

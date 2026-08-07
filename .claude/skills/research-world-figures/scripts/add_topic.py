@@ -11,7 +11,7 @@ happens here.
       --title "GDP (current US$)" --unit "current US$" \\
       --source-name "World Bank WDI, NY.GDP.MKTP.CD" \\
       --source-url "https://api.worldbank.org/v2/..." \\
-      --publisher "World Bank" --published 2026-07-01 --data-year 2025
+      --publisher "World Bank" --published 2026-07-01 --data-date 2025-12-31
 
 Fixed-roster entity types (countries, states): nothing is written unless every
 input label either resolves to a canonical row, is a recognized aggregate, or
@@ -22,9 +22,10 @@ Open-roster entity types (banks, companies, ...): there's no canonical row set
 to check against, so an input label that doesn't match an entity already in
 the master is added as a new row instead of being reported as unmatched.
 
---data-year (or the values a --year-col resolves to) must be dated to last
-calendar year -- today's year minus one. Anything else is rejected unless you
-pass --allow-stale-year, which requires an explanation in --notes.
+--data-date (or the values a --date-col resolves to) must be dated to last
+calendar year -- today's year minus one. Give the most precise date the source
+states (YYYY-MM-DD, YYYY-MM, or bare YYYY); a mismatched year is rejected
+unless you pass --allow-stale-year, which requires an explanation in --notes.
 """
 
 import argparse
@@ -60,7 +61,8 @@ def main():
     ap.add_argument("--input", required=True, help="staged CSV/TSV of values")
     ap.add_argument("--key-col", required=True, help="column holding place names or codes")
     ap.add_argument("--value-col", required=True)
-    ap.add_argument("--year-col", help="optional per-row year column")
+    ap.add_argument("--date-col", help="optional per-row column giving the date "
+                    "(or year) each value refers to")
     ap.add_argument("--data-dir", default="data")
 
     ap.add_argument("--title", required=True, help="human-readable topic name")
@@ -71,9 +73,10 @@ def main():
     ap.add_argument("--source-url", required=True)
     ap.add_argument("--publisher", required=True, help="BLS, World Bank, Our World in Data ...")
     ap.add_argument("--published", default="", help="when the source published this release")
-    ap.add_argument("--data-year", default="",
-                    help="year(s) the values refer to; must be last calendar year "
-                         "unless --allow-stale-year is passed")
+    ap.add_argument("--data-date", default="",
+                    help="date the values refer to -- YYYY-MM-DD, YYYY-MM, or "
+                         "YYYY, as precise as the source states; the year must "
+                         "be last calendar year unless --allow-stale-year is passed")
     ap.add_argument("--definition", default="", help="what exactly is counted")
     ap.add_argument("--notes", default="", help="caveats a reader of the book would need")
 
@@ -110,7 +113,7 @@ def main():
     dropset = {d.strip().lower() for d in (args.drop or [])}
     res = Resolver(args.scope, parse_pairs(args.map), data_dir=args.data_dir)
 
-    values, years, unmatched, unparsed, dupes = {}, {}, [], [], []
+    values, dates, unmatched, unparsed, dupes = {}, {}, [], [], []
     for row in staged:
         label = (row.get(args.key_col) or "").strip()
         if not label or label.lower() in dropset:
@@ -129,23 +132,23 @@ def main():
         if key in values and str(values[key]) != str(val):
             dupes.append((label, key, values[key], val))
         values[key] = str(val).strip()
-        if args.year_col and row.get(args.year_col):
-            years[key] = str(row[args.year_col]).strip()
+        if args.date_col and row.get(args.date_col):
+            dates[key] = str(row[args.date_col]).strip()
 
     # ---- data vintage ---------------------------------------------------------
     # Rule: the book only takes sources dated to last calendar year (today's
     # year minus one). A stray current-year or older-vintage source is a much
     # easier mistake to make than it looks -- catch it before it's merged.
-    data_year = args.data_year
-    if not data_year and years:
-        ys = sorted({y for y in years.values() if y})
-        data_year = ys[0] if len(ys) == 1 else "%s-%s" % (ys[0], ys[-1])
+    data_date = args.data_date
+    if not data_date and dates:
+        ds = sorted({d for d in dates.values() if d})
+        data_date = ds[0] if len(ds) == 1 else "%s-%s" % (ds[0], ds[-1])
     target_year = datetime.date.today().year - 1
-    found_years = [int(y) for y in re.findall(r"\d{4}", data_year or "")]
+    found_years = [int(y) for y in re.findall(r"\d{4}", data_date or "")]
     stale = (not found_years) or (max(found_years) != target_year)
     if stale and args.allow_stale_year:
-        override_note = "[vintage override: data_year=%s, expected %d]" % (
-            data_year or "(none)", target_year)
+        override_note = "[vintage override: date=%s, expected %d]" % (
+            data_date or "(none)", target_year)
         args.notes = (args.notes + " " + override_note).strip()
 
     # ---- report -------------------------------------------------------------
@@ -161,8 +164,8 @@ def main():
     missing = [r[name_col] for r in master if r[key_col] not in values]
 
     print("topic     : %s  (%s)" % (args.topic, args.scope))
-    print("vintage   : data_year=%s, expected %d%s" % (
-        data_year or "(none)", target_year,
+    print("vintage   : date=%s, expected %d%s" % (
+        data_date or "(none)", target_year,
         "" if not stale else (" -- OVERRIDDEN" if args.allow_stale_year else " -- REJECTED")))
     if roster == "fixed":
         print("coverage  : %d/%d rows (%.0f%%)" % (
@@ -229,7 +232,7 @@ def main():
     entries = read_csv(mpath) if os.path.exists(mpath) else []
     entry = {
         "entity_type": args.scope, "topic_slug": args.topic, "title": args.title,
-        "unit": args.unit, "value_type": args.value_type, "data_year": data_year,
+        "unit": args.unit, "value_type": args.value_type, "date": data_date,
         "source_name": args.source_name, "source_url": args.source_url,
         "publisher": args.publisher, "published": args.published,
         "retrieved": datetime.date.today().isoformat(),
