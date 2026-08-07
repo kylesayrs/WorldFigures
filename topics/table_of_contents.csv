@@ -29,7 +29,7 @@ nobel_prizes_literature,countries,culture,honours_and_awards,"Nobel Prize in Lit
 nobel_prizes_economics,countries,culture,honours_and_awards,"Nobel Memorial Prize in Economics wins, by country of birth",todo
 nobel_prizes_physics,countries,culture,honours_and_awards,"Nobel Prize in Physics wins, by country of birth",todo
 nobel_prizes_chemistry,countries,culture,honours_and_awards,"Nobel Prize in Chemistry wins, by country of birth",todo
-nobel_prizes_total,countries,culture,honours_and_awards,"Total Nobel Prize wins, by country of birth",todo
+nobel_prizes_total,countries,culture,honours_and_awards,"Total Nobel Prize wins, by country of birth",done
 press_freedom_index,countries,politics,media_freedom,Press freedom index score,todo
 journalist_abuse,countries,politics,media_freedom,"Abuses and attacks against journalists, reported",todo
 journalists_imprisoned,countries,politics,media_freedom,Number of journalists in prison,todo
