@@ -1,0 +1,198 @@
+iso3,country,iso2,aliases
+AFG,Afghanistan,AF,AF|Islamic Republic of Afghanistan
+ALB,Albania,AL,AL|Republic of Albania
+DZA,Algeria,DZ,DZ|People's Democratic Republic of Algeria
+AND,Andorra,AD,AD|Principality of Andorra
+AGO,Angola,AO,AO|Republic of Angola
+ATG,Antigua and Barbuda,AG,AG|Antigua & Barbuda
+ARG,Argentina,AR,AR|Argentine Republic
+ARM,Armenia,AM,AM|Republic of Armenia
+AUS,Australia,AU,AU
+AUT,Austria,AT,AT|Republic of Austria
+AZE,Azerbaijan,AZ,AZ|Republic of Azerbaijan
+BHS,Bahamas,BS,"BS|Bahamas, The|Commonwealth of the Bahamas|The Bahamas"
+BHR,Bahrain,BH,BH|Kingdom of Bahrain
+BGD,Bangladesh,BD,BD|People's Republic of Bangladesh
+BRB,Barbados,BB,BB
+BLR,Belarus,BY,BY|Republic of Belarus
+BEL,Belgium,BE,BE|Kingdom of Belgium
+BLZ,Belize,BZ,BZ
+BEN,Benin,BJ,BJ|Republic of Benin
+BTN,Bhutan,BT,BT|Kingdom of Bhutan
+BOL,Bolivia,BO,"BO|Bolivia (Plurinational State of)|Bolivia, Plurinational State of|Plurinational State of Bolivia"
+BIH,Bosnia and Herzegovina,BA,BA|Bosnia & Herzegovina|Republic of Bosnia and Herzegovina
+BWA,Botswana,BW,BW|Republic of Botswana
+BRA,Brazil,BR,BR|Federative Republic of Brazil
+BRN,Brunei,BN,BN|Brunei Darussalam
+BGR,Bulgaria,BG,BG|Republic of Bulgaria
+BFA,Burkina Faso,BF,BF
+BDI,Burundi,BI,BI|Republic of Burundi
+KHM,Cambodia,KH,KH|Kingdom of Cambodia
+CMR,Cameroon,CM,CM|Republic of Cameroon
+CAN,Canada,CA,CA
+CPV,Cape Verde,CV,CV|Cabo Verde|Republic of Cabo Verde
+CAF,Central African Republic,CF,CF|Central African Rep.
+TCD,Chad,TD,Republic of Chad|TD
+CHL,Chile,CL,CL|Republic of Chile
+CHN,China,CN,"CN|China, People's Republic of|Mainland China|People's Republic of China"
+COL,Colombia,CO,CO|Republic of Colombia
+COM,Comoros,KM,KM|Union of the Comoros
+CRI,Costa Rica,CR,CR|Republic of Costa Rica
+HRV,Croatia,HR,HR|Republic of Croatia
+CUB,Cuba,CU,CU|Republic of Cuba
+CYP,Cyprus,CY,CY|Republic of Cyprus
+CZE,Czechia,CZ,CZ|Czech Republic
+COD,Democratic Republic of the Congo,CD,"CD|Congo (Kinshasa)|Congo, Dem. Rep.|Congo, Democratic Republic of the|Congo, The Democratic Republic of the|DR Congo|Democratic Republic of Congo|Zaire"
+DNK,Denmark,DK,DK|Kingdom of Denmark
+DJI,Djibouti,DJ,DJ|Republic of Djibouti
+DMA,Dominica,DM,Commonwealth of Dominica|DM
+DOM,Dominican Republic,DO,DO|Dominican Rep.
+TLS,East Timor,TL,Democratic Republic of Timor-Leste|TL|Timor-Leste
+ECU,Ecuador,EC,EC|Republic of Ecuador
+EGY,Egypt,EG,"Arab Republic of Egypt|EG|Egypt, Arab Rep."
+SLV,El Salvador,SV,Republic of El Salvador|SV
+GNQ,Equatorial Guinea,GQ,Equatorial Guinea|GQ|Republic of Equatorial Guinea
+ERI,Eritrea,ER,ER|the State of Eritrea
+EST,Estonia,EE,EE|Republic of Estonia
+SWZ,Eswatini,SZ,Kingdom of Eswatini|SZ|Swaziland
+ETH,Ethiopia,ET,ET|Federal Democratic Republic of Ethiopia
+FJI,Fiji,FJ,FJ|Republic of Fiji
+FIN,Finland,FI,FI|Republic of Finland
+FRA,France,FR,FR|French Republic
+GAB,Gabon,GA,GA|Gabonese Republic
+GMB,Gambia,GM,"GM|Gambia, The|Republic of the Gambia|The Gambia"
+GEO,Georgia,GE,GE
+DEU,Germany,DE,DE|Federal Republic of Germany
+GHA,Ghana,GH,GH|Republic of Ghana
+GRC,Greece,GR,GR|Hellenic Republic
+GRD,Grenada,GD,GD
+GTM,Guatemala,GT,GT|Republic of Guatemala
+GIN,Guinea,GN,GN|Republic of Guinea
+GNB,Guinea-Bissau,GW,GW|Republic of Guinea-Bissau
+GUY,Guyana,GY,GY|Republic of Guyana
+HTI,Haiti,HT,HT|Republic of Haiti
+HND,Honduras,HN,HN|Republic of Honduras
+HUN,Hungary,HU,HU
+ISL,Iceland,IS,IS|Republic of Iceland
+IND,India,IN,IN|Republic of India
+IDN,Indonesia,ID,ID|Republic of Indonesia
+IRN,Iran,IR,"IR|Iran (Islamic Republic of)|Iran, Islamic Rep.|Iran, Islamic Republic of|Islamic Republic of Iran"
+IRQ,Iraq,IQ,IQ|Republic of Iraq
+IRL,Ireland,IE,IE
+ISR,Israel,IL,IL|State of Israel
+ITA,Italy,IT,IT|Italian Republic
+CIV,Ivory Coast,CI,CI|Cote d'Ivoire|Côte d'Ivoire|Republic of Côte d'Ivoire
+JAM,Jamaica,JM,JM
+JPN,Japan,JP,JP
+JOR,Jordan,JO,Hashemite Kingdom of Jordan|JO
+KAZ,Kazakhstan,KZ,KZ|Republic of Kazakhstan
+KEN,Kenya,KE,KE|Republic of Kenya
+KIR,Kiribati,KI,KI|Republic of Kiribati
+XKX,Kosovo,XK,Kosovo (UNSCR 1244)|Republic of Kosovo
+KWT,Kuwait,KW,KW|State of Kuwait
+KGZ,Kyrgyzstan,KG,KG|Kyrgyz Republic
+LAO,Laos,LA,LA|Lao PDR|Lao People's Democratic Republic
+LVA,Latvia,LV,LV|Republic of Latvia
+LBN,Lebanon,LB,LB|Lebanese Republic
+LSO,Lesotho,LS,Kingdom of Lesotho|LS
+LBR,Liberia,LR,LR|Republic of Liberia
+LBY,Libya,LY,LY
+LIE,Liechtenstein,LI,LI|Principality of Liechtenstein
+LTU,Lithuania,LT,LT|Republic of Lithuania
+LUX,Luxembourg,LU,Grand Duchy of Luxembourg|LU
+MDG,Madagascar,MG,MG|Republic of Madagascar
+MWI,Malawi,MW,MW|Republic of Malawi
+MYS,Malaysia,MY,MY
+MDV,Maldives,MV,MV|Republic of Maldives
+MLI,Mali,ML,ML|Republic of Mali
+MLT,Malta,MT,MT|Republic of Malta
+MHL,Marshall Islands,MH,MH|Marshall Is.|Republic of the Marshall Islands
+MRT,Mauritania,MR,Islamic Republic of Mauritania|MR
+MUS,Mauritius,MU,MU|Republic of Mauritius
+MEX,Mexico,MX,MX|United Mexican States
+FSM,Micronesia,FM,"FM|Federated States of Micronesia|Micronesia (Federated States of)|Micronesia, Fed. Sts.|Micronesia, Federated States of"
+MDA,Moldova,MD,"MD|Moldova, Republic of|Republic of Moldova"
+MCO,Monaco,MC,MC|Principality of Monaco
+MNG,Mongolia,MN,MN
+MNE,Montenegro,ME,ME
+MAR,Morocco,MA,Kingdom of Morocco|MA
+MOZ,Mozambique,MZ,MZ|Republic of Mozambique
+MMR,Myanmar,MM,Burma|MM|Republic of Myanmar
+NAM,Namibia,NA,NA|Republic of Namibia
+NRU,Nauru,NR,NR|Republic of Nauru
+NPL,Nepal,NP,Federal Democratic Republic of Nepal|NP
+NLD,Netherlands,NL,Holland|Kingdom of the Netherlands|NL|Netherlands (Kingdom of the)
+NZL,New Zealand,NZ,NZ
+NIC,Nicaragua,NI,NI|Republic of Nicaragua
+NER,Niger,NE,NE|Republic of the Niger
+NGA,Nigeria,NG,Federal Republic of Nigeria|NG
+PRK,North Korea,KP,"Democratic People's Republic of Korea|KP|Korea, Dem. People's Rep.|Korea, Democratic People's Republic of|Korea, North"
+MKD,North Macedonia,MK,"MK|Macedonia|Macedonia, FYR|Republic of North Macedonia|The former Yugoslav Republic of Macedonia"
+NOR,Norway,NO,Kingdom of Norway|NO
+OMN,Oman,OM,OM|Sultanate of Oman
+PAK,Pakistan,PK,Islamic Republic of Pakistan|PK
+PLW,Palau,PW,PW|Republic of Palau
+PSE,Palestine,PS,"PS|Palestine, State of|Palestinian Territories|State of Palestine|West Bank and Gaza|the State of Palestine"
+PAN,Panama,PA,PA|Republic of Panama
+PNG,Papua New Guinea,PG,Independent State of Papua New Guinea|PG
+PRY,Paraguay,PY,PY|Republic of Paraguay
+PER,Peru,PE,PE|Republic of Peru
+PHL,Philippines,PH,PH|Republic of the Philippines
+POL,Poland,PL,PL|Republic of Poland
+PRT,Portugal,PT,PT|Portuguese Republic
+QAT,Qatar,QA,QA|State of Qatar
+COG,Republic of the Congo,CG,"CG|Congo|Congo (Brazzaville)|Congo, Rep.|Congo-Brazzaville"
+ROU,Romania,RO,RO
+RUS,Russia,RU,RU|Russian Federation
+RWA,Rwanda,RW,RW|Rwandese Republic
+KNA,Saint Kitts and Nevis,KN,KN|St Kitts & Nevis|St. Kitts and Nevis
+LCA,Saint Lucia,LC,LC|St. Lucia
+VCT,Saint Vincent and the Grenadines,VC,St Vincent & the Grenadines|St. Vincent and the Grenadines|VC
+WSM,Samoa,WS,Independent State of Samoa|WS
+SMR,San Marino,SM,Republic of San Marino|SM
+STP,Sao Tome and Principe,ST,Democratic Republic of Sao Tome and Principe|ST|Sao Tome & Principe|São Tomé and Príncipe
+SAU,Saudi Arabia,SA,Kingdom of Saudi Arabia|SA
+SEN,Senegal,SN,Republic of Senegal|SN
+SRB,Serbia,RS,RS|Republic of Serbia
+SYC,Seychelles,SC,Republic of Seychelles|SC
+SLE,Sierra Leone,SL,Republic of Sierra Leone|SL
+SGP,Singapore,SG,Republic of Singapore|SG
+SVK,Slovakia,SK,SK|Slovak Republic
+SVN,Slovenia,SI,Republic of Slovenia|SI
+SLB,Solomon Islands,SB,SB|Solomon Is.
+SOM,Somalia,SO,Federal Republic of Somalia|SO
+ZAF,South Africa,ZA,Republic of South Africa|ZA
+KOR,South Korea,KR,"KR|Korea (Republic of)|Korea, Rep.|Korea, Republic of|Korea, South|Republic of Korea"
+SSD,South Sudan,SS,Republic of South Sudan|SS
+ESP,Spain,ES,ES|Kingdom of Spain
+LKA,Sri Lanka,LK,Democratic Socialist Republic of Sri Lanka|LK
+SDN,Sudan,SD,Republic of the Sudan|SD
+SUR,Suriname,SR,Republic of Suriname|SR
+SWE,Sweden,SE,Kingdom of Sweden|SE
+CHE,Switzerland,CH,CH|Swiss Confederation
+SYR,Syria,SY,SY|Syrian Arab Republic
+TWN,Taiwan,TW,"Chinese Taipei|TW|Taiwan (Province of China)|Taiwan Province of China|Taiwan, China|Taiwan, Province of China"
+TJK,Tajikistan,TJ,Republic of Tajikistan|TJ
+TZA,Tanzania,TZ,"TZ|Tanzania, United Rep. of|Tanzania, United Republic of|United Republic of Tanzania"
+THA,Thailand,TH,Kingdom of Thailand|TH
+TGO,Togo,TG,TG|Togolese Republic
+TON,Tonga,TO,Kingdom of Tonga|TO
+TTO,Trinidad and Tobago,TT,Republic of Trinidad and Tobago|TT|Trinidad & Tobago
+TUN,Tunisia,TN,Republic of Tunisia|TN
+TKM,Turkmenistan,TM,TM
+TUV,Tuvalu,TV,TV
+TUR,Türkiye,TR,Republic of Türkiye|TR|Turkiye|Türkiye
+UGA,Uganda,UG,Republic of Uganda|UG
+UKR,Ukraine,UA,UA
+ARE,United Arab Emirates,AE,AE|UAE
+GBR,United Kingdom,GB,GB|Great Britain|UK|United Kingdom of Great Britain and Northern Ireland
+USA,United States,US,U.S.|US|USA|United States of America
+URY,Uruguay,UY,Eastern Republic of Uruguay|UY
+UZB,Uzbekistan,UZ,Republic of Uzbekistan|UZ
+VUT,Vanuatu,VU,Republic of Vanuatu|VU
+VAT,Vatican City,VA,Holy See|Holy See (Vatican City State)|VA
+VEN,Venezuela,VE,"Bolivarian Republic of Venezuela|VE|Venezuela (Bolivarian Republic of)|Venezuela, Bolivarian Republic of|Venezuela, RB"
+VNM,Vietnam,VN,Socialist Republic of Viet Nam|VN|Viet Nam
+YEM,Yemen,YE,"Republic of Yemen|YE|Yemen, Rep."
+ZMB,Zambia,ZM,Republic of Zambia|ZM
+ZWE,Zimbabwe,ZW,Republic of Zimbabwe|ZW

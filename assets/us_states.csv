@@ -1,0 +1,52 @@
+state_code,state,fips,aliases
+AL,Alabama,01,AL|US-AL
+AK,Alaska,02,AK|US-AK
+AZ,Arizona,04,AZ|US-AZ
+AR,Arkansas,05,AR|US-AR
+CA,California,06,CA|US-CA
+CO,Colorado,08,CO|US-CO
+CT,Connecticut,09,CT|US-CT
+DE,Delaware,10,DE|US-DE
+DC,District of Columbia,11,"D.C.|DC|District of Columbia|US-DC|Washington D.C.|Washington DC|Washington, D.C."
+FL,Florida,12,FL|US-FL
+GA,Georgia,13,GA|US-GA
+HI,Hawaii,15,HI|US-HI
+ID,Idaho,16,ID|US-ID
+IL,Illinois,17,IL|US-IL
+IN,Indiana,18,IN|US-IN
+IA,Iowa,19,IA|US-IA
+KS,Kansas,20,KS|US-KS
+KY,Kentucky,21,KY|US-KY
+LA,Louisiana,22,LA|US-LA
+ME,Maine,23,ME|US-ME
+MD,Maryland,24,MD|US-MD
+MA,Massachusetts,25,MA|US-MA
+MI,Michigan,26,MI|US-MI
+MN,Minnesota,27,MN|US-MN
+MS,Mississippi,28,MS|US-MS
+MO,Missouri,29,MO|US-MO
+MT,Montana,30,MT|US-MT
+NE,Nebraska,31,NE|US-NE
+NV,Nevada,32,NV|US-NV
+NH,New Hampshire,33,NH|US-NH
+NJ,New Jersey,34,NJ|US-NJ
+NM,New Mexico,35,NM|US-NM
+NY,New York,36,NY|US-NY
+NC,North Carolina,37,NC|US-NC
+ND,North Dakota,38,ND|US-ND
+OH,Ohio,39,OH|US-OH
+OK,Oklahoma,40,OK|US-OK
+OR,Oregon,41,OR|US-OR
+PA,Pennsylvania,42,PA|US-PA
+RI,Rhode Island,44,RI|US-RI
+SC,South Carolina,45,SC|US-SC
+SD,South Dakota,46,SD|US-SD
+TN,Tennessee,47,TN|US-TN
+TX,Texas,48,TX|US-TX
+UT,Utah,49,US-UT|UT
+VT,Vermont,50,US-VT|VT
+VA,Virginia,51,US-VA|VA
+WA,Washington,53,US-WA|WA
+WV,West Virginia,54,US-WV|WV
+WI,Wisconsin,55,US-WI|WI
+WY,Wyoming,56,US-WY|WY

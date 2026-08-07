@@ -1,0 +1,198 @@
+iso3,country,iso2
+AFG,Afghanistan,AF
+ALB,Albania,AL
+DZA,Algeria,DZ
+AND,Andorra,AD
+AGO,Angola,AO
+ATG,Antigua and Barbuda,AG
+ARG,Argentina,AR
+ARM,Armenia,AM
+AUS,Australia,AU
+AUT,Austria,AT
+AZE,Azerbaijan,AZ
+BHS,Bahamas,BS
+BHR,Bahrain,BH
+BGD,Bangladesh,BD
+BRB,Barbados,BB
+BLR,Belarus,BY
+BEL,Belgium,BE
+BLZ,Belize,BZ
+BEN,Benin,BJ
+BTN,Bhutan,BT
+BOL,Bolivia,BO
+BIH,Bosnia and Herzegovina,BA
+BWA,Botswana,BW
+BRA,Brazil,BR
+BRN,Brunei,BN
+BGR,Bulgaria,BG
+BFA,Burkina Faso,BF
+BDI,Burundi,BI
+KHM,Cambodia,KH
+CMR,Cameroon,CM
+CAN,Canada,CA
+CPV,Cape Verde,CV
+CAF,Central African Republic,CF
+TCD,Chad,TD
+CHL,Chile,CL
+CHN,China,CN
+COL,Colombia,CO
+COM,Comoros,KM
+CRI,Costa Rica,CR
+HRV,Croatia,HR
+CUB,Cuba,CU
+CYP,Cyprus,CY
+CZE,Czechia,CZ
+COD,Democratic Republic of the Congo,CD
+DNK,Denmark,DK
+DJI,Djibouti,DJ
+DMA,Dominica,DM
+DOM,Dominican Republic,DO
+TLS,East Timor,TL
+ECU,Ecuador,EC
+EGY,Egypt,EG
+SLV,El Salvador,SV
+GNQ,Equatorial Guinea,GQ
+ERI,Eritrea,ER
+EST,Estonia,EE
+SWZ,Eswatini,SZ
+ETH,Ethiopia,ET
+FJI,Fiji,FJ
+FIN,Finland,FI
+FRA,France,FR
+GAB,Gabon,GA
+GMB,Gambia,GM
+GEO,Georgia,GE
+DEU,Germany,DE
+GHA,Ghana,GH
+GRC,Greece,GR
+GRD,Grenada,GD
+GTM,Guatemala,GT
+GIN,Guinea,GN
+GNB,Guinea-Bissau,GW
+GUY,Guyana,GY
+HTI,Haiti,HT
+HND,Honduras,HN
+HUN,Hungary,HU
+ISL,Iceland,IS
+IND,India,IN
+IDN,Indonesia,ID
+IRN,Iran,IR
+IRQ,Iraq,IQ
+IRL,Ireland,IE
+ISR,Israel,IL
+ITA,Italy,IT
+CIV,Ivory Coast,CI
+JAM,Jamaica,JM
+JPN,Japan,JP
+JOR,Jordan,JO
+KAZ,Kazakhstan,KZ
+KEN,Kenya,KE
+KIR,Kiribati,KI
+XKX,Kosovo,XK
+KWT,Kuwait,KW
+KGZ,Kyrgyzstan,KG
+LAO,Laos,LA
+LVA,Latvia,LV
+LBN,Lebanon,LB
+LSO,Lesotho,LS
+LBR,Liberia,LR
+LBY,Libya,LY
+LIE,Liechtenstein,LI
+LTU,Lithuania,LT
+LUX,Luxembourg,LU
+MDG,Madagascar,MG
+MWI,Malawi,MW
+MYS,Malaysia,MY
+MDV,Maldives,MV
+MLI,Mali,ML
+MLT,Malta,MT
+MHL,Marshall Islands,MH
+MRT,Mauritania,MR
+MUS,Mauritius,MU
+MEX,Mexico,MX
+FSM,Micronesia,FM
+MDA,Moldova,MD
+MCO,Monaco,MC
+MNG,Mongolia,MN
+MNE,Montenegro,ME
+MAR,Morocco,MA
+MOZ,Mozambique,MZ
+MMR,Myanmar,MM
+NAM,Namibia,NA
+NRU,Nauru,NR
+NPL,Nepal,NP
+NLD,Netherlands,NL
+NZL,New Zealand,NZ
+NIC,Nicaragua,NI
+NER,Niger,NE
+NGA,Nigeria,NG
+PRK,North Korea,KP
+MKD,North Macedonia,MK
+NOR,Norway,NO
+OMN,Oman,OM
+PAK,Pakistan,PK
+PLW,Palau,PW
+PSE,Palestine,PS
+PAN,Panama,PA
+PNG,Papua New Guinea,PG
+PRY,Paraguay,PY
+PER,Peru,PE
+PHL,Philippines,PH
+POL,Poland,PL
+PRT,Portugal,PT
+QAT,Qatar,QA
+COG,Republic of the Congo,CG
+ROU,Romania,RO
+RUS,Russia,RU
+RWA,Rwanda,RW
+KNA,Saint Kitts and Nevis,KN
+LCA,Saint Lucia,LC
+VCT,Saint Vincent and the Grenadines,VC
+WSM,Samoa,WS
+SMR,San Marino,SM
+STP,Sao Tome and Principe,ST
+SAU,Saudi Arabia,SA
+SEN,Senegal,SN
+SRB,Serbia,RS
+SYC,Seychelles,SC
+SLE,Sierra Leone,SL
+SGP,Singapore,SG
+SVK,Slovakia,SK
+SVN,Slovenia,SI
+SLB,Solomon Islands,SB
+SOM,Somalia,SO
+ZAF,South Africa,ZA
+KOR,South Korea,KR
+SSD,South Sudan,SS
+ESP,Spain,ES
+LKA,Sri Lanka,LK
+SDN,Sudan,SD
+SUR,Suriname,SR
+SWE,Sweden,SE
+CHE,Switzerland,CH
+SYR,Syria,SY
+TWN,Taiwan,TW
+TJK,Tajikistan,TJ
+TZA,Tanzania,TZ
+THA,Thailand,TH
+TGO,Togo,TG
+TON,Tonga,TO
+TTO,Trinidad and Tobago,TT
+TUN,Tunisia,TN
+TKM,Turkmenistan,TM
+TUV,Tuvalu,TV
+TUR,Türkiye,TR
+UGA,Uganda,UG
+UKR,Ukraine,UA
+ARE,United Arab Emirates,AE
+GBR,United Kingdom,GB
+USA,United States,US
+URY,Uruguay,UY
+UZB,Uzbekistan,UZ
+VUT,Vanuatu,VU
+VAT,Vatican City,VA
+VEN,Venezuela,VE
+VNM,Vietnam,VN
+YEM,Yemen,YE
+ZMB,Zambia,ZM
+ZWE,Zimbabwe,ZW
