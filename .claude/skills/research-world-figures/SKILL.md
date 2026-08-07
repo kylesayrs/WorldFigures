@@ -33,7 +33,9 @@ On invocation:
 
 1. Parse `$ARGUMENTS` into `<topic>` and `<scope>`. If either is missing, ask
    rather than guessing — a mismatched slug creates an orphan row that nothing
-   else will ever match later.
+   else will ever match later. Create a scratch staging directory for this run
+   (e.g. `mktemp -d`) and use it for every staging file below — staging files
+   are working data for the merge step, not something to commit.
 2. Look up the row where `topic == <topic>` and `entity_type == <scope>` in
    `topics/table_of_contents.csv`; `(topic, entity_type)` is the unique key.
    Its `description` column is the starting point for "Pin down the measure"
@@ -75,32 +77,15 @@ using the topic as described in chat.
 2. **Find the source.** See "Choosing a source" below and
    `references/source-catalog.md` for vetted starting points by domain.
 
-3. **Get the data as a file, not as prose.** Download the source's own CSV/JSON
-   (bulk download, API, or data-explorer export). Transcribing numbers from an
-   article, a Wikipedia table, or a PDF table by hand is where errors enter and
-   where provenance quietly dies.
+3. **Get the data** Download the source's own CSV/JSON
+   (bulk download, API, or data-explorer export) whenever possible.
 
    If `curl`/`requests` are blocked by network restrictions, use `web_fetch` on
    the data URL — API endpoints returning CSV or JSON work fine — and write the
    response to a staging file.
 
-   For entity-ranking topics (companies, banks, funds) the primary source is
-   often a subscription report — S&P Global Market Intelligence, *The Banker*'s
-   Top 1000, Fortune Global 500 — with no free bulk download. If the primary
-   source's own page is unreachable (paywalled, blocks fetchers, or renders the
-   ranking as a graphic instead of markup) but a web search turns up a Wikipedia
-   list that names the same report as its source, that's an acceptable last
-   resort — pulled the same non-manual way, not the way step 3 opens by warning
-   against: fetch the article via the MediaWiki API
-   (`action=parse&prop=wikitext`) and parse the table programmatically, don't
-   read the rendered page and retype numbers. Then verify at least one figure
-   (rank 1 is enough) against the primary source's own published text or press
-   release — Wikipedia's inline citation can lag behind an edited table, so the
-   numbers are what to check, not the citation. Cite the primary source, not
-   Wikipedia, in `--source-name`/`--publisher`, and record the extraction path
-   and the figure you verified in `--notes`.
-
-4. **Stage it.** Write `staging/<slug>.csv` with at minimum a place column
+4. **Stage it.** Write `$STAGING_DIR/<slug>.csv` (the scratch directory from
+   step 1 of "Arguments") with at minimum a place column
    and a value column; add a year column if the source's "latest available" year
    varies by country. Keep the source's own precision — no rounding.
 
@@ -120,7 +105,7 @@ using the topic as described in chat.
    ```bash
    python3 scripts/init_masters.py --data-dir data      # first run only, safe to repeat
    python3 scripts/add_topic.py --entity-type countries --topic <topic> \
-     --input staging/<slug>.csv --key-col country --value-col value \
+     --input "$STAGING_DIR/<slug>.csv" --key-col country --value-col value \
      --title "..." --unit "..." --source-name "..." --source-url "..." \
      --publisher "..." --published YYYY-MM-DD --data-date YYYY-MM-DD \
      --definition "..." --dry-run
@@ -152,8 +137,9 @@ using the topic as described in chat.
      first; otherwise commit on the current branch.
    - Stage exactly what this run touched: the master file you merged into
      (e.g. `data/countries.csv`, `data/states.csv`, `data/banks.csv`),
-     `data/sources_manifest.csv`, `staging/<slug>.csv`, and
-     `topics/table_of_contents.csv`.
+     `data/sources_manifest.csv`, and `topics/table_of_contents.csv`. The
+     staging file lives in `$STAGING_DIR`, outside the repo, and is never
+     committed.
    - Commit (e.g. `Add <topic> column (<scope>)`), push with `-u origin
      <branch>`, and open the PR:
 
@@ -309,7 +295,7 @@ data/states.csv             field row, then state/fips/topic rows, one column pe
 data/banks.csv              field row, then name/topic rows, one column per bank (open roster)
 data/sources_manifest.csv   one row per (entity_type, topic): title, unit, vintage, source, coverage
 data/manifest.md            full data-layout reference
-staging/<slug>.csv          raw extraction, kept for auditing (one row per entity, as fetched); slug = <topic>_<scope>
+$STAGING_DIR/<slug>.csv     raw extraction, scratch temp dir (not committed); slug = <topic>_<scope>
 topics/table_of_contents.csv  to-do list of topics, by entity_type: topic,entity_type,description,status
 topics/manifest.md          explains table_of_contents.csv
 ```
@@ -346,9 +332,9 @@ variable IDs against the Census variable list before using them — table and
 variable names do change between vintages. Then:
 
 ```bash
-# fetch -> staging/mean_commute_minutes_states.csv with columns: state,value
+# fetch -> $STAGING_DIR/mean_commute_minutes_states.csv with columns: state,value
 python3 scripts/add_topic.py --entity-type states --topic mean_commute_minutes \
-  --input staging/mean_commute_minutes_states.csv --key-col state --value-col value \
+  --input "$STAGING_DIR/mean_commute_minutes_states.csv" --key-col state --value-col value \
   --title "Mean travel time to work" --unit "minutes" \
   --source-name "ACS 1-year estimates, aggregate travel time / workers who commute" \
   --source-url "<endpoint or table URL>" --publisher "U.S. Census Bureau" \

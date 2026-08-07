@@ -7,7 +7,7 @@ matching to canonical rows, leaving gaps blank, keeping column order stable --
 happens here.
 
     python3 scripts/add_topic.py --entity-type countries --topic gdp_usd \\
-      --input staging/gdp.csv --key-col country --value-col value \\
+      --input /tmp/pwf-staging/gdp.csv --key-col country --value-col value \\
       --title "GDP (current US$)" --unit "current US$" \\
       --source-name "World Bank WDI, NY.GDP.MKTP.CD" \\
       --source-url "https://api.worldbank.org/v2/..." \\
