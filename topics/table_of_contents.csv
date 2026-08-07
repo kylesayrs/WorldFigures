@@ -1,6 +1,6 @@
 topic,entity_type,header,sub_header,description,status
 largest_nonfinancial_companies,companies,economics,business_and_investment,Largest non-financial companies,todo
-largest_banks,banks,economics,markets_and_finance,Largest banks,todo
+largest_banks,banks,economics,markets_and_finance,Largest banks,done
 largest_sovereign_wealth_funds,funds,economics,markets_and_finance,Largest sovereign-wealth funds,todo
 largest_state_investment_funds,funds,economics,markets_and_finance,Largest state permanent/investment funds,todo
 office_rents,countries,economics,business_and_investment,"Office rents, highest",todo
