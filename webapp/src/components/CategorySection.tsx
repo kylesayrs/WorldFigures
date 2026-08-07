@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { CategorySection as CategorySectionData } from '../lib/data';
 import { TopicCard } from './TopicCard';
+import { useScrollFade } from '../hooks/useScrollFade';
 
 interface Props {
   section: CategorySectionData;
@@ -9,6 +10,7 @@ interface Props {
 export function CategorySection({ section }: Props) {
   const { theme, topics } = section;
   const filledCount = topics.filter((t) => t.hasData).length;
+  const header = useScrollFade<HTMLDivElement>();
 
   return (
     <section
@@ -17,10 +19,8 @@ export function CategorySection({ section }: Props) {
       style={{ backgroundColor: theme.bg, borderColor: theme.border }}
     >
       <motion.header
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: false, amount: 0.4 }}
-        transition={{ duration: 0.4 }}
+        ref={header.ref}
+        style={{ opacity: header.opacity, y: header.y }}
         className="flex items-baseline justify-between gap-3 mb-4"
       >
         <h2 className="font-serif text-2xl font-semibold flex items-center gap-2" style={{ color: theme.accent }}>
