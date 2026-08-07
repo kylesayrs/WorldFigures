@@ -64,10 +64,33 @@ impossible.
    genuinely don't refresh annually, re-run with `--allow-stale-year` and a
    `--notes` explanation. Then re-run without `--dry-run`.
 
-6. **Report back.** Tell the user the measure you chose, the source, the data
-   year, coverage (`N/197` or `N/51`), and which notable rows are blank. If a
-   large country is missing, say so plainly — that's the kind of gap a reader
-   notices.
+6. **Open a PR.** Never commit a topic directly to `main`.
+
+   - If the current branch is `main`, create and switch to `topic/<slug>`
+     first; otherwise commit on the current branch.
+   - Stage exactly what this run touched: the master file(s) you merged into
+     (`data/countries.csv` and/or `data/us_states.csv`), `data/sources_manifest.csv`,
+     and `staging/<slug>.csv`.
+   - Commit (e.g. `Add <topic> column`), push with `-u origin <branch>`, and
+     open the PR:
+
+     ```bash
+     gh pr create --base main --title "Add <topic> column" --body "$(cat <<'EOF'
+     Measure: <what you picked, e.g. mean one-way commute time, workers 16+>
+     Source: <publisher> — <source-name>, <source-url>
+     Data year: <YYYY>  Coverage: <N>/197 (or /51)
+     Notable gaps: <large places missing, or "none">
+     EOF
+     )"
+     ```
+   - If `gh pr create` fails because a PR already exists for the branch (a
+     refresh of a topic you opened earlier), that's fine — note the existing
+     PR URL instead of erroring out.
+
+7. **Report back.** Tell the user the measure you chose, the source, the data
+   year, coverage (`N/197` or `N/51`), which notable rows are blank, and the
+   PR URL. If a large country is missing, say so plainly — that's the kind of
+   gap a reader notices.
 
 ## Choosing a source
 
