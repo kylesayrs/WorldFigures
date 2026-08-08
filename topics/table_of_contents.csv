@@ -164,7 +164,7 @@ out_of_pocket_health_spending,states,economics,spending,"Out-of-pocket health sp
 exports_total,countries,economics,trade,"Total exports, biggest exporters",todo
 exports_total,states,economics,trade,"Total exports, biggest exporters",todo
 goods_trade_total,countries,economics,trade,"Total goods trade, biggest traders",todo
-mobile_phone_subscriptions,countries,industry,connectivity,"Mobile telephone subscriptions, highest",todo
+mobile_phone_subscriptions,countries,industry,connectivity,"Mobile telephone subscriptions, highest",done
 mobile_phone_subscriptions,states,industry,connectivity,"Mobile telephone subscriptions, highest",todo
 landline_subscriptions,countries,industry,connectivity,"Fixed landline telephone subscriptions, highest",todo
 landline_subscriptions,states,industry,connectivity,"Fixed landline telephone subscriptions, highest",todo
