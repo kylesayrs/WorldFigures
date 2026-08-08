@@ -152,7 +152,7 @@ stock_market_performance,countries,economics,markets_and_finance,"Stockmarket in
 stock_market_turnover,countries,economics,markets_and_finance,"Value of shares traded, largest",todo
 listed_companies,countries,economics,markets_and_finance,"Number of listed companies, most",todo
 trade_dependency,countries,economics,trade,Trade dependency (trade as share of GDP),todo
-gini_coefficient,countries,economics,wealth_and_inequality,Gini coefficient,todo
+gini_coefficient,countries,economics,wealth_and_inequality,Gini coefficient,done
 gini_coefficient,states,economics,wealth_and_inequality,Gini coefficient,todo
 household_wealth,countries,economics,wealth_and_inequality,Household wealth,todo
 num_millionaires,countries,economics,wealth_and_inequality,Number of millionaires,todo
