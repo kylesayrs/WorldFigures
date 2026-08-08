@@ -24,7 +24,7 @@ to check against, so an input label that doesn't match an entity already in
 the master is added as a new row instead of being reported as unmatched.
 
 --data-date (or the values a --date-col resolves to) must fall within the
-window from today's year minus 2 through today's year (inclusive). Give the
+window from today's year minus 4 through today's year (inclusive). Give the
 most precise date the source states (YYYY-MM-DD, YYYY-MM, or bare YYYY). A
 --date-col value is checked per row, not just at the column's newest value:
 any individual row older than that floor is flagged even if other rows are
@@ -91,7 +91,7 @@ def main():
     ap.add_argument("--data-date", default="",
                     help="date the values refer to -- YYYY-MM-DD, YYYY-MM, or "
                          "YYYY, as precise as the source states; the year must "
-                         "fall within today's year minus 2 through today's "
+                         "fall within today's year minus 4 through today's "
                          "year unless --allow-stale-year is passed")
     ap.add_argument("--definition", default="", help="what exactly is counted")
     ap.add_argument("--notes", default="",
@@ -170,7 +170,7 @@ def main():
     missing = [r[name_col] for r in master if r[key_col] not in values]
 
     # ---- data vintage -----------------------------------------------------
-    # Rule: values must fall within today's year minus 2 through today's
+    # Rule: values must fall within today's year minus 4 through today's
     # year, inclusive -- not just "somewhere in the column is recent." When
     # --date-col gives a date per row, checking only the newest row (the old
     # rule) let individually ancient rows hide behind one fresh one; every
@@ -191,7 +191,7 @@ def main():
         years = sorted(set(row_years.values()))
         data_date = str(years[0]) if len(years) == 1 else "%d-%d" % (years[0], years[-1])
     target_year = datetime.date.today().year
-    floor_year = target_year - 2
+    floor_year = target_year - 4
     found_years = [int(y) for y in re.findall(r"\d{4}", data_date or "")]
     range_stale = (not found_years) or not (floor_year <= max(found_years) <= target_year)
 

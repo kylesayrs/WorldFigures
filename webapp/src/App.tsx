@@ -20,7 +20,7 @@ function App() {
             <p className="text-xs opacity-60">
               A pocket handbook of world statistics for every-day life
               {totalTopics > 0 && (
-                <span className="tabular-nums"> · {totalFilled}/{totalTopics} chapters researched</span>
+                <span className="tabular-nums"> · {totalFilled}/{totalTopics} topics researched</span>
               )}
             </p>
           </div>

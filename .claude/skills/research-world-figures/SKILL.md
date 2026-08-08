@@ -245,9 +245,9 @@ Judge candidates on four things:
   2025-dated values; 2026 (this year) is usually still incomplete.
 
   The hard window, past which `add_topic.py` rejects without an explicit
-  override, is **today minus 2 through today's year**, inclusive (2024–2026
+  override, is **today minus 4 through today's year**, inclusive (2022–2026
   if today is in 2026). This is a ceiling, not a target: don't stop looking
-  once a 2-year-old source turns up if a 1-year-old (or this-year) one is
+  once an older source turns up if a more recent (or this-year) one is
   findable. Recompute the window from the current date each run, don't reuse
   a number from an earlier session.
 
@@ -385,7 +385,7 @@ top-level `scripts/` — see the path note in "Merge it" above (step 5).
 | Script | Use |
 |---|---|
 | `init_masters.py` | Create or repair the masters and manifest. Idempotent; preserves existing topic columns (and, for open-roster entity types, existing rows). |
-| `add_topic.py` | Merge staged values into a master + write the manifest entry. `--dry-run` reports without writing. Rejects `--data-date` (or any `--date-col` row) dated outside today's year minus 2 through today's year unless `--allow-stale-year` is passed. |
+| `add_topic.py` | Merge staged values into a master + write the manifest entry. `--dry-run` reports without writing. Rejects `--data-date` (or any `--date-col` row) dated outside today's year minus 4 through today's year unless `--allow-stale-year` is passed. |
 | `report.py` | Coverage per topic, undocumented columns, rows blank everywhere (fixed-roster entity types), or entity counts per topic (open-roster). |
 
 Run `--help` on any of them for the full flag list. `--data-dir` defaults to
