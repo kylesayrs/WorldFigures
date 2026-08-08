@@ -46,7 +46,7 @@ hiv_aids_prevalence,countries,demographics,disease_and_mortality,HIV/AIDS preval
 hiv_aids_prevalence,states,demographics,disease_and_mortality,HIV/AIDS prevalence rate,todo
 hiv_aids_deaths,countries,demographics,disease_and_mortality,HIV/AIDS death rate,todo
 hiv_aids_deaths,states,demographics,disease_and_mortality,HIV/AIDS death rate,todo
-life_expectancy,countries,demographics,disease_and_mortality,"Life expectancy at birth, highest and lowest",todo
+life_expectancy,countries,demographics,disease_and_mortality,"Life expectancy at birth, highest and lowest",done
 life_expectancy,states,demographics,disease_and_mortality,"Life expectancy at birth, highest and lowest",todo
 life_expectancy_male,countries,demographics,disease_and_mortality,"Male life expectancy at birth, highest and lowest",todo
 life_expectancy_male,states,demographics,disease_and_mortality,"Male life expectancy at birth, highest and lowest",todo
