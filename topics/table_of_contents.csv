@@ -4,7 +4,7 @@ brain_drain,states,demographics,migration,"Brain drain, highest",todo
 total_births,countries,demographics,fertility_and_family,Total annual births,todo
 total_births,states,demographics,fertility_and_family,Total annual births,todo
 teenage_births,countries,demographics,fertility_and_family,Teenage births,todo
-teenage_births,states,demographics,fertility_and_family,Teenage births,todo
+teenage_births,states,demographics,fertility_and_family,Teenage births,done
 contraception_rate,countries,demographics,fertility_and_family,Contraception prevalence rate,todo
 marriage_rate,countries,demographics,fertility_and_family,"Marriage rate, highest and lowest",todo
 marriage_rate,states,demographics,fertility_and_family,"Marriage rate, highest and lowest",todo
