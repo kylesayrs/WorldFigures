@@ -62,7 +62,7 @@ underweight_population_rate,countries,demographics,nutrition,"Underweight popula
 underweight_population_rate,states,demographics,nutrition,"Underweight population, share of total",todo
 road_deaths,countries,demographics,road,"Road traffic deaths, most",todo
 road_deaths,states,demographics,road,"Road traffic deaths, most",todo
-co2_emissions_total,countries,geography,environment,"CO2 emissions, biggest emitters",todo
+co2_emissions_total,countries,geography,environment,"CO2 emissions, biggest emitters",done
 co2_emissions_total,states,geography,environment,"CO2 emissions, biggest emitters",todo
 co2_emissions_per_capita,countries,geography,environment,"CO2 emissions per person, largest",todo
 co2_emissions_per_capita,states,geography,environment,"CO2 emissions per person, largest",todo
