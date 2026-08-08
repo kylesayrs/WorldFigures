@@ -1,5 +1,5 @@
 topic,entity_type,header,sub_header,description,status
-brain_drain,countries,demographics,migration,"Brain drain, highest",todo
+brain_drain,countries,demographics,migration,"Brain drain, highest",done
 brain_drain,states,demographics,migration,"Brain drain, highest",todo
 total_births,countries,demographics,fertility_and_family,Total annual births,todo
 total_births,states,demographics,fertility_and_family,Total annual births,todo
