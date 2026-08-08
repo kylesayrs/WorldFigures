@@ -317,7 +317,7 @@ merchant_fleet_registration,countries,industry,maritime,"Merchant fleet size by 
 press_freedom_index,countries,politics,media_freedom,Press freedom index score,todo
 journalist_abuse,countries,politics,media_freedom,"Abuses and attacks against journalists, reported",todo
 journalists_imprisoned,countries,politics,media_freedom,Number of journalists in prison,todo
-democracy_index,countries,politics,democracy,"Democracy index score, most and least democratic",todo
+democracy_index,countries,politics,democracy,"Democracy index score, most and least democratic",done
 parliament_seats,countries,politics,democracy,"Parliamentary seats, most and fewest",todo
 parliament_seats,states,politics,democracy,"State legislature seats, most and fewest",todo
 women_in_parliament,countries,politics,democracy,"Women in parliament, share of seats held",todo
