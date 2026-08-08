@@ -70,7 +70,7 @@ co2_emissions_change,countries,geography,environment,Change in CO2 emissions,tod
 co2_emissions_change,states,geography,environment,Change in CO2 emissions,todo
 capital_city_air_pollution,countries,geography,environment,"Air pollution in capital cities, most polluted",todo
 sanitation_access,countries,geography,environment,"Access to basic sanitation, lowest",todo
-forest_area,countries,geography,environment,"Forest area, largest",todo
+forest_area,countries,geography,environment,"Forest area, largest",done
 forest_area,states,geography,environment,"Forest area, largest",todo
 forest_cover_share,countries,geography,environment,"Forest cover (% of land area), most forested",todo
 forest_cover_share,states,geography,environment,"Forest cover (% of land area), most forested",todo
