@@ -11,3 +11,4 @@ A project to create pocket world figures for everyday life (and roadtrip games)
 * Move csvs in `assets` to `data/aliases`
 * Add statistics for Puerto Rico
 * In the visualizer, separate country topics and state topics into separate dropdowns
+* Add "per capita" and "per m^2" checkboxes for topics

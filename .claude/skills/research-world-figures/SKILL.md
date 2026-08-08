@@ -59,7 +59,7 @@ arguments, infer `<topic>`/`<scope>` the same way and check
 `topics/table_of_contents.csv` for a matching row; if nothing matches, proceed
 using the topic as described in chat.
 
-## The loop
+## Required Steps
 
 1. **Pin down the measure.** A topic name is not yet a measure. "GDP" could be
    nominal, PPP, per capita, or growth rate. "Commute duration" could be mean
@@ -217,32 +217,33 @@ Prefer, in rough order:
    World Bank, IMF, UN agencies, WHO, FAO, ITU, OECD.
 2. **A curated aggregator that documents its upstream sources** — Our World in
    Data above all, which republishes agency data with the original citation and
-   a stated download date.
+   a stated download date, Wikipedia, World Bank Group.
 3. **A well-documented academic or NGO dataset** with a methodology paper —
    V-Dem, IHME, Transparency International.
 
-For entity-ranking topics (companies, banks, funds), the equivalent of tier 1
-is usually a commercial industry report rather than a government agency — S&P
-Global Market Intelligence for banks, Forbes Global 2000 / Fortune Global 500
-for companies, the Sovereign Wealth Fund Institute for funds. See
-`references/source-catalog.md`'s "Entity rankings" section for known sources,
-and step 3 above for what to do when the report itself isn't freely reachable.
+For a list of recommended sources, see `references/source-catalog.md`.
 
-Judge candidates on four things:
+Judge candidates on three things:
 
 - **Coverage.** Aim for all or nearly all rows. A source covering 40 countries
-  isn't a world figure; keep looking. Below roughly half the rows, tell the user
-  what you found and let them decide whether the column is worth having.
-- **How many sources.** Default to one source per column; see "How many sources
-  to accept" below for when a second, well-aligned source is allowed instead of
-  leaving gaps blank.
-- **Documented vintage, and last calendar year specifically.** You need the date
-  the values describe *and* the release date; an undated number can't be
-  footnoted. Give `--data-date` the most precise date the source states — a
-  specific day (`2025-12-31`) beats a bare year. Always look for the most
-  current values available — *last* calendar year, today minus one, is the
-  target, not just the acceptable floor. If today is in 2026, prefer
-  2025-dated values; 2026 (this year) is usually still incomplete.
+  isn't a world figure; keep looking. If after pruning for vintage, the source
+  is missing >50% of the rows, or is missing key entities like China, India, or
+  Taiwan, consider picking a new source or supplementing with an additional
+  source. If the coverage is still bad, mention the lack of coverage in the PR
+  description and in the source notes.
+  
+  **It's okay to accept a source with gaps in the data.** It is up to your best
+  judgement whether the gaps should be filled with an additional or replacement
+  source.
+
+- **Documented vintage.** Attempt to use data which is up-to-date and consistent
+  across all entities. Reject data which is too out-of-date.
+
+  When a source gives one date per entity, use `--date-col` to specify which
+  column contains dates. This is used to compute the source's `date` field in
+  the source manifest, and is computed as the span of each row's year. If dates
+  are not available on a per-entity granularity, use `--data-date` to describe
+  the most precise date range of the data (e.g. `2025-12-31`, `2000-2024`).
 
   The hard window, past which `add_topic.py` rejects without an explicit
   override, is **today minus 4 through today's year**, inclusive (2022–2026
@@ -251,57 +252,31 @@ Judge candidates on four things:
   findable. Recompute the window from the current date each run, don't reuse
   a number from an earlier session.
 
-  When a source gives one date per row (`--date-col`) rather than one date
-  for the whole column, the check applies **per row**, not just to the
-  column's newest value — a column can't hide a decade-old row for one
-  country behind a current row for another. Rows outside the window print in
-  the dry-run's `old rows` line. The manifest's `date` field for that column
-  is then written automatically as the span of the actual per-row years (a
-  single year if every row agrees, otherwise a `YYYY-YYYY` range like
-  `2000-2024`) — whatever you passed to `--data-date` is overridden, since
-  the per-row dates are the ground truth.
+  If, after researching, it is not possible to find sources with enough data which
+  falls within the vintage window, use `--allow-stale-year` and explain the situation
+  using `--notes`.
 
-  A rejection — whether the whole column or specific rows — needs
-  `--allow-stale-year` with a `--notes` explanation to proceed. Reserve that
-  for topics (census, some V-Dem/IHME/Gini series) that genuinely don't
-  refresh annually for every row, and for the handful of places within an
-  otherwise-current column whose own latest figure is simply older (say so by
-  place, not just by count, when it's a short list).
+  Cumulative all-time totals (Nobel Prizes, Olympic medals, World Cup titles —
+  a running career/history tally, not a yearly snapshot) still need a `--data-date`,
+  but it means "as of the most recent completed event," not "the date this number
+  describes." Use the year of the latest edition/award covered by the source (e.g.
+  `2025` for Nobel Prizes if the source includes the 2025 announcements).
 
-  **Cumulative all-time totals** (Nobel Prizes, Olympic medals, World Cup
-  titles — a running career/history tally, not a yearly snapshot) still need
-  a `--data-date`, but it means "as of the most recent completed event," not
-  "the date this number describes." Use the year of the latest edition/award
-  covered by the source (e.g. `2025` for Nobel Prizes if the source includes
-  the 2025 announcements). Winners that aren't individually attributable to
-  one country — organizations, national teams for an individual-level tally —
-  get excluded rather than guessed at; say so in `--notes`.
-- **Consistent definition across rows.** Watch for sources that mix survey years,
+- **Quality and Consistency.** Watch for sources that mix survey years,
   switch between administrative and modelled estimates, or change denominators
   by country. Note the caveat in `--notes` when unavoidable.
 
-### How many sources to accept
+### Mixing multiple sources
 
-Default is **strict: one source per column.** Splicing in a second source to
-patch gaps mixes definitions and vintages invisibly, and that's worse than a
-blank cell. Don't combine sources unless the rule below is satisfied — leave
-the gaps blank instead.
+Often, a single source will not contain enough data to cover all entities within the
+vintage requirements. In this case, decide whether the missing data is important enough
+to merit an additional source.
 
-The user sets the strictness for a given topic (ask if it isn't clear which
-they want, and default to strict when they haven't said):
+When mixing with an additional source, check for the following:
 
-| Level | What's allowed |
-|---|---|
-| **strict** (default) | Exactly one source. Gaps stay blank. |
-| **moderate** | A second source may fill gaps in an otherwise-strong first source, but only if both publish the **same definition, comparable collection methodology, and the same data year**. A different vintage or a different definition of the same-sounding metric disqualifies it — leave those rows blank instead. |
-| **lenient** | Sources from different publishers may be combined even if methodology alignment is closer to "compatible" than "identical" (e.g. two agencies both reporting modelled estimates against the same standard) — as long as the user has explicitly asked for lenient sourcing for this topic. |
-
-Whatever the level, combining sources requires all of the following, not just
-one:
-
-1. Both sources describe the **same measure** (same units, same population,
+1. All sources describe the **same measure** (same units, same population,
    same what's-counted) — not just a similarly-named one.
-2. Both are dated to the **same data year** — the previous-calendar-year rule
+2. All are dated to the **same data year** — the previous-calendar-year rule
    above still applies to every source in the mix, no exceptions.
 3. You can state in one sentence *why* they're compatible ("both use the ILO
    harmonized unemployment definition and the same reference period") — if you
@@ -316,11 +291,23 @@ Say in your final report that the column draws on more than one source and why.
 recollection of "roughly right" figures, or interpolation. A blank cell is a
 correct statement about what the source covers.
 
-**Sanity-check before merging.** Look at the top and bottom five values and ask
-whether they're plausible — a country at 100× its neighbours usually means a
+**Sanity-check before mixing.** Look at the top and bottom five values of each source
+and ask whether they're plausible — a country at 100× its neighbours usually means a
 unit mismatch (thousands vs units, local currency vs USD) or a stray aggregate
 row that slipped through. Check one or two values against a second source; a
 mismatch means you've misread the column, not that the source is wrong.
+
+## When there's no good source
+
+Sometimes, the a source that you pick will fail to meet the sourcing criteria
+described above. If this is the case, consider either mixing in an additional source
+or picking a new source. If, after research, it seems that there is not combination
+of sources which maintains sufficient data coverage and quality, then pick the best
+partial source and describe why the available sources fall short (too few countries,
+undated, inconsistent definitions, paywalled, wrong vintage), and the nearest
+well-covered measure that *would* work. "Household silicon consumption has no
+per-country source, but silicon and silicon-product exports by value are in UN
+Comtrade for 170 countries" is a useful answer. A half-invented column is not.
 
 ## Entity types
 
@@ -419,21 +406,3 @@ python3 "$SCRIPTS/add_topic.py" --entity-type states --topic mean_commute_minute
 
 The national total row and Puerto Rico appear in ACS output and are skipped
 automatically; DC resolves to the `DC` row.
-
-## When there's no good source
-
-Say so, rather than assembling something weaker and presenting it as a column.
-Report what you found: the best partial source and its coverage, why it falls
-short (too few countries, undated, inconsistent definitions, paywalled, wrong
-vintage), and the nearest well-covered measure that *would* work. "Household
-silicon consumption has no per-country source, but silicon and silicon-product
-exports by value are in UN Comtrade for 170 countries" is a useful answer. A
-half-invented column is not.
-
-A common way this happens now: the best source's newest data is a year or more
-stale relative to last calendar year. That's a real gap, not a rounding error —
-report it as one. Options, in order: keep looking for a source with last year's
-values; ask the user whether `--allow-stale-year` is acceptable for this
-specific topic (with a reason, e.g. "ACS 1-year estimates for this table won't
-be out until Q4"); or leave the column for a later refresh. Don't quietly accept
-an older vintage to avoid an empty-handed report.
