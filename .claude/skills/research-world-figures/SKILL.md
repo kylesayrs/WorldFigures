@@ -168,18 +168,30 @@ using the topic as described in chat.
 
 7. **Open a PR.** Never commit a topic directly to `main`.
 
-   - If the current branch is `main`, create and switch to `topic/<slug>`
-     first; otherwise commit on the current branch.
+   - Work on a locally-unique branch, regardless of what's currently checked
+     out — a stale worktree elsewhere may already hold `topic/<slug>` itself:
+
+     ```bash
+     git checkout -B "topic/<slug>.$(date +%s)" origin/main
+     ```
+
    - Stage exactly what this run touched: the master file you merged into
      (e.g. `data/countries.csv`, `data/states.csv`, `data/banks.csv`),
      `data/sources_manifest.csv`, and `topics/table_of_contents.csv`. The
      staging file lives in `$STAGING_DIR`, outside the repo, and is never
      committed.
-   - Commit (e.g. `Add <topic> column (<scope>)`), push with `-u origin
-     <branch>`, and open the PR:
+   - Commit (e.g. `Add <topic> column (<scope>)`), then push to the real
+     target name via refspec — this is what actually lands on `topic/<slug>`,
+     not the locally-unique name above:
 
      ```bash
-     gh pr create --base main --title "Add <topic> column (<scope>)" --body "$(cat <<'EOF'
+     git push --force-with-lease origin "HEAD:topic/<slug>"
+     ```
+
+   - Open the PR:
+
+     ```bash
+     gh pr create --base main --head "topic/<slug>" --title "Add <topic> column (<scope>)" --body "$(cat <<'EOF'
      Measure: <what you picked, e.g. mean one-way commute time, workers 16+>
      Source: <publisher> — <source-name>, <source-url>
      Data date: <YYYY-MM-DD, or YYYY if that's all the source gives>  Coverage: <N>/197 (or /51)
