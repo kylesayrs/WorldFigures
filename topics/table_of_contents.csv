@@ -355,7 +355,7 @@ refugee_hosting_population,countries,society,migration_and_refugees,"Refugee pop
 asylum_application_origin,countries,society,migration_and_refugees,Origin of asylum applications,todo
 asylum_application_destination,countries,society,migration_and_refugees,Country where asylum applications were lodged,todo
 conflict_displaced_population,countries,society,migration_and_refugees,"Population displaced by conflict, stock",todo
-human_development_index,countries,society,quality_of_life,Human Development Index,todo
+human_development_index,countries,society,quality_of_life,Human Development Index,done
 music_sales,countries,culture,entertainment,"Recorded music sales/revenue, biggest markets",todo
 music_sales,states,culture,entertainment,"Recorded music sales/revenue, biggest markets",todo
 book_publishing,countries,culture,entertainment,"Books published, biggest markets",todo
