@@ -377,7 +377,7 @@ world_cup_titles_cricket,countries,culture,sport,"Cricket World Cup wins and fin
 davis_cup_titles,countries,culture,sport,"Davis Cup wins, all-time",todo
 olympic_medals_summer,countries,culture,sport,"Summer Olympics medal count, all-time",todo
 olympic_medals_winter,countries,culture,sport,"Winter Olympics medal count, all-time",todo
-tourist_arrivals,countries,culture,tourism,"International tourist arrivals, most",todo
+tourist_arrivals,countries,culture,tourism,"International tourist arrivals, most",done
 tourist_arrivals,states,culture,tourism,"Tourist arrivals, most",todo
 tourist_spending,countries,culture,tourism,"Outbound tourist spending, biggest spenders",todo
 tourist_spending,states,culture,tourism,"Domestic tourist spending, biggest spenders",todo
