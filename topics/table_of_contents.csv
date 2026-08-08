@@ -5,7 +5,7 @@ total_births,countries,demographics,fertility_and_family,Total annual births,tod
 total_births,states,demographics,fertility_and_family,Total annual births,todo
 teenage_births,countries,demographics,fertility_and_family,Teenage births,todo
 teenage_births,states,demographics,fertility_and_family,Teenage births,todo
-contraception_rate,countries,demographics,fertility_and_family,Contraception prevalence rate,todo
+contraception_rate,countries,demographics,fertility_and_family,Contraception prevalence rate,done
 marriage_rate,countries,demographics,fertility_and_family,"Marriage rate, highest and lowest",todo
 marriage_rate,states,demographics,fertility_and_family,"Marriage rate, highest and lowest",todo
 divorce_rate,countries,demographics,fertility_and_family,"Divorce rate, highest and lowest",todo
