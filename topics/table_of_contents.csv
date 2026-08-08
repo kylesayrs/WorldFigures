@@ -15,7 +15,7 @@ mean_age_first_marriage_women,states,demographics,fertility_and_family,"Mean age
 foreign_born_population,countries,demographics,migration,"Foreign-born population, largest",todo
 foreign_born_population,states,demographics,migration,"Foreign-born population, largest",todo
 population_total,countries,demographics,population,"Total population, current year",todo
-population_total,states,demographics,population,"Total population, current year",todo
+population_total,states,demographics,population,"Total population, current year",done
 population_projected,countries,demographics,population,Projected population (e.g. 2040),todo
 population_projected,states,demographics,population,Projected population (e.g. 2040),todo
 population_growth_rate,countries,demographics,population,Population growth rate,todo
