@@ -129,7 +129,7 @@ gdp_nominal,states,economics,gdp,"GDP, nominal, largest economies",todo
 gdp_ppp,countries,economics,gdp,"GDP, purchasing power parity, largest economies",todo
 gdp_per_capita,countries,economics,gdp,GDP per person,todo
 gdp_per_capita,states,economics,gdp,GDP per person,todo
-gdp_per_capita_ppp,countries,economics,gdp,Purchasing power per person,todo
+gdp_per_capita_ppp,countries,economics,gdp,Purchasing power per person,done
 gdp_growth_rate,countries,economics,gdp,Economic growth rate,todo
 gdp_growth_rate,states,economics,gdp,Economic growth rate,todo
 consumer_price_inflation,countries,economics,prices,"Consumer-price inflation, highest and lowest",todo
