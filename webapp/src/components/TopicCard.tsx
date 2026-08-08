@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { TopicEntry } from '../lib/data';
 import type { CategoryTheme } from '../lib/theme';
-import { humanizeSlug, scopeLabel } from '../lib/format';
+import { combineVintage, humanizeSlug, scopeLabel } from '../lib/format';
 import { PlaceList, SourceFootnote } from './PlaceList';
 
 interface Props {
@@ -15,6 +15,10 @@ export function TopicCard({ topic, theme }: Props) {
   const firstTitledGroup = topic.entityGroups.find((g) => g.source?.title);
   const title = firstTitledGroup?.source?.title || humanizeSlug(topic.slug);
   const firstDefinedGroup = topic.entityGroups.find((g) => g.source?.definition);
+  const vintage = combineVintage(
+    topic.entityGroups.filter((g) => g.values.length > 0).map((g) => g.source?.dataYear),
+  );
+  const description = topic.description || firstDefinedGroup?.source?.definition;
   const totalCoverage = topic.entityGroups.reduce((n, g) => n + g.values.length, 0);
   const maxCoverage = topic.entityGroups.reduce(
     (n, g) => n + (Number(g.source?.coverageTotal) || g.values.length),
@@ -48,9 +52,10 @@ export function TopicCard({ topic, theme }: Props) {
           <p className="font-serif font-semibold leading-snug truncate" style={{ color: theme.accent }}>
             {title}
           </p>
-          {(topic.description || firstDefinedGroup?.source?.definition) && (
+          {description && (
             <p className="text-xs opacity-70 truncate">
-              {topic.description || firstDefinedGroup?.source?.definition}
+              {description}
+              {vintage && ` • ${vintage}`}
             </p>
           )}
         </div>

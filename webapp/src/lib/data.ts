@@ -156,7 +156,7 @@ function loadSourceManifest(): Map<string, SourceInfo> {
       title: r.title ?? '',
       unit: r.unit ?? '',
       valueType: r.value_type ?? '',
-      dataYear: r.data_year ?? '',
+      dataYear: r.date ?? '',
       sourceName: r.source_name ?? '',
       sourceUrl: r.source_url ?? '',
       publisher: r.publisher ?? '',

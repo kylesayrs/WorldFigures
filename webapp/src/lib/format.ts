@@ -32,3 +32,17 @@ export function scopeLabel(scopes: string[]): string {
   if (scopes.length === 0) return 'Unspecified';
   return scopes.map(singleScopeLabel).join(' & ');
 }
+
+/** Collapse one or more source dates (each possibly already a "YYYY-YYYY"
+ * range, e.g. when an entity type's own vintage varies by row) into a single
+ * display string: a bare year if every date agrees, otherwise the overall
+ * "YYYY-YYYY" span. */
+export function combineVintage(dates: (string | undefined)[]): string {
+  const years = dates
+    .flatMap((d) => (d ? d.match(/\d{4}/g) ?? [] : []))
+    .map(Number);
+  if (years.length === 0) return '';
+  const min = Math.min(...years);
+  const max = Math.max(...years);
+  return min === max ? String(min) : `${min}-${max}`;
+}

@@ -23,13 +23,19 @@ Open-roster entity types (banks, companies, ...): there's no canonical row set
 to check against, so an input label that doesn't match an entity already in
 the master is added as a new row instead of being reported as unmatched.
 
---data-date (or the values a --date-col resolves to) must fall within the last
-two calendar years -- today's year minus 2 through today's year minus 1 --
-inclusive. Give the most precise date the source states (YYYY-MM-DD, YYYY-MM,
-or bare YYYY). A --date-col value is checked per row, not just at the column's
-newest value: any individual row older than that floor is flagged even if
-other rows are current. A column or row outside the window is rejected unless
-you pass --allow-stale-year, which requires an explanation in --notes.
+--data-date (or the values a --date-col resolves to) must fall within the
+window from today's year minus 2 through today's year (inclusive). Give the
+most precise date the source states (YYYY-MM-DD, YYYY-MM, or bare YYYY). A
+--date-col value is checked per row, not just at the column's newest value:
+any individual row older than that floor is flagged even if other rows are
+current. A column or row outside the window is rejected unless you pass
+--allow-stale-year, which requires an explanation in --notes.
+
+When --date-col is given, the manifest's recorded date is always the span of
+the actual per-row years -- a single year (e.g. "2024") if every row agrees,
+or a "YYYY-YYYY" range (e.g. "2000-2024") if they don't -- overriding
+whatever --data-date was passed. Without --date-col, --data-date is recorded
+as given (a single value or a hand-typed range).
 """
 
 import argparse
@@ -85,8 +91,8 @@ def main():
     ap.add_argument("--data-date", default="",
                     help="date the values refer to -- YYYY-MM-DD, YYYY-MM, or "
                          "YYYY, as precise as the source states; the year must "
-                         "fall within the last two calendar years unless "
-                         "--allow-stale-year is passed")
+                         "fall within today's year minus 2 through today's "
+                         "year unless --allow-stale-year is passed")
     ap.add_argument("--definition", default="", help="what exactly is counted")
     ap.add_argument("--notes", default="",
                     help="caveats a reader of the book would need; also where "
@@ -100,7 +106,7 @@ def main():
     ap.add_argument("--force", action="store_true", help="overwrite an existing topic column")
     ap.add_argument("--dry-run", action="store_true", help="report only, write nothing")
     ap.add_argument("--allow-stale-year", action="store_true",
-                    help="override the two-calendar-year data vintage window, "
+                    help="override the data vintage window, "
                          "for the column overall or for individual --date-col "
                          "rows older than that (explain why in --notes; the "
                          "override is recorded there too)")
@@ -164,26 +170,31 @@ def main():
     missing = [r[name_col] for r in master if r[key_col] not in values]
 
     # ---- data vintage -----------------------------------------------------
-    # Rule: values must fall within the last two calendar years (today's year
-    # minus 2 through minus 1), inclusive -- not just "somewhere in the
-    # column is recent." When --date-col gives a date per row, checking only
-    # the newest row (the old rule) let individually ancient rows hide behind
-    # one fresh one; every row is now checked against the same floor.
-    data_date = args.data_date
-    if not data_date and dates:
-        ds = sorted({d for d in dates.values() if d})
-        data_date = ds[0] if len(ds) == 1 else "%s-%s" % (ds[0], ds[-1])
-    target_year = datetime.date.today().year - 1
-    floor_year = target_year - 1
-    found_years = [int(y) for y in re.findall(r"\d{4}", data_date or "")]
-    range_stale = (not found_years) or not (floor_year <= max(found_years) <= target_year)
-
+    # Rule: values must fall within today's year minus 2 through today's
+    # year, inclusive -- not just "somewhere in the column is recent." When
+    # --date-col gives a date per row, checking only the newest row (the old
+    # rule) let individually ancient rows hide behind one fresh one; every
+    # row is now checked against the same floor.
     row_years = {}
     if args.date_col:
         for key, d in dates.items():
             ys = [int(y) for y in re.findall(r"\d{4}", d)]
             if ys:
                 row_years[key] = max(ys)
+
+    # Per-row dates (--date-col) are the ground truth for vintage, so they
+    # always take priority over a manually-typed --data-date: the recorded
+    # date is the min-max span of the actual rows, not whatever the caller
+    # guessed the column's overall date was.
+    data_date = args.data_date
+    if row_years:
+        years = sorted(set(row_years.values()))
+        data_date = str(years[0]) if len(years) == 1 else "%d-%d" % (years[0], years[-1])
+    target_year = datetime.date.today().year
+    floor_year = target_year - 2
+    found_years = [int(y) for y in re.findall(r"\d{4}", data_date or "")]
+    range_stale = (not found_years) or not (floor_year <= max(found_years) <= target_year)
+
     old_rows = sorted(((k, y) for k, y in row_years.items() if y < floor_year),
                        key=lambda kv: kv[1])
 
@@ -247,10 +258,10 @@ def main():
         if old_rows:
             reason = (reason + " and " if reason else "") + (
                 "%d row(s) older than %d" % (len(old_rows), floor_year))
-        print("\nVINTAGE REJECTED -- this book only takes data dated within the "
-              "last two calendar years (%d-%d): %s. Find a source with more "
-              "current values, or pass --allow-stale-year and explain why in "
-              "--notes." % (floor_year, target_year, reason))
+        print("\nVINTAGE REJECTED -- this book only takes data dated within "
+              "%d-%d: %s. Find a source with more current values, or pass "
+              "--allow-stale-year and explain why in --notes."
+              % (floor_year, target_year, reason))
         sys.exit(2)
 
     if args.topic in cols and not args.force:
