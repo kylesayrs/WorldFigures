@@ -274,7 +274,7 @@ services_income_exports,countries,industry,services,"Earnings from services and 
 labour_force_participation,countries,industry,labour,"Labour-force participation rate, highest and lowest",todo
 labour_force_participation,states,industry,labour,"Labour-force participation rate, highest and lowest",todo
 modern_slavery,countries,industry,labour,Modern slavery prevalence,todo
-unemployment_rate,countries,industry,labour,"Unemployment rate, highest",todo
+unemployment_rate,countries,industry,labour,"Unemployment rate, highest",done
 unemployment_rate,states,industry,labour,"Unemployment rate, highest",todo
 youth_unemployment_rate,countries,industry,labour,"Youth unemployment rate, highest",todo
 youth_unemployment_rate,states,industry,labour,"Youth unemployment rate, highest",todo
