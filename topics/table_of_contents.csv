@@ -340,7 +340,7 @@ secondary_enrolment_rate,countries,society,education,"Secondary school enrolment
 secondary_enrolment_rate,states,society,education,"Secondary school enrolment rate, highest and lowest",todo
 tertiary_enrolment_rate,countries,society,education,"Tertiary education enrolment rate, highest and lowest",todo
 tertiary_enrolment_rate,states,society,education,"Tertiary education enrolment rate, highest and lowest",todo
-literacy_rate,countries,society,education,"Adult literacy rate, lowest",todo
+literacy_rate,countries,society,education,"Adult literacy rate, lowest",done
 education_spending,countries,society,education,"Education spending (% of GDP), highest and lowest",todo
 education_spending,states,society,education,"Education spending (% of budget), highest and lowest",todo
 num_households,countries,society,quality_of_life,"Number of households, largest",todo
