@@ -41,7 +41,7 @@ function App() {
           viewport={{ once: true }}
           className="text-center text-xs opacity-40 py-6"
         >
-          Researched one topic at a time.
+          It's dangerous to go alone. May this be your guide
         </motion.footer>
       </main>
     </div>

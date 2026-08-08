@@ -157,6 +157,7 @@ gini_coefficient,states,economics,wealth_and_inequality,Gini coefficient,todo
 household_wealth,countries,economics,wealth_and_inequality,Household wealth,todo
 num_millionaires,countries,economics,wealth_and_inequality,Number of millionaires,todo
 num_millionaires,states,economics,wealth_and_inequality,Number of millionaires,todo
+num_billionaires,states,economics,wealth_and_inequality,Number of billionaires,todo
 health_spending,countries,economics,spending,"Health spending, highest and lowest",todo
 health_spending,states,economics,spending,"Health spending, highest and lowest",todo
 out_of_pocket_health_spending,countries,economics,spending,"Out-of-pocket health spending share, highest and lowest",todo
@@ -273,7 +274,6 @@ services_growth_rate,states,industry,services,Services sector growth rate,todo
 services_income_exports,countries,industry,services,"Earnings from services and income exports, biggest",todo
 labour_force_participation,countries,industry,labour,"Labour-force participation rate, highest and lowest",todo
 labour_force_participation,states,industry,labour,"Labour-force participation rate, highest and lowest",todo
-modern_slavery,countries,industry,labour,Modern slavery prevalence,todo
 unemployment_rate,countries,industry,labour,"Unemployment rate, highest",todo
 unemployment_rate,states,industry,labour,"Unemployment rate, highest",todo
 youth_unemployment_rate,countries,industry,labour,"Youth unemployment rate, highest",todo
@@ -306,6 +306,12 @@ car_ownership_growth,countries,industry,road,"Car ownership growth rate, fastest
 car_ownership_growth,states,industry,road,"Car ownership growth rate, fastest and slowest growing",todo
 car_production,countries,industry,road,"Car production, largest",todo
 cars_sold,countries,industry,road,"New car sales, largest",todo
+tourist_arrivals,countries,industry,tourism,"International tourist arrivals, most",done
+tourist_arrivals,states,industry,tourism,"Tourist arrivals, most",todo
+tourist_spending,countries,industry,tourism,"Outbound tourist spending, biggest spenders",todo
+tourist_spending,states,industry,tourism,"Domestic tourist spending, biggest spenders",todo
+tourist_receipts,countries,industry,tourism,"Inbound tourism receipts, largest",todo
+tourist_receipts,states,industry,tourism,"Inbound tourism receipts, largest",todo
 merchant_fleet_domicile,countries,industry,maritime,"Merchant fleet size by country of domicile (beneficial ownership), largest",todo
 merchant_fleet_registration,countries,industry,maritime,"Merchant fleet size by country of registration (flag), largest",todo
 press_freedom_index,countries,politics,media_freedom,Press freedom index score,todo
@@ -356,6 +362,7 @@ asylum_application_origin,countries,society,migration_and_refugees,Origin of asy
 asylum_application_destination,countries,society,migration_and_refugees,Country where asylum applications were lodged,todo
 conflict_displaced_population,countries,society,migration_and_refugees,"Population displaced by conflict, stock",todo
 human_development_index,countries,society,quality_of_life,Human Development Index,todo
+modern_slavery,countries,society,quality_of_life,Modern slavery prevalence,todo
 music_sales,countries,culture,entertainment,"Recorded music sales/revenue, biggest markets",todo
 music_sales,states,culture,entertainment,"Recorded music sales/revenue, biggest markets",todo
 book_publishing,countries,culture,entertainment,"Books published, biggest markets",todo
@@ -377,15 +384,10 @@ world_cup_titles_cricket,countries,culture,sport,"Cricket World Cup wins and fin
 davis_cup_titles,countries,culture,sport,"Davis Cup wins, all-time",todo
 olympic_medals_summer,countries,culture,sport,"Summer Olympics medal count, all-time",todo
 olympic_medals_winter,countries,culture,sport,"Winter Olympics medal count, all-time",todo
-tourist_arrivals,countries,culture,tourism,"International tourist arrivals, most",done
-tourist_arrivals,states,culture,tourism,"Tourist arrivals, most",todo
-tourist_spending,countries,culture,tourism,"Outbound tourist spending, biggest spenders",todo
-tourist_spending,states,culture,tourism,"Domestic tourist spending, biggest spenders",todo
-tourist_receipts,countries,culture,tourism,"Inbound tourism receipts, largest",todo
-tourist_receipts,states,culture,tourism,"Inbound tourism receipts, largest",todo
 beer_consumption,countries,culture,lifestyle,"Beer consumption per person, highest",todo
 beer_consumption,states,culture,lifestyle,"Beer consumption per person, highest",todo
 wine_consumption,countries,culture,lifestyle,"Wine consumption per person, highest",todo
 wine_consumption,states,culture,lifestyle,"Wine consumption per person, highest",todo
 gambling_losses,countries,culture,lifestyle,"Gambling losses per person, highest",todo
 gambling_losses,states,culture,lifestyle,"Gambling losses per person, highest",todo
+language_diversity_index,countries,culture,diversity,"Probability that two people will have different mother tongues",todo
