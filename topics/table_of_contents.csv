@@ -328,7 +328,7 @@ city_growth_rate,states,society,cities,City population growth rate,todo
 city_liveability_index,countries,society,cities,City liveability index score,todo
 tallest_building_height,countries,society,cities,Height of tallest building,todo
 tallest_building_height,states,society,cities,Height of tallest building,todo
-murder_rate,countries,society,crime_and_justice,"Murder rate, highest",todo
+murder_rate,countries,society,crime_and_justice,"Murder rate, highest",done
 murder_rate,states,society,crime_and_justice,"Murder rate, highest",todo
 robbery_rate,countries,society,crime_and_justice,"Robbery rate, highest",todo
 robbery_rate,states,society,crime_and_justice,"Robbery rate, highest",todo
