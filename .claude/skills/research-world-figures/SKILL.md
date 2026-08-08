@@ -98,16 +98,30 @@ using the topic as described in chat.
    and a value column; add a year column if the source's "latest available" year
    varies by country. Keep the source's own precision — no rounding.
 
-   If the source labels some rows below the country level in a way that should
-   roll up to one canonical row — constituent countries (Scotland, Northern
-   Ireland → United Kingdom), dependencies that are politically part of a
-   parent state (Faroe Islands → Denmark, Guadeloupe → France) — sum those
-   into the parent country yourself before staging. `add_topic.py`'s `--map`
-   resolves a label to a key but does not sum values that land on the same
-   key: two input labels mapped to the same country silently keep only the
-   last one processed (it prints a one-line `conflicts` notice, but the write
-   still succeeds and the dropped value isn't recorded anywhere). Pre-summing
-   in the staging file is the only way to get a correct total.
+   Default to keeping a dependency or territory separate from its parent —
+   drop it (or leave it as its own row, for entity types where it has one)
+   rather than folding it into the parent's number. Only sum it into the
+   parent when the *source itself* treats it that way: either the source
+   gives you a single pre-merged figure for the parent that already includes
+   the dependency (nothing to sum — just use that row as-is), or the source
+   splits out sub-national pieces of a country that has no other row of its
+   own (Scotland, Northern Ireland, Wales → United Kingdom, when the source
+   has no separate "United Kingdom" row at all) and summing is the only way
+   to get that country onto the roster. If the source reports the dependency
+   as its own distinct entry *alongside* a separate entry for the parent —
+   Hong Kong and Macao alongside China; Greenland, the Faroe Islands, Aruba,
+   Curaçao, and Sint Maarten alongside Denmark/Netherlands; Bermuda, the
+   Cayman Islands, and other UK/US overseas territories alongside the
+   UK/US — that's a sign the source itself keeps them separate, so you
+   should too: drop the dependency, use the parent's own row unmodified.
+   Summing in that case invents a total the source never published and
+   inflates the parent above the commonly-cited figure a reader would
+   expect. When you do sum (the "no separate parent row" case), `add_topic.py`'s
+   `--map` resolves a label to a key but does not sum values that land on the
+   same key: two input labels mapped to the same country silently keep only
+   the last one processed (it prints a one-line `conflicts` notice, but the
+   write still succeeds and the dropped value isn't recorded anywhere).
+   Pre-summing in the staging file is the only way to get a correct total.
 
 5. **Merge it.** Identify the scripts folder and use it to merge data and sources
    ```bash
