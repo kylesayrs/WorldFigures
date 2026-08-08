@@ -124,7 +124,7 @@ household_debt,countries,economics,markets_and_finance,Household debt,todo
 household_debt,states,economics,markets_and_finance,Household debt,todo
 exchange_rate,countries,economics,markets_and_finance,Exchange rate against the US dollar,todo
 big_mac_index,countries,economics,markets_and_finance,The Economist's Big Mac index,todo
-gdp_nominal,countries,economics,gdp,"GDP, nominal, largest economies",todo
+gdp_nominal,countries,economics,gdp,"GDP, nominal, largest economies",done
 gdp_nominal,states,economics,gdp,"GDP, nominal, largest economies",todo
 gdp_ppp,countries,economics,gdp,"GDP, purchasing power parity, largest economies",todo
 gdp_per_capita,countries,economics,gdp,GDP per person,todo
