@@ -168,7 +168,7 @@ mobile_phone_subscriptions,countries,industry,connectivity,"Mobile telephone sub
 mobile_phone_subscriptions,states,industry,connectivity,"Mobile telephone subscriptions, highest",todo
 landline_subscriptions,countries,industry,connectivity,"Fixed landline telephone subscriptions, highest",todo
 landline_subscriptions,states,industry,connectivity,"Fixed landline telephone subscriptions, highest",todo
-broadband_subscriptions,countries,industry,connectivity,"Broadband subscriptions, highest",todo
+broadband_subscriptions,countries,industry,connectivity,"Broadband subscriptions, highest",done
 broadband_subscriptions,states,industry,connectivity,"Broadband subscriptions, highest",todo
 broadband_speed,countries,industry,connectivity,"Average broadband internet speed, highest",todo
 broadband_speed,states,industry,connectivity,"Average broadband internet speed, highest",todo
