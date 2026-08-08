@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Show what's in the masters and where the holes are.
 
-    python3 scripts/report.py --data-dir data
-    python3 scripts/report.py --data-dir data --topic gdp_usd
+    python3 scripts/report.py
+    python3 scripts/report.py --topic gdp_usd
 
 Flags three things worth catching before the book goes anywhere: topic columns
 with no manifest entry (unciteable), manifest entries with no column (stale),
@@ -18,13 +18,15 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pwf_lib import ENTITY_TYPES, load_master, manifest_path, read_csv
+from pwf_lib import DEFAULT_DATA_DIR, ENTITY_TYPES, load_master, manifest_path, read_csv
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--data-dir", default="data")
+    ap.add_argument("--data-dir", default=DEFAULT_DATA_DIR,
+                    help="defaults to this checkout's own data/ dir, resolved "
+                         "from this script's file location, not cwd")
     ap.add_argument("--entity-type", dest="scope",
                     choices=list(ENTITY_TYPES) + ["all"], default="all")
     ap.add_argument("--topic", help="list the blank rows for one topic")

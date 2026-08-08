@@ -18,6 +18,11 @@ SKILL_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # project's data, not bundled inside the skill.
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(SKILL_DIR)))
 ASSETS = os.path.join(PROJECT_ROOT, "assets")
+# Self-locating default: resolved from this file's own path, not the caller's
+# cwd, so a script always reads/writes its own checkout's data/ even if the
+# shell has cd'ed elsewhere (e.g. mid-run while fetching source data) or if
+# multiple checkouts/worktrees of this repo are in play at once.
+DEFAULT_DATA_DIR = os.path.join(PROJECT_ROOT, "data")
 
 # Every entity type a topic can be measured across. Two kinds:
 #

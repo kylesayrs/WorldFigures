@@ -84,6 +84,15 @@ using the topic as described in chat.
    the data URL — API endpoints returning CSV or JSON work fine — and write the
    response to a staging file.
 
+   When you fetch via an API rather than a browsable page, keep track of two
+   URLs, not one: the raw query you actually called (with its parameters),
+   and — separately — the API's own documentation or indicator landing page,
+   the one a human reader would open to see the series' definition, update
+   schedule, and license (e.g. `https://data.worldbank.org/indicator/<code>`
+   for a World Bank indicator, not `https://api.worldbank.org/v2/...`). You'll
+   need both in step 5: the documentation page is `--source-url`, the raw
+   query should be included in `--notes`.
+
 4. **Stage it.** Write `$STAGING_DIR/<slug>.csv` (the scratch directory from
    step 1 of "Arguments") with at minimum a place column
    and a value column; add a year column if the source's "latest available" year
@@ -100,11 +109,11 @@ using the topic as described in chat.
    still succeeds and the dropped value isn't recorded anywhere). Pre-summing
    in the staging file is the only way to get a correct total.
 
-5. **Merge it.**
-
+5. **Merge it.** Identify the scripts folder and use it to merge data and sources
    ```bash
-   python3 scripts/init_masters.py --data-dir data      # first run only, safe to repeat
-   python3 scripts/add_topic.py --entity-type countries --topic <topic> \
+   SCRIPTS="$(git rev-parse --show-toplevel)/.claude/skills/research-world-figures/scripts"
+   python3 "$SCRIPTS/init_masters.py"      # first run only, safe to repeat
+   python3 "$SCRIPTS/add_topic.py" --entity-type countries --topic <topic> \
      --input "$STAGING_DIR/<slug>.csv" --key-col country --value-col value \
      --title "..." --unit "..." --source-name "..." --source-url "..." \
      --publisher "..." --published YYYY-MM-DD --data-date YYYY-MM-DD \
@@ -115,13 +124,25 @@ using the topic as described in chat.
    `countries` and `states` for most topics, but a topic like "largest banks"
    is `banks`, not `countries` (see "Entity types" below).
 
+   `--source-url` should be a page a human reader can open to understand the
+   series — the documentation or landing page you tracked in step 3 — not the
+   raw query URL, whenever the source publishes a separate one. When you
+   fetched via a raw API call, put that exact call (with its query
+   parameters) in `--notes`, e.g. `--notes "API:
+   https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?format=json&mrnev=1"`.
+   If the source genuinely has no separate documentation page — a bare CSV
+   download with nothing else — `--source-url` can be the raw URL directly;
+   don't invent a documentation link that doesn't exist.
+
    `--dry-run` first, always. It prints coverage, fuzzy matches, skipped
-   aggregates, every unresolved label, and a `vintage` line checking `--data-date`
-   against last calendar year. Resolve unmatched labels (`--map "Label=ISO3"` for
-   real matches, `--drop "Label"` for non-rows); if the vintage line says
-   REJECTED, either find a source dated to last year or, for topics that
-   genuinely don't refresh annually, re-run with `--allow-stale-year` and a
-   `--notes` explanation. Then re-run without `--dry-run`.
+   aggregates, every unresolved label, and a `vintage` line checking
+   `--data-date` (or each `--date-col` row) against the last-two-calendar-years
+   window — see "Documented vintage" below. Resolve unmatched labels
+   (`--map "Label=ISO3"` for real matches, `--drop "Label"` for non-rows); if
+   the vintage line says REJECTED, either find more current values or, for
+   topics that genuinely don't refresh annually, re-run with
+   `--allow-stale-year` and a `--notes` explanation. Then re-run without
+   `--dry-run`.
 
 6. **Mark the topic done.** In `topics/table_of_contents.csv`, set `status`
    to `done` for the `(topic, entity_type)` row matching this run — matching
@@ -192,14 +213,30 @@ Judge candidates on four things:
 - **Documented vintage, and last calendar year specifically.** You need the date
   the values describe *and* the release date; an undated number can't be
   footnoted. Give `--data-date` the most precise date the source states — a
-  specific day (`2025-12-31`) beats a bare year — but its year component must be
-  *last* calendar year — today minus one. If today is in 2026, only 2025-dated
-  values are acceptable; 2024 is stale and 2026 (this year) is usually still
-  incomplete. Recompute this from the current date each time, don't reuse a
-  number from an earlier session. `add_topic.py` enforces this on `--data-date`
-  and rejects a mismatch unless you pass `--allow-stale-year` with a `--notes`
-  explanation — reserve that for topics (census, some V-Dem/IHME series) that
-  are never updated annually.
+  specific day (`2025-12-31`) beats a bare year. Always look for the most
+  current values available — *last* calendar year, today minus one, is the
+  target, not just the acceptable floor. If today is in 2026, prefer
+  2025-dated values; 2026 (this year) is usually still incomplete.
+
+  The hard window, past which `add_topic.py` rejects without an explicit
+  override, is the **last two calendar years** — today minus 2 through today
+  minus 1, inclusive (2024–2025 if today is in 2026). This is a ceiling, not
+  a target: don't stop looking once a 2-year-old source turns up if a
+  1-year-old one is findable. Recompute the window from the current date each
+  run, don't reuse a number from an earlier session.
+
+  When a source gives one date per row (`--date-col`) rather than one date
+  for the whole column, the check applies **per row**, not just to the
+  column's newest value — a column can't hide a decade-old row for one
+  country behind a current row for another. Rows outside the window print in
+  the dry-run's `old rows` line.
+
+  A rejection — whether the whole column or specific rows — needs
+  `--allow-stale-year` with a `--notes` explanation to proceed. Reserve that
+  for topics (census, some V-Dem/IHME/Gini series) that genuinely don't
+  refresh annually for every row, and for the handful of places within an
+  otherwise-current column whose own latest figure is simply older (say so by
+  place, not just by count, when it's a short list).
 
   **Cumulative all-time totals** (Nobel Prizes, Olympic medals, World Cup
   titles — a running career/history tally, not a yearly snapshot) still need
@@ -312,13 +349,18 @@ and updates the manifest entry in place.
 
 ## Scripts
 
+All three live at `.claude/skills/research-world-figures/scripts/`, not at a
+top-level `scripts/` — see the path note in "Merge it" above (step 5).
+
 | Script | Use |
 |---|---|
-| `scripts/init_masters.py` | Create or repair the masters and manifest. Idempotent; preserves existing topic columns (and, for open-roster entity types, existing rows). |
-| `scripts/add_topic.py` | Merge staged values into a master + write the manifest entry. `--dry-run` reports without writing. Rejects `--data-date` values whose year is other than last calendar year unless `--allow-stale-year` is passed. |
-| `scripts/report.py` | Coverage per topic, undocumented columns, rows blank everywhere (fixed-roster entity types), or entity counts per topic (open-roster). |
+| `init_masters.py` | Create or repair the masters and manifest. Idempotent; preserves existing topic columns (and, for open-roster entity types, existing rows). |
+| `add_topic.py` | Merge staged values into a master + write the manifest entry. `--dry-run` reports without writing. Rejects `--data-date` (or any `--date-col` row) dated outside the last two calendar years unless `--allow-stale-year` is passed. |
+| `report.py` | Coverage per topic, undocumented columns, rows blank everywhere (fixed-roster entity types), or entity counts per topic (open-roster). |
 
-Run `--help` on any of them for the full flag list.
+Run `--help` on any of them for the full flag list. `--data-dir` defaults to
+that script's own project root (resolved from the script file's location) —
+you shouldn't need to pass it.
 
 ## Worked example: average commute duration, U.S. states
 
@@ -333,13 +375,15 @@ variable names do change between vintages. Then:
 
 ```bash
 # fetch -> $STAGING_DIR/mean_commute_minutes_states.csv with columns: state,value
-python3 scripts/add_topic.py --entity-type states --topic mean_commute_minutes \
+python3 "$SCRIPTS/add_topic.py" --entity-type states --topic mean_commute_minutes \
   --input "$STAGING_DIR/mean_commute_minutes_states.csv" --key-col state --value-col value \
   --title "Mean travel time to work" --unit "minutes" \
   --source-name "ACS 1-year estimates, aggregate travel time / workers who commute" \
-  --source-url "<endpoint or table URL>" --publisher "U.S. Census Bureau" \
+  --source-url "https://www.census.gov/data/developers/data-sets/acs-1year.html" \
+  --publisher "U.S. Census Bureau" \
   --published <release date> --data-date <survey year, or exact "as of" date> \
   --definition "Mean one-way travel time to work, workers 16+ not working from home" \
+  --notes "API: <the exact detailed-table endpoint + variable IDs you queried>" \
   --dry-run
 ```
 

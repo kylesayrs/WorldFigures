@@ -10,7 +10,8 @@ happens here.
       --input /tmp/pwf-staging/gdp.csv --key-col country --value-col value \\
       --title "GDP (current US$)" --unit "current US$" \\
       --source-name "World Bank WDI, NY.GDP.MKTP.CD" \\
-      --source-url "https://api.worldbank.org/v2/..." \\
+      --source-url "https://data.worldbank.org/indicator/NY.GDP.MKTP.CD" \\
+      --notes "API: https://api.worldbank.org/v2/country/all/indicator/NY.GDP.MKTP.CD?format=json" \\
       --publisher "World Bank" --published 2026-07-01 --data-date 2025-12-31
 
 Fixed-roster entity types (countries, states): nothing is written unless every
@@ -22,10 +23,13 @@ Open-roster entity types (banks, companies, ...): there's no canonical row set
 to check against, so an input label that doesn't match an entity already in
 the master is added as a new row instead of being reported as unmatched.
 
---data-date (or the values a --date-col resolves to) must be dated to last
-calendar year -- today's year minus one. Give the most precise date the source
-states (YYYY-MM-DD, YYYY-MM, or bare YYYY); a mismatched year is rejected
-unless you pass --allow-stale-year, which requires an explanation in --notes.
+--data-date (or the values a --date-col resolves to) must fall within the last
+two calendar years -- today's year minus 2 through today's year minus 1 --
+inclusive. Give the most precise date the source states (YYYY-MM-DD, YYYY-MM,
+or bare YYYY). A --date-col value is checked per row, not just at the column's
+newest value: any individual row older than that floor is flagged even if
+other rows are current. A column or row outside the window is rejected unless
+you pass --allow-stale-year, which requires an explanation in --notes.
 """
 
 import argparse
@@ -36,9 +40,9 @@ import re
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pwf_lib import (ENTITY_TYPES, MANIFEST_COLUMNS, Resolver, clean_number,
-                     die, load_master, manifest_path, master_path, read_csv,
-                     write_csv, write_master_csv)
+from pwf_lib import (DEFAULT_DATA_DIR, ENTITY_TYPES, MANIFEST_COLUMNS,
+                     Resolver, clean_number, die, load_master, manifest_path,
+                     master_path, read_csv, write_csv, write_master_csv)
 
 BASE = {s: [c["key_col"], c["name_col"]] + c["extra_cols"] for s, c in ENTITY_TYPES.items()}
 
@@ -63,22 +67,31 @@ def main():
     ap.add_argument("--value-col", required=True)
     ap.add_argument("--date-col", help="optional per-row column giving the date "
                     "(or year) each value refers to")
-    ap.add_argument("--data-dir", default="data")
+    ap.add_argument("--data-dir", default=DEFAULT_DATA_DIR,
+                    help="defaults to this checkout's own data/ dir, resolved "
+                         "from this script's file location, not cwd")
 
     ap.add_argument("--title", required=True, help="human-readable topic name")
     ap.add_argument("--unit", default="", help='e.g. "current US$", "minutes", "per 100,000"')
     ap.add_argument("--value-type", default="number",
                     choices=["number", "rate", "percent", "index", "rank", "text"])
     ap.add_argument("--source-name", required=True, help="dataset name + series/table ID")
-    ap.add_argument("--source-url", required=True)
+    ap.add_argument("--source-url", required=True,
+                    help="a page a human reader can open -- the series' own "
+                         "documentation/landing page if the source has one, "
+                         "not a raw API query URL (put that in --notes instead)")
     ap.add_argument("--publisher", required=True, help="BLS, World Bank, Our World in Data ...")
     ap.add_argument("--published", default="", help="when the source published this release")
     ap.add_argument("--data-date", default="",
                     help="date the values refer to -- YYYY-MM-DD, YYYY-MM, or "
                          "YYYY, as precise as the source states; the year must "
-                         "be last calendar year unless --allow-stale-year is passed")
+                         "fall within the last two calendar years unless "
+                         "--allow-stale-year is passed")
     ap.add_argument("--definition", default="", help="what exactly is counted")
-    ap.add_argument("--notes", default="", help="caveats a reader of the book would need")
+    ap.add_argument("--notes", default="",
+                    help="caveats a reader of the book would need; also where "
+                         "the raw API query URL goes when --source-url is a "
+                         "documentation page rather than the fetch URL itself")
 
     ap.add_argument("--map", action="append", metavar="LABEL=KEY",
                     help="resolve a stubborn label by hand, e.g. --map \"Turkiye=TUR\"")
@@ -87,8 +100,10 @@ def main():
     ap.add_argument("--force", action="store_true", help="overwrite an existing topic column")
     ap.add_argument("--dry-run", action="store_true", help="report only, write nothing")
     ap.add_argument("--allow-stale-year", action="store_true",
-                    help="override the previous-calendar-year data vintage rule "
-                         "(explain why in --notes; the override is recorded there too)")
+                    help="override the two-calendar-year data vintage window, "
+                         "for the column overall or for individual --date-col "
+                         "rows older than that (explain why in --notes; the "
+                         "override is recorded there too)")
     ap.add_argument("--allow-unmatched", action="store_true",
                     help="write anyway, leaving unresolved labels out (use sparingly)")
     args = ap.parse_args()
@@ -135,23 +150,8 @@ def main():
         if args.date_col and row.get(args.date_col):
             dates[key] = str(row[args.date_col]).strip()
 
-    # ---- data vintage ---------------------------------------------------------
-    # Rule: the book only takes sources dated to last calendar year (today's
-    # year minus one). A stray current-year or older-vintage source is a much
-    # easier mistake to make than it looks -- catch it before it's merged.
-    data_date = args.data_date
-    if not data_date and dates:
-        ds = sorted({d for d in dates.values() if d})
-        data_date = ds[0] if len(ds) == 1 else "%s-%s" % (ds[0], ds[-1])
-    target_year = datetime.date.today().year - 1
-    found_years = [int(y) for y in re.findall(r"\d{4}", data_date or "")]
-    stale = (not found_years) or (max(found_years) != target_year)
-    if stale and args.allow_stale_year:
-        override_note = "[vintage override: date=%s, expected %d]" % (
-            data_date or "(none)", target_year)
-        args.notes = (args.notes + " " + override_note).strip()
-
-    # ---- report -------------------------------------------------------------
+    # ---- report (load early: the vintage check below needs names for its
+    # per-row report) ----------------------------------------------------------
     cols, master = load_master(args.data_dir, args.scope)
     if roster == "open":
         # An open master may not have a name/extra-col row yet (e.g. its very
@@ -163,10 +163,48 @@ def main():
     filled = sum(1 for r in master if r[key_col] in values)
     missing = [r[name_col] for r in master if r[key_col] not in values]
 
+    # ---- data vintage -----------------------------------------------------
+    # Rule: values must fall within the last two calendar years (today's year
+    # minus 2 through minus 1), inclusive -- not just "somewhere in the
+    # column is recent." When --date-col gives a date per row, checking only
+    # the newest row (the old rule) let individually ancient rows hide behind
+    # one fresh one; every row is now checked against the same floor.
+    data_date = args.data_date
+    if not data_date and dates:
+        ds = sorted({d for d in dates.values() if d})
+        data_date = ds[0] if len(ds) == 1 else "%s-%s" % (ds[0], ds[-1])
+    target_year = datetime.date.today().year - 1
+    floor_year = target_year - 1
+    found_years = [int(y) for y in re.findall(r"\d{4}", data_date or "")]
+    range_stale = (not found_years) or not (floor_year <= max(found_years) <= target_year)
+
+    row_years = {}
+    if args.date_col:
+        for key, d in dates.items():
+            ys = [int(y) for y in re.findall(r"\d{4}", d)]
+            if ys:
+                row_years[key] = max(ys)
+    old_rows = sorted(((k, y) for k, y in row_years.items() if y < floor_year),
+                       key=lambda kv: kv[1])
+
+    stale = range_stale or bool(old_rows)
+    if stale and args.allow_stale_year:
+        parts = ["date=%s, expected %d-%d" % (data_date or "(none)", floor_year, target_year)]
+        if old_rows:
+            parts.append("%d row(s) older than %d" % (len(old_rows), floor_year))
+        args.notes = (args.notes + " [vintage override: %s]" % "; ".join(parts)).strip()
+
     print("topic     : %s  (%s)" % (args.topic, args.scope))
-    print("vintage   : date=%s, expected %d%s" % (
-        data_date or "(none)", target_year,
+    print("vintage   : date=%s, expected %d-%d%s" % (
+        data_date or "(none)", floor_year, target_year,
         "" if not stale else (" -- OVERRIDDEN" if args.allow_stale_year else " -- REJECTED")))
+    if old_rows:
+        key_to_name = {r[key_col]: r[name_col] for r in master}
+        for label, key in getattr(res, "created", []) or []:
+            key_to_name.setdefault(key, label)
+        shown = ", ".join("%s (%d)" % (key_to_name.get(k, k), y) for k, y in old_rows[:10]) + (
+            ", ..." if len(old_rows) > 10 else "")
+        print("old rows  : %d row(s) older than %d -- %s" % (len(old_rows), floor_year, shown))
     if roster == "fixed":
         print("coverage  : %d/%d rows (%.0f%%)" % (
             filled, total, 100.0 * filled / total if total else 0.0))
@@ -204,9 +242,15 @@ def main():
             sys.exit(2)
 
     if stale and not args.allow_stale_year:
-        print("\nVINTAGE REJECTED -- this book only takes data dated to last "
-              "calendar year (%d). Find a source with %d-dated values, or pass "
-              "--allow-stale-year and explain why in --notes." % (target_year, target_year))
+        reason = ("outside the %d-%d window" % (floor_year, target_year) if range_stale
+                  else "")
+        if old_rows:
+            reason = (reason + " and " if reason else "") + (
+                "%d row(s) older than %d" % (len(old_rows), floor_year))
+        print("\nVINTAGE REJECTED -- this book only takes data dated within the "
+              "last two calendar years (%d-%d): %s. Find a source with more "
+              "current values, or pass --allow-stale-year and explain why in "
+              "--notes." % (floor_year, target_year, reason))
         sys.exit(2)
 
     if args.topic in cols and not args.force:

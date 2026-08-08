@@ -11,7 +11,7 @@ Open-roster entity types (banks, companies, ...): there's no canonical set to
 restore -- this just makes sure the master file exists (creating an empty one
 if needed) and otherwise leaves it untouched.
 
-    python3 scripts/init_masters.py --data-dir data
+    python3 scripts/init_masters.py
 """
 
 import argparse
@@ -19,9 +19,9 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from pwf_lib import (ENTITY_TYPES, MANIFEST_COLUMNS, load_canonical,
-                     manifest_path, master_path, read_csv, read_master_csv,
-                     write_csv, write_master_csv)
+from pwf_lib import (DEFAULT_DATA_DIR, ENTITY_TYPES, MANIFEST_COLUMNS,
+                     load_canonical, manifest_path, master_path, read_csv,
+                     read_master_csv, write_csv, write_master_csv)
 
 
 def init_fixed(data_dir, scope, verbose=True):
@@ -93,7 +93,9 @@ def init_manifest(data_dir, verbose=True):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--data-dir", default="data")
+    ap.add_argument("--data-dir", default=DEFAULT_DATA_DIR,
+                    help="defaults to this checkout's own data/ dir, resolved "
+                         "from this script's file location, not cwd")
     ap.add_argument("--entity-type", choices=list(ENTITY_TYPES) + ["all"], default="all")
     args = ap.parse_args()
 
